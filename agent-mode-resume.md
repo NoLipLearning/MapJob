@@ -14,3 +14,7 @@ Phase2 (after T merges): Agent A apply helper (BUILD-PLAN 2.4) + Reminders (sect
 
 UPDATE 2: F (filters) and T (tracker) MERGED to master + tests pass (smoke 10, filters, tracker). Built html untracked. R (routes) agent a84e7ca2b7dd7a080 still running. Phase2 agents launched: A apply helper (aee0f2921c7c74496), Reminders (a4d0d8594cbc86169). After all merge: run Rosslyn (add_rosslyn.py after fetch DONE), then Phase3 UI-pass agent per docs/UI-DIRECTION.md, then publish+zip.
 Known nits for UI pass: filters 'My status' buckets (star=Interested, applying=Applied, offer=Interviewing); desktop filter bar starts collapsed.
+
+UPDATE 3: ALL Phase1+2 branches MERGED (F,T,R,A,Reminders) + Rosslyn tile+5130 streets. 8 suites pass (smoke10, filters42, tracker48, routes21, apply30, reminders51, rosslyn, integration). 
+Next: Phase3 UI-pass agent per docs/UI-DIRECTION.md (launch in worktree), merge, review screenshots myself; then publish artifact (capabilities db,user,downloads; files tiles/*.json) and verify cloud path with ArtifactData; zip to Eric (SendUserFile). Ask Eric: GitHub repo, near-home detail OK?, profile JSON.
+UI issues seen: tabs wrap ('Biggest offices'), Today panel pushes list down, phone: map below ~400px controls, card overlaps pad, header tagline tall.
