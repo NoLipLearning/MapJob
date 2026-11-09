@@ -1,0 +1,118 @@
+<title>Reston Hiring Map</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/*__CSS__*/
+</style>
+
+<div class="wrap">
+  <header>
+    <div>
+      <h1>Reston Hiring Map</h1>
+      <p class="sub">Ninety-plus researched employers from Warrenton to Capitol Hill, ranked for a political science grad who wants work without a security clearance. Tune the ranking, open a careers page, or explore the biggest office buildings in 3D.</p>
+    </div>
+    <span class="homechip" id="homechip"></span>
+  </header>
+
+  <div class="controls">
+    <div class="search"><input type="search" id="q" placeholder="Search, then Enter to fly there" aria-label="Search employers, roles and buildings. Press Enter to fly to the top result."></div>
+    <select id="area" data-tab-only="emp" aria-label="Area"></select>
+    <select id="kind" data-tab-only="emp" aria-label="Employer type"></select>
+    <label class="check" id="clearwrap" data-tab-only="emp"><input type="checkbox" id="hideclear" checked> Hide employers where most entry jobs need a clearance</label>
+    <button type="button" class="tool cta" id="sethome" aria-pressed="false">Set my home</button>
+  </div>
+
+  <div class="main">
+    <div class="mapbox" id="mapbox">
+      <canvas id="gl" tabindex="0" aria-label="3D map of employers and office buildings from Warrenton to Washington, DC. Arrow keys move the map, Q and E rotate, plus and minus zoom. The list beside it has the same information as text."></canvas>
+      <div class="places" id="places" role="group" aria-label="Jump to a place">
+        <button type="button" data-p="home">Home</button>
+        <button type="button" data-p="reston">Reston</button>
+        <button type="button" data-p="tysons">Tysons</button>
+        <button type="button" data-p="rosslyn">Rosslyn</button>
+        <button type="button" data-p="dc">DC</button>
+        <button type="button" data-p="warrenton">Warrenton</button>
+        <button type="button" data-p="region">Whole region</button>
+        <button type="button" data-p="fit" title="Zoom to fit everything in the list">Fit list</button>
+      </div>
+      <div class="zoom">
+        <button type="button" id="compass" aria-label="Rotate the map so north is up" title="North up"><svg viewBox="0 0 24 24" id="needle" style="fill:currentColor;stroke:none"><path d="M12 2.5l4.2 9.5H7.8z" style="fill:var(--sel)"/><path d="M12 21.5L7.8 12h8.4z" style="opacity:.4"/></svg></button>
+        <button type="button" class="big" id="zin" aria-label="Zoom in" title="Zoom in (+)">+</button>
+        <button type="button" class="big" id="zout" aria-label="Zoom out" title="Zoom out (&minus;)">&minus;</button>
+        <button type="button" id="tilt" aria-pressed="true" title="Switch between 3D and top-down (T)">3D</button>
+        <button type="button" class="sm" id="dragmode" aria-pressed="false" title="What dragging does: Move slides the map, Turn rotates and tilts it">Move</button>
+        <button type="button" id="keybtn" aria-pressed="false" aria-controls="legend" title="Show map key">Key</button>
+        <button type="button" id="helpbtn" aria-pressed="false" aria-controls="help" title="How to get around (?)">?</button>
+      </div>
+      <div class="help" id="help" hidden>
+        <h3>Getting around <button type="button" id="helpx">Got it</button></h3>
+        <dl>
+          <dt>Mouse</dt><dd>Drag to slide the map. Right-drag or Shift-drag to rotate and tilt. Scroll to zoom at the cursor. Double-click to zoom in, Shift-double-click to zoom out.</dd>
+          <dt>Touch</dt><dd>One finger slides, two fingers pinch to zoom. Switch the <b>Move</b> button to <b>Turn</b> to rotate and tilt.</dd>
+          <dt>Keys</dt><dd><kbd>&uarr;&darr;&larr;&rarr;</kbd> or <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> move, <kbd>Q</kbd><kbd>E</kbd> rotate, <kbd>R</kbd><kbd>F</kbd> tilt, <kbd>+</kbd><kbd>&minus;</kbd> zoom, <kbd>N</kbd> north up, <kbd>T</kbd> 3D or top-down, <kbd>H</kbd> home.</dd>
+          <dt>Browse</dt><dd><kbd>[</kbd> <kbd>]</kbd> or the Prev and Next buttons step through the list. <kbd>/</kbd> searches, and Enter flies to the top result.</dd>
+        </dl>
+      </div>
+      <div class="legend" id="legend" hidden>
+        <span><i class="dot" style="background:var(--m1)"></i>Match 80 and up</span>
+        <span><i class="dot" style="background:var(--m2)"></i>Match 65 to 79</span>
+        <span><i class="dot" style="background:var(--m3)"></i>Match 50 to 64</span>
+        <span><i class="dot" style="background:var(--m4)"></i>Match under 50</span>
+        <span><i class="sw" style="background:var(--bld-est)"></i>Building, height estimated</span>
+        <span><i class="sw" style="background:var(--bld)"></i>Height from map data</span>
+        <span><i class="sw" style="background:var(--bld-tall)"></i>30 m or taller</span>
+        <span><i class="sw" style="background:var(--sel)"></i>Selected building</span>
+      </div>
+      <div class="hint" id="hint" hidden></div>
+      <div class="tip" id="tip" hidden></div>
+      <div class="status" id="status" hidden></div>
+      <div class="card" id="card" hidden></div>
+      <div class="pad" id="pad" role="group" aria-label="Move the map">
+        <button type="button" data-a="rotL" aria-label="Rotate left" title="Rotate left (Q)"><svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 3-6.2"/><path d="M4 4v5h5"/></svg></button>
+        <button type="button" data-a="up" aria-label="Move north" title="Move up (W)"><svg viewBox="0 0 24 24"><path d="M6 15l6-6 6 6"/></svg></button>
+        <button type="button" data-a="rotR" aria-label="Rotate right" title="Rotate right (E)"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-3-6.2"/><path d="M20 4v5h-5"/></svg></button>
+        <button type="button" data-a="left" aria-label="Move left" title="Move left (A)"><svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button>
+        <button type="button" id="padhome" aria-label="Go to home" title="Go home (H)"><svg viewBox="0 0 24 24"><path d="M4 11l8-7 8 7"/><path d="M6 10v9h12v-9"/></svg></button>
+        <button type="button" data-a="right" aria-label="Move right" title="Move right (D)"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>
+        <button type="button" data-a="tiltLow" aria-label="Tilt toward the horizon" title="Tilt toward the horizon (R)"><svg viewBox="0 0 24 24"><path d="M3 18l5-11h8l5 11z"/></svg></button>
+        <button type="button" data-a="down" aria-label="Move down" title="Move down (S)"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button>
+        <button type="button" data-a="tiltTop" aria-label="Tilt top-down" title="Tilt top-down (F)"><svg viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="14" rx="1.5"/></svg></button>
+      </div>
+      <div class="attr">Map data &copy; OpenStreetMap contributors</div>
+    </div>
+
+    <div class="side">
+      <div class="tabs" id="tabs" role="tablist" aria-label="List">
+        <button type="button" role="tab" id="tab-emp" aria-selected="true" aria-controls="list">Top matches<span class="c" id="cnt-emp"></span></button>
+        <button type="button" role="tab" id="tab-rank" aria-selected="false" aria-controls="list">Biggest offices<span class="c" id="cnt-rank"></span></button>
+      </div>
+      <details class="tune" id="tune" data-tab-only="emp">
+        <summary>How matches are ranked</summary>
+        <div class="rows">
+          <label for="w0">Role fit <output id="o0"></output><input type="range" id="w0" min="0" max="50" step="5"><small>Political, policy, international or legislative work</small></label>
+          <label for="w1">No-clearance access <output id="o1"></output><input type="range" id="w1" min="0" max="50" step="5"><small>Entry jobs that don't need a security clearance</small></label>
+          <label for="w2">Entry-level access <output id="o2"></output><input type="range" id="w2" min="0" max="50" step="5"><small>Hires recent grads, with programs or BA-level postings</small></label>
+          <label for="w3">Commute <output id="o3"></output><input type="range" id="w3" min="0" max="50" step="5"><small>Distance from your home, with a bonus near Metro</small></label>
+          <div class="row2"><span id="wsum"></span><button type="button" id="wreset">Reset to my defaults</button></div>
+        </div>
+      </details>
+      <div class="chiprow" id="rankareas" hidden></div>
+      <div class="list" id="list" role="tabpanel" aria-labelledby="tab-emp"></div>
+    </div>
+  </div>
+
+  <div class="foot">
+    <p>How the match score works: researchers rated each employer 1 to 5 on role fit, no-clearance access and entry-level access, citing the pages in each card. Commute is scored from straight-line distance to your home (Reston until you set it), with a bonus for offices near a Metro station. The score is the weighted average on a 0 to 100 scale. Ratings are judgments from public postings and pages as of November 2026, so check each listing before you apply.</p>
+    <p>Office sizes are estimates: footprint from OpenStreetMap times tagged floors, in gross square feet. Names in map data can be out of date. Pins are placed from address lookups; a few are placed at street level. Your home point and ranking weights are stored only in this browser.</p>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+/*__JS__*/
+</script>

@@ -1,4 +1,11 @@
-import json
-t=open('template4.html').read(); d=json.load(open('prep4.json'))
-open('reston-hiring-map.html','w').write(t.replace('__DATA__',json.dumps(d,separators=(',',':'))))
-print('html bytes',len(t)+len(json.dumps(d,separators=(',',':'))))
+"""Build reston-hiring-map.html from shell.html + parts/*.css + parts/*.js (filename order) + prep4.json.
+Run from src/:  python3 build4.py   (writes ../reston-hiring-map.html)"""
+import json, glob, os
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
+shell = open('shell.html').read()
+css = '\n'.join(open(f).read() for f in sorted(glob.glob('parts/*.css')))
+js = '\n'.join(open(f).read() for f in sorted(glob.glob('parts/*.js')))
+data = json.dumps(json.load(open('prep4.json')), separators=(',', ':'))
+out = shell.replace('/*__CSS__*/', css).replace('/*__JS__*/', js.replace('__DATA__', data))
+open('../reston-hiring-map.html', 'w').write(out)
+print('html bytes', len(out), '| parts:', ', '.join(os.path.basename(f) for f in sorted(glob.glob('parts/*.*'))))
