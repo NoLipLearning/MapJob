@@ -35,7 +35,7 @@ const ARGS = ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swif
   ok(await page.locator('#filters .fbody').isVisible(), 'desktop: Filters button expands the bar');
   const base = await total(page); ok(base === await shown(page), `default count ${base} equals list`);
   ok(await page.locator('#area, #kind, #hideclear').count() === 0, 'old controls removed');
-  ok(await page.locator('#filters .fcount').first().textContent() === `Showing ${base} of 95`, 'live count text');
+  ok(await page.locator('#filters .fcount').first().textContent() === `Showing ${base} of ${await page.evaluate(() => app.E.length)}`, 'live count text');
   await click(page, '.chip[data-g=cl][data-v=none]'); await page.waitForTimeout(150);
   const tag = await page.locator('#list .item .tag', { hasText: 'Sponsors clearance' }).count(); ok(tag > 0, `"Sponsors clearance" tag on rows (${tag})`);
   await page.evaluate(() => app.filters.reset());

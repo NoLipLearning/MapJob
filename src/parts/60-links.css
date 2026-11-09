@@ -1,0 +1,7 @@
+/* 60-links: Find openings rows. Reuses kit classes. */
+.links-sec .btn-row { gap: 6px; }
+.links-sec .btn.sm { min-height: 34px; }
+.links-sec h3 .btn { text-transform: none; letter-spacing: 0; font-size: 12px; }
+.links-mine { margin-top: 8px; padding-top: 8px; border-top: 1px dashed var(--line); }
+.links-err { color: var(--warm); }
+@media (pointer: coarse) { .links-sec .btn.sm { min-height: 44px; } }

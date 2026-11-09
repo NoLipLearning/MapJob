@@ -39,7 +39,7 @@ const RANK_AREAS = [...new Set(RANK.map(r => r.area))];
 //   app.addTab({id, label, render(listEl), count(), items(), markers()})  extra list tab
 const app = {
   D, E, RANK, store, esc, miles, toXZ, toLL, $,
-  hooks: { filter: [], commute: null, card: [], marker: null, row: [] }, tabs: {}, _h: {},
+  hooks: { filter: [], commute: null, card: [], marker: null, row: [], rankCard: [] }, tabs: {}, _h: {},
   on(ev, fn) { (this._h[ev] = this._h[ev] || []).push(fn); },
   emit(ev, d) { (this._h[ev] || []).forEach(fn => { try { fn(d); } catch (x) { console.error("[" + ev + "]", x); } }); },
   get home() { return home; }, get selected() { return selected; }, get tab() { return tab; }, get ranked() { return ranked; },
@@ -527,6 +527,7 @@ function selectRank(n, go) {
     <p class="addr">${esc(r.name ? r.addr : "")}${r.city ? (r.name && r.addr ? ", " : "") + esc(r.city) : ""}</p>
     <div class="facts"><div><b>${sqft(r.sqft)}</b><span>sq ft (est.)</span></div><div><b>${r.floors}</b><span>floors</span></div><div><b>${Math.round(r.h * 3.281)} ft</b><span>height</span></div></div>
     ${emps.length ? `<p class="sect">Employers on this map here</p>${emps.map(e => `<p class="note"><a class="dir" href="#" data-emp="${esc(e.id)}">${esc(e.name)} &middot; match ${e.score}</a></p>`).join("")}` : `<p class="note">No researched employer on this map is matched to this building yet.</p>`}
+    ${(app.hooks.rankCard || []).map(fn => { try { return fn(r) || ""; } catch (x) { return ""; } }).join("")}
     <div class="actions"><a class="dir" href="https://www.google.com/search?q=${encodeURIComponent((r.name || r.addr) + " " + (r.city || "") + " office tenants")}" target="_blank" rel="noopener">Look up tenants &#8599;</a>
     <a class="dir" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent((r.name ? r.name + " " : "") + r.addr + " " + (r.city || ""))}" target="_blank" rel="noopener">Directions &#8599;</a></div>`);
   card.querySelectorAll("[data-emp]").forEach(a => a.onclick = ev => { ev.preventDefault(); selectEmp(a.dataset.emp, true); });
