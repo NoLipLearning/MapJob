@@ -1,7 +1,7 @@
 // Extra screenshots for review: settings, jump menu, help, legend, move pad, large text, calm mode. node tests/menus-shots.js
 const { chromium } = require('playwright'); const fs = require('fs'), path = require('path');
 const vendor = f => fs.readFileSync(path.join(__dirname, 'vendor', f));
-const url = process.argv[2] || 'http://localhost:8776/reston-hiring-map.html';
+const url = process.argv[2] || 'http://localhost:8765/reston-hiring-map.html';
 const ARGS = ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist', '--no-sandbox'];
 (async () => {
   const b = await chromium.launch({ args: ARGS });

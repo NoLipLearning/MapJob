@@ -3,7 +3,7 @@ const { chromium } = require('playwright');
 const fs = require('fs'), path = require('path');
 const vendor = f => fs.readFileSync(path.join(__dirname, 'vendor', f));
 async function stubCdn(ctx) { await ctx.route(/cdn\.jsdelivr\.net\/npm\/three@0\.128\.0\/.*(three\.min|OrbitControls)\.js/, r => r.fulfill({ contentType: 'application/javascript', body: vendor(/OrbitControls/.test(r.request().url()) ? 'OrbitControls.js' : 'three.min.js') })); }
-const url = process.argv[2] || 'http://localhost:8771/reston-hiring-map.html';
+const url = process.argv[2] || 'http://localhost:8765/reston-hiring-map.html';
 const ARGS = ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist', '--no-sandbox'];
 (async () => {
   const browser = await chromium.launch({ args: ARGS });
@@ -99,8 +99,13 @@ const ARGS = ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swif
   ok(page.errs.length === 0, 'desktop: no console errors ' + page.errs.slice(0, 2));
   await ctx.close();
 
-  // fallbacks with no routes / tracker
+  // with the real routes + tracker parts present
   page = await open({ width: 1280, height: 800 }, false);
+  ok(!(await page.locator('#filters .chip[data-t=toll]').isDisabled()), 'real routes: Toll-free chip enabled');
+  ok(await page.locator('#filters legend', { hasText: 'My status' }).count() === 1, 'real tracker: My status group shown');
+  ok(!/est\./.test(await page.locator('#filters .fslide label').textContent()), 'real routes: slider not labeled est.');
+  // fallbacks when those parts are absent: remove them, then make the bar redraw
+  await page.evaluate(() => { delete app.routes; delete app.tracker; app.emit('filters-changed'); app.refresh(); }); await page.waitForTimeout(400);
   ok(await page.locator('#filters .chip[data-t=toll]').isDisabled(), 'no routes: Toll-free disabled with note');
   ok(await page.locator('#filters legend', { hasText: 'My status' }).count() === 0, 'no tracker: My status hidden');
   ok(/est\./.test(await page.locator('#filters .fslide label').textContent()), 'no routes: slider labeled est.');

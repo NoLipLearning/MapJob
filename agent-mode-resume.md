@@ -20,3 +20,5 @@ Next: Phase3 UI-pass agent per docs/UI-DIRECTION.md (launch in worktree), merge,
 UI issues seen: tabs wrap ('Biggest offices'), Today panel pushes list down, phone: map below ~400px controls, card overlaps pad, header tagline tall.
 
 UPDATE 4: GitHub connected: origin = https://github.com/NoLipLearning/MapJob.git, local branch renamed master->main, pushed at c28f6fd. Push again after merging the UI agent (a8ef7649921c867b2). Empty clone at /home/user/mapjob is unused.
+
+UPDATE 5: UI agent merged (fcdda39). Agents' leftover http servers made earlier test passes unreliable; tests now default to :8765; all 9 suites passed on merged build (smoke10 filters45 tracker48 routes21 apply30 reminders51 integration20 layout78). Published artifact https://claude.ai/artifact/H5oMnB3g2z77WQWKBESDyU (v1 = pre-UI build); republish same file path to update. Remaining: republish, verify cloud save once Eric tracks something, near-home detail (unconfirmed), profile JSON from Eric. Server must be restarted after worker restart: python3 -m http.server 8765 from project root.

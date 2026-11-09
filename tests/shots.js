@@ -3,7 +3,7 @@
 const { chromium } = require('playwright'); const fs = require('fs'), path = require('path');
 const vendor = f => fs.readFileSync(path.join(__dirname, 'vendor', f));
 const prefix = process.argv[2] || 'after';
-const url = process.argv[3] || 'http://localhost:8776/reston-hiring-map.html';
+const url = process.argv[3] || 'http://localhost:8765/reston-hiring-map.html';
 const ARGS = ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist', '--no-sandbox'];
 const SIZES = [[1280, 800], [1024, 700], [400, 800], [320, 640]];
 (async () => {

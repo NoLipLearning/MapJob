@@ -3,7 +3,7 @@
 // settings persistence, tabs that never wrap, 44px touch targets.
 const { chromium } = require('playwright'); const fs = require('fs'), path = require('path');
 const vendor = f => fs.readFileSync(path.join(__dirname, 'vendor', f));
-const url = process.argv[2] || 'http://localhost:8776/reston-hiring-map.html';
+const url = process.argv[2] || 'http://localhost:8765/reston-hiring-map.html';
 const ARGS = ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist', '--no-sandbox'];
 const res = []; const ok = (c, m) => res.push((c ? 'PASS ' : 'FAIL ') + m);
 async function open(b, w, h, touch) {

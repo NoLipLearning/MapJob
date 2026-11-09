@@ -3,7 +3,7 @@ const { chromium } = require('playwright');
 const fs = require('fs'), path = require('path');
 const vendor = f => fs.readFileSync(path.join(__dirname, 'vendor', f));
 async function stubCdn(ctx) { await ctx.route(/cdn\.jsdelivr\.net\/npm\/three@0\.128\.0\/.*(three\.min|OrbitControls)\.js/, r => r.fulfill({ contentType: 'application/javascript', body: vendor(/OrbitControls/.test(r.request().url()) ? 'OrbitControls.js' : 'three.min.js') })); }
-const url = process.argv[2] || 'http://localhost:8774/reston-hiring-map.html';
+const url = process.argv[2] || 'http://localhost:8765/reston-hiring-map.html';
 const ARGS = ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist', '--no-sandbox'];
 const FAKE_PROFILE = { name: 'Test Person Zzyzx', education: [{ school: 'Fake State University', degree: 'BA', major: 'Political Science' }], experience: [{ title: 'Fake Intern', org: 'Imaginary Institute', bullets: ['Wrote ZZ-briefing memos'] }], skills: { technical: ['Stata'], software: [], languages: ['Spanish'], methods: [], soft: [] }, writing_sample: { title: 'Fake Policy Memo' }, synopsis_60_words: 'UNKNOWN', gaps_or_questions: ['Which GPA should be listed?'] };
 const FAKE_CLOUD = `(() => { const docs = window.__DOCS = window.__DOCS || {};

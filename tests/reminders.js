@@ -3,7 +3,7 @@ const { chromium } = require('playwright');
 const fs = require('fs'), path = require('path');
 const vendor = f => fs.readFileSync(path.join(__dirname, 'vendor', f));
 async function stubCdn(ctx) { await ctx.route(/cdn\.jsdelivr\.net\/npm\/three@0\.128\.0\/.*(three\.min|OrbitControls)\.js/, r => r.fulfill({ contentType: 'application/javascript', body: vendor(/OrbitC/.test(r.request().url()) ? 'OrbitControls.js' : 'three.min.js') })); }
-const url = process.argv[2] || 'http://localhost:8775/reston-hiring-map.html';
+const url = process.argv[2] || 'http://localhost:8765/reston-hiring-map.html';
 const ARGS = ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist', '--no-sandbox'];
 const CLOCK = `(() => { window.__NOW = '2026-11-09'; const R = Date; class F extends R { constructor(...a) { if (a.length) super(...a); else super(window.__NOW + 'T12:00:00'); } static now() { return new R(window.__NOW + 'T12:00:00').getTime(); } } window.Date = F; window.RESTON_REMINDERS_TIMING = { undoMs: 1200 }; })();`;
 
