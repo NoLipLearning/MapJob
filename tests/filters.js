@@ -109,6 +109,7 @@ const ARGS = ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swif
   // ---- phone ----
   page = await open({ width: 400, height: 800 }, true);
   await fakes(page); await page.waitForTimeout(300);
+  await page.evaluate(() => app.sheet('half')); await page.waitForTimeout(400); // phone: the list lives in a bottom sheet that starts collapsed
   const ob = page.locator('#filters .fopen');
   ok(/^Filters$/.test((await ob.textContent()).trim()), 'phone: collapsed "Filters" button');
   ok((await ob.boundingBox()).height >= 44, 'phone: button >= 44px tall');

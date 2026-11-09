@@ -135,7 +135,7 @@ const CLOCK = `(() => { window.__NOW = '2026-11-09'; const R = Date; class F ext
   ({ ctx, page } = await open({ width: 400, height: 800 }));
   const e4 = await page.evaluate(() => app.E.slice(0, 3).map(e => e.id));
   await mk(page, { empId: e4[0], role: 'Analyst', status: 'applied', dates: { applied: '2026-10-26' } });
-  await page.waitForTimeout(300);
+  await page.evaluate(() => app.sheet('half')); await page.waitForTimeout(500); // phone: the list lives in a bottom sheet that starts collapsed
   await page.screenshot({ path: 'test-shots/reminders-3-mobile.png' });
   await page.click('#today [data-snz]'); await page.screenshot({ path: 'test-shots/reminders-4-mobile-snooze.png' });
   ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), 'mobile: no horizontal scroll');

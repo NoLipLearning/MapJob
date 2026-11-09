@@ -307,7 +307,7 @@ PARTS.push(function (app) {
   }
   const trackedEmps = () => { const seen = new Set(), out = []; GROUPS.concat("closed").forEach(g => tracker.all().filter(r => r.status === g).sort(newest).forEach(r => { const e = emp(r.empId); if (e && !seen.has(e.id)) { seen.add(e.id); out.push(e); } })); return out; };
   app.addTab({
-    id: "apps", label: "My applications",
+    id: "apps", label: "Applications",
     count: () => "", items: () => trackedEmps().map(e => ({ kind: "emp", id: e.id })),
     markers: () => trackedEmps().map((e, i) => ({ e, label: i + 1 })),
     render(el) {

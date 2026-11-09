@@ -9,33 +9,75 @@
 /*__CSS__*/
 </style>
 
-<div class="wrap">
-  <header>
-    <div>
+<a class="skip" href="#list">Skip to the list</a>
+<div class="app" id="app">
+  <aside class="rail" id="rail" data-snap="peek" aria-label="Employers and tools">
+    <div class="rail-top">
       <h1>Reston Hiring Map</h1>
-      <p class="sub">Ninety-plus researched employers from Warrenton to Capitol Hill, ranked for a political science grad who wants work without a security clearance. Tune the ranking, open a careers page, or explore the biggest office buildings in 3D.</p>
+      <button type="button" class="iconbtn" id="gear" aria-haspopup="dialog" aria-expanded="false" aria-controls="settings" aria-label="Settings" title="Settings"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
     </div>
-    <span class="homechip" id="homechip"></span>
-  </header>
+    <div class="rail-search">
+      <svg class="si" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+      <input type="search" id="q" placeholder="Search employers" aria-label="Search employers, roles and buildings. Press Enter to fly to the top result.">
+    </div>
+    <div class="menu" id="settings" role="dialog" aria-label="Settings" hidden>
+      <div class="menu-h"><b>Settings</b><button type="button" class="btn quiet sm" id="setdone">Done</button></div>
+      <div class="srow"><span id="lb-theme">Theme</span><div class="seg" role="group" aria-labelledby="lb-theme" data-set="theme"><button type="button" data-v="auto" aria-pressed="true">Auto</button><button type="button" data-v="light" aria-pressed="false">Light</button><button type="button" data-v="dark" aria-pressed="false">Dark</button></div></div>
+      <div class="srow"><span id="lb-size">Text size</span><div class="seg" role="group" aria-labelledby="lb-size" data-set="size"><button type="button" data-v="s" aria-pressed="false" aria-label="Small text">S</button><button type="button" data-v="m" aria-pressed="true" aria-label="Medium text">M</button><button type="button" data-v="l" aria-pressed="false" aria-label="Large text">L</button></div></div>
+      <div class="srow tg"><span id="lb-calm">Calm mode<small>Hides map labels and extra details in list rows</small></span><button type="button" class="switch" role="switch" aria-checked="false" aria-labelledby="lb-calm" data-set="calm"><i aria-hidden="true"></i><em aria-hidden="true">Off</em></button></div>
+      <div class="srow tg"><span id="lb-pad">Show move pad<small>Arrow buttons on the map</small></span><button type="button" class="switch" role="switch" aria-checked="false" aria-labelledby="lb-pad" data-set="pad"><i aria-hidden="true"></i><em aria-hidden="true">Off</em></button></div>
+      <details class="about"><summary>About this map</summary>
+        <p>Ninety-plus researched employers from Warrenton to Capitol Hill, ranked for a political science grad who wants work without a security clearance. Tune the ranking, open a careers page, or explore the biggest office buildings in 3D.</p>
 
-  <div class="controls">
-    <div class="search"><input type="search" id="q" placeholder="Search, then Enter to fly there" aria-label="Search employers, roles and buildings. Press Enter to fly to the top result."></div>
-    <button type="button" class="tool cta" id="sethome" aria-pressed="false">Set my home</button>
-  </div>
-  <div class="fbar" id="filters" data-tab-only="emp"></div>
+        <p>How the match score works: researchers rated each employer 1 to 5 on role fit, no-clearance access and entry-level access, citing the pages in each card. Commute is scored from straight-line distance to your home (Reston until you set it), with a bonus for offices near a Metro station. The score is the weighted average on a 0 to 100 scale. Ratings are judgments from public postings and pages as of November 2026, so check each listing before you apply.</p>
+        <p>Office sizes are estimates: footprint from OpenStreetMap times tagged floors, in gross square feet. Names in map data can be out of date. Pins are placed from address lookups; a few are placed at street level. Your home point and ranking weights are stored only in this browser.</p>
+        </details>
+    </div>
+    <div class="sheet-head" id="sheethead">
+      <button type="button" class="grab" id="sheetgrab" aria-label="List panel size. Arrow up or down to resize." aria-expanded="false"><span class="grip" aria-hidden="true"></span></button>
+      <button type="button" class="iconbtn" id="sheetdn" aria-label="Show less of the list" title="Show less"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+      <button type="button" class="iconbtn" id="sheetup" aria-label="Show more of the list" title="Show more"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg></button>
+    </div>
+    <div class="rail-scroll" id="railscroll">
+      <div class="fbar" id="filters" data-tab-only="emp"></div>
+      <div id="today"></div>
+      <div class="tabs" id="tabs" role="tablist" aria-label="List">
+        <button type="button" role="tab" id="tab-emp" aria-selected="true" aria-controls="list"><span class="tl">Matches</span><span class="c" id="cnt-emp"></span></button>
+        <button type="button" role="tab" id="tab-rank" aria-selected="false" aria-controls="list"><span class="tl">Offices</span><span class="c" id="cnt-rank"></span></button>
+      </div>
+<details class="tune" id="tune" data-tab-only="emp">
+          <summary>How matches are ranked</summary>
+          <div class="rows">
+            <label for="w0">Role fit <output id="o0"></output><input type="range" id="w0" min="0" max="50" step="5"><small>Political, policy, international or legislative work</small></label>
+            <label for="w1">No-clearance access <output id="o1"></output><input type="range" id="w1" min="0" max="50" step="5"><small>Entry jobs that don't need a security clearance</small></label>
+            <label for="w2">Entry-level access <output id="o2"></output><input type="range" id="w2" min="0" max="50" step="5"><small>Hires recent grads, with programs or BA-level postings</small></label>
+            <label for="w3">Commute <output id="o3"></output><input type="range" id="w3" min="0" max="50" step="5"><small>Distance from your home, with a bonus near Metro</small></label>
+            <div class="row2"><span id="wsum"></span><button type="button" id="wreset">Reset to my defaults</button></div>
+          </div>
+        </details>
+        <div class="chiprow" id="rankareas" hidden></div>
+      <div class="list" id="list" role="tabpanel" aria-labelledby="tab-emp"></div>
+    </div>
+  </aside>
 
-  <div class="main">
+  <main class="stage" id="stage">
     <div class="mapbox" id="mapbox">
       <canvas id="gl" tabindex="0" aria-label="3D map of employers and office buildings from Warrenton to Washington, DC. Arrow keys move the map, Q and E rotate, plus and minus zoom. The list beside it has the same information as text."></canvas>
-      <div class="places" id="places" role="group" aria-label="Jump to a place">
-        <button type="button" data-p="home">Home</button>
-        <button type="button" data-p="reston">Reston</button>
-        <button type="button" data-p="tysons">Tysons</button>
-        <button type="button" data-p="rosslyn">Rosslyn</button>
-        <button type="button" data-p="dc">DC</button>
-        <button type="button" data-p="warrenton">Warrenton</button>
-        <button type="button" data-p="region">Whole region</button>
-        <button type="button" data-p="fit" title="Zoom to fit everything in the list">Fit list</button>
+      <div class="places" id="places" role="group" aria-label="Map places">
+        <button type="button" class="mbtn" data-p="home"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11l8-7 8 7"/><path d="M6 10v9h12v-9"/></svg>Home</button>
+        <button type="button" class="mbtn" id="jumpbtn" aria-haspopup="true" aria-expanded="false" aria-controls="jump">Jump to<svg viewBox="0 0 24 24" aria-hidden="true" class="caret"><path d="M6 9l6 6 6-6"/></svg></button>
+        <div class="menu jump" id="jump" hidden>
+          <div class="jgrid">
+            <button type="button" data-p="reston">Reston</button>
+            <button type="button" data-p="tysons">Tysons</button>
+            <button type="button" data-p="rosslyn">Rosslyn</button>
+            <button type="button" data-p="dc">DC</button>
+            <button type="button" data-p="warrenton">Warrenton</button>
+            <button type="button" data-p="region">Whole region</button>
+            <button type="button" data-p="fit" title="Zoom to fit everything in the list">Fit list</button>
+          </div>
+          <div class="jhome"><span class="homechip" id="homechip"></span><button type="button" class="btn sm" id="sethome" aria-pressed="false">Set my home</button></div>
+        </div>
       </div>
       <div class="zoom">
         <button type="button" id="compass" aria-label="Rotate the map so north is up" title="North up"><svg viewBox="0 0 24 24" id="needle" style="fill:currentColor;stroke:none"><path d="M12 2.5l4.2 9.5H7.8z" style="fill:var(--sel)"/><path d="M12 21.5L7.8 12h8.4z" style="opacity:.4"/></svg></button>
@@ -68,7 +110,6 @@
       <div class="hint" id="hint" hidden></div>
       <div class="tip" id="tip" hidden></div>
       <div class="status" id="status" hidden></div>
-      <div class="card" id="card" hidden></div>
       <div class="pad" id="pad" role="group" aria-label="Move the map">
         <button type="button" data-a="rotL" aria-label="Rotate left" title="Rotate left (Q)"><svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 3-6.2"/><path d="M4 4v5h5"/></svg></button>
         <button type="button" data-a="up" aria-label="Move north" title="Move up (W)"><svg viewBox="0 0 24 24"><path d="M6 15l6-6 6 6"/></svg></button>
@@ -82,32 +123,10 @@
       </div>
       <div class="attr">Map data &copy; OpenStreetMap contributors</div>
     </div>
-
-    <div class="side">
-      <div class="tabs" id="tabs" role="tablist" aria-label="List">
-        <button type="button" role="tab" id="tab-emp" aria-selected="true" aria-controls="list">Top matches<span class="c" id="cnt-emp"></span></button>
-        <button type="button" role="tab" id="tab-rank" aria-selected="false" aria-controls="list">Biggest offices<span class="c" id="cnt-rank"></span></button>
-      </div>
-      <details class="tune" id="tune" data-tab-only="emp">
-        <summary>How matches are ranked</summary>
-        <div class="rows">
-          <label for="w0">Role fit <output id="o0"></output><input type="range" id="w0" min="0" max="50" step="5"><small>Political, policy, international or legislative work</small></label>
-          <label for="w1">No-clearance access <output id="o1"></output><input type="range" id="w1" min="0" max="50" step="5"><small>Entry jobs that don't need a security clearance</small></label>
-          <label for="w2">Entry-level access <output id="o2"></output><input type="range" id="w2" min="0" max="50" step="5"><small>Hires recent grads, with programs or BA-level postings</small></label>
-          <label for="w3">Commute <output id="o3"></output><input type="range" id="w3" min="0" max="50" step="5"><small>Distance from your home, with a bonus near Metro</small></label>
-          <div class="row2"><span id="wsum"></span><button type="button" id="wreset">Reset to my defaults</button></div>
-        </div>
-      </details>
-      <div class="chiprow" id="rankareas" hidden></div>
-      <div class="list" id="list" role="tabpanel" aria-labelledby="tab-emp"></div>
-    </div>
-  </div>
-
-  <div class="foot">
-    <p>How the match score works: researchers rated each employer 1 to 5 on role fit, no-clearance access and entry-level access, citing the pages in each card. Commute is scored from straight-line distance to your home (Reston until you set it), with a bonus for offices near a Metro station. The score is the weighted average on a 0 to 100 scale. Ratings are judgments from public postings and pages as of November 2026, so check each listing before you apply.</p>
-    <p>Office sizes are estimates: footprint from OpenStreetMap times tagged floors, in gross square feet. Names in map data can be out of date. Pins are placed from address lookups; a few are placed at street level. Your home point and ranking weights are stored only in this browser.</p>
-  </div>
+    <div class="card" id="card" role="region" aria-label="Employer details" tabindex="-1" hidden></div>
+  </main>
 </div>
+<div class="sr" id="livecount" role="status" aria-live="polite"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
