@@ -18,3 +18,5 @@ Known nits for UI pass: filters 'My status' buckets (star=Interested, applying=A
 UPDATE 3: ALL Phase1+2 branches MERGED (F,T,R,A,Reminders) + Rosslyn tile+5130 streets. 8 suites pass (smoke10, filters42, tracker48, routes21, apply30, reminders51, rosslyn, integration). 
 Next: Phase3 UI-pass agent per docs/UI-DIRECTION.md (launch in worktree), merge, review screenshots myself; then publish artifact (capabilities db,user,downloads; files tiles/*.json) and verify cloud path with ArtifactData; zip to Eric (SendUserFile). Ask Eric: GitHub repo, near-home detail OK?, profile JSON.
 UI issues seen: tabs wrap ('Biggest offices'), Today panel pushes list down, phone: map below ~400px controls, card overlaps pad, header tagline tall.
+
+UPDATE 4: GitHub connected: origin = https://github.com/NoLipLearning/MapJob.git, local branch renamed master->main, pushed at c28f6fd. Push again after merging the UI agent (a8ef7649921c867b2). Empty clone at /home/user/mapjob is unused.
