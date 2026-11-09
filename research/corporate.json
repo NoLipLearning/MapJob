@@ -1,0 +1,712 @@
+[
+  {
+    "id": "fannie-mae",
+    "name": "Fannie Mae",
+    "org_type": "corporate",
+    "address": "1100 15th St NW, Washington, DC 20005",
+    "address_source": "https://data.sec.gov/submissions/CIK0000310522.json",
+    "careers_url": "https://www.fanniemae.com/careers",
+    "entry_roles": [
+      "Campus Analytics and Modeling Program Associate",
+      "Campus Finance Analytics Intern",
+      "Campus Risk Analyst Program Intern"
+    ],
+    "programs": [
+      {
+        "name": "Analytics and Modeling Program (campus hire, 10-week training in DC)",
+        "url": "https://www.fanniemae.com/careers"
+      }
+    ],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 2,
+      "clearance_access": 5,
+      "entry_access": 3
+    },
+    "why": "Entry hiring is a formal campus program, but it targets quantitative majors (data science, finance, stats), and the true policy roles (Public Policy and Industry Relations) want 8+ years of mortgage-policy experience.",
+    "sources": [
+      "https://www.themuse.com/jobs/fanniemae/campus-analytics-and-modeling-program-associate",
+      "https://www.themuse.com/jobs/fanniemae/principal-public-policy-and-industry-relations",
+      "https://www.restonnow.com/2023/06/30/voided-development-plan-for-former-fannie-mae-campus-expedited-for-approval/",
+      "https://www.fanniemae.com/careers"
+    ],
+    "notes": "ADDRESS CHANGED: the requested 2000 Opportunity Way, Reston campus is described as the 'former Fannie Mae campus' (Reston Now, 2023); address used is HQ Midtown Center per SEC filing. The Analytics and Modeling posting is dated for a June 2026 start (class of Dec 2025-Spring 2026), so the next cycle is unconfirmed. Program entry points to the careers page because the official program URL could not be opened (fanniemae.com blocks scripted fetches except the main careers page)."
+  },
+  {
+    "id": "verisign",
+    "name": "Verisign",
+    "org_type": "corporate",
+    "address": "12061 Bluemont Way, Reston, VA 20190",
+    "address_source": "https://data.sec.gov/submissions/CIK0001014473.json",
+    "careers_url": "https://www.verisign.com/en_US/careers/index.xhtml",
+    "entry_roles": [
+      "Compliance Specialist II (listed as 'II or III', Reston)"
+    ],
+    "programs": [],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 2,
+      "clearance_access": 5,
+      "entry_access": 2
+    },
+    "why": "Verisign has a Government Relations and Public Policy team, but its only posting is a manager role based in the Netherlands, and Reston openings are mostly engineering with no internships listed.",
+    "sources": [
+      "https://job-boards.greenhouse.io/verisign",
+      "https://www.verisign.com/en_US/careers/index.xhtml"
+    ],
+    "notes": "18 openings seen on the Greenhouse board; none mention a clearance. Compliance Specialist level is not confirmed as BA-entry. Search results also showed grad research and undergrad technical internships (not opened)."
+  },
+  {
+    "id": "comscore",
+    "name": "comScore",
+    "org_type": "corporate",
+    "address": "11950 Democracy Dr, Suite 600, Reston, VA 20190",
+    "address_source": "https://data.sec.gov/submissions/CIK0001158172.json",
+    "careers_url": "https://www.comscore.com/About/Careers",
+    "entry_roles": [
+      "Associate Data Analyst (entry level, Reston or East Coast remote)"
+    ],
+    "programs": [],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 2,
+      "clearance_access": 5,
+      "entry_access": 3
+    },
+    "why": "Media-measurement firm whose entry analyst role is technical (SQL, Python or Java), so a poli-sci grad would need to show data skills.",
+    "sources": [
+      "https://builtin.com/job/associate-data-analyst/3568012",
+      "https://www.comscore.com/About/Careers"
+    ],
+    "notes": "No formal graduate program; the careers page mentions a Young Professionals Group only. Other titles seen in search results only (not opened): Associate Analyst Activation, Panel Development Analyst."
+  },
+  {
+    "id": "reston-hospital-center",
+    "name": "Reston Hospital Center (HCA)",
+    "org_type": "education-health",
+    "address": "1850 Town Center Pkwy, Reston, VA 20190",
+    "address_source": "https://www.restonhospital.com/",
+    "careers_url": "https://careers.hcahealthcare.com/pages/reston-hospital-center",
+    "entry_roles": [
+      "Patient Financial Concierge / Financial Counselor",
+      "Administrative Care Technician",
+      "Unit Secretary"
+    ],
+    "programs": [],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 1,
+      "clearance_access": 5,
+      "entry_access": 3
+    },
+    "why": "Hospital hiring is clinical and patient-services work with no policy or political analysis path.",
+    "sources": [
+      "https://www.restonhospital.com/",
+      "https://talents.vaia.com/companies/hca-healthcare/reston/patient-financial-concierge-117856859/"
+    ],
+    "notes": "Careers URL is the link published on restonhospital.com; it returns 403 to scripted requests (Cloudflare). The posting I opened says Reston, VA but not the hospital by name; the other two titles come from search listings I did not open."
+  },
+  {
+    "id": "microsoft-reston",
+    "name": "Microsoft (Reston)",
+    "org_type": "corporate",
+    "address": "11955 Freedom Dr, Reston, VA 20190",
+    "address_source": "https://www.bisnow.com/washington-dc/news/office/microsoft-signs-400k-sf-lease-at-reston-town-center-104575",
+    "careers_url": "https://careers.microsoft.com/",
+    "entry_roles": [],
+    "programs": [],
+    "clearance": "some",
+    "scores": {
+      "role_fit": 2,
+      "clearance_access": 3,
+      "entry_access": 2
+    },
+    "why": "Microsoft has government-affairs and public-policy teams, but the postings found are manager level or legal fellowships, and the Reston office leans toward federal sales and engineering.",
+    "sources": [
+      "https://www.bisnow.com/washington-dc/news/office/microsoft-signs-400k-sf-lease-at-reston-town-center-104575",
+      "https://www.restonnow.com/2020/05/27/microsofts-expansion-in-reston-town-center-to-bring-1500-jobs/",
+      "https://careers.microsoft.com/"
+    ],
+    "notes": "ADDRESS CHANGED: requested 12010 Sunset Hills Rd could not be confirmed; Bisnow and Reston Now give Microsoft at 12012 Sunset Hills Rd and a 400K SF hub at 11955 Freedom Dr (Two Freedom Square, Reston Town Center), used here. ZIP 20190 is the Reston Town Center ZIP and is not printed in the sources. No BA-level policy role confirmed, so entry_roles is empty; clearance 'some' is a judgment (federal-facing office), not verified from a posting. The early-career page I tried returned 404."
+  },
+  {
+    "id": "oracle-reston",
+    "name": "Oracle (Reston)",
+    "org_type": "corporate",
+    "address": "1900 Oracle Way, Reston, VA 20190",
+    "address_source": "https://www.ffxnow.com/2026/03/05/tech-company-oracle-seeks-to-build-parking-lot-for-reston-office/",
+    "careers_url": "https://careers.oracle.com/",
+    "entry_roles": [
+      "GDI Business Analyst Intern (OVIP, veterans and military spouses)",
+      "Federal Contracts Coordinator (2-5 years)"
+    ],
+    "programs": [],
+    "clearance": "most",
+    "scores": {
+      "role_fit": 2,
+      "clearance_access": 2,
+      "entry_access": 2
+    },
+    "why": "The Reston campus serves Oracle's government, defense and intelligence business, and the roles found either need a clearance or are limited to veterans and require contracts experience.",
+    "sources": [
+      "https://www.career.com/job/oracle/federal-contracts-coordinator-reston-va/j202603190010541976297",
+      "https://talents.vaia.com/companies/oracle/reston/gdi-business-analyst-intern-ovip-117857993/",
+      "https://www.ffxnow.com/2026/03/05/tech-company-oracle-seeks-to-build-parking-lot-for-reston-office/"
+    ],
+    "notes": "ADDRESS CHANGED: FFXnow (Mar 2026) gives the Oracle office at 1900 Oracle Way and says NVR leased 1910 Oracle Way, so the requested 1910 is not Oracle's. ZIP not printed in FFXnow; 20190 matches NVR's own 1900 Oracle Way address. OVIP is Oracle's veteran internship program (not eligible for this grad). Both postings had expired. No formal program URL confirmed."
+  },
+  {
+    "id": "nvr",
+    "name": "NVR, Inc. (Ryan Homes / NVHomes)",
+    "org_type": "corporate",
+    "address": "1900 Oracle Way, Suite 300, Reston, VA 20190",
+    "address_source": "https://www.nvrinc.com/contact-us",
+    "careers_url": "https://www.nvrcareers.com/",
+    "entry_roles": [],
+    "programs": [],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 1,
+      "clearance_access": 5,
+      "entry_access": 3
+    },
+    "why": "Homebuilder whose careers site lists sales, construction, corporate, technology and mortgage tracks; none are policy or analysis work.",
+    "sources": [
+      "https://www.nvrcareers.com/",
+      "https://www.nvrinc.com/contact-us",
+      "https://www.ffxnow.com/2026/03/05/tech-company-oracle-seeks-to-build-parking-lot-for-reston-office/"
+    ],
+    "notes": "ADDRESS CHANGED: requested 11700 Plaza America Dr is out of date; NVR's own contact page lists 1900 Oracle Way, Suite 300 (FFXnow says the lease is at 1910 Oracle Way, a minor discrepancy; both are the same campus). Specific entry titles and a management-trainee program were not confirmed on the careers site; the site has a 'College Applicants' section."
+  },
+  {
+    "id": "google-reston",
+    "name": "Google (Reston)",
+    "org_type": "corporate",
+    "address": "1900 Reston Metro Plaza, Reston, VA 20190",
+    "address_source": "https://about.google/locations/?region=north-america",
+    "careers_url": "https://www.google.com/about/careers/applications/",
+    "entry_roles": [
+      "Associate Compliance Analyst, Public Sector (Reston; about 2 years experience required)"
+    ],
+    "programs": [],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 3,
+      "clearance_access": 4,
+      "entry_access": 2
+    },
+    "why": "Google's Government Affairs and Public Policy team does core policy analysis, but the Policy Analyst roles in DC ask for four years of experience and the Reston roles are public-sector cloud and compliance.",
+    "sources": [
+      "https://www.google.com/about/careers/applications/jobs/results/114144442750771910-policy-analyst",
+      "https://www.monster.com/job-openings/associate-compliance-analyst-public-sector-reston-va--d7752d65-f11b-4137-bfa6-a7297ede02fa",
+      "https://about.google/locations/?region=north-america"
+    ],
+    "notes": "Neither posting mentions a clearance, but Google's Reston office supports federal customers, so some roles there may require one (clearance_access 4, not 5). The compliance analyst role needs 2 years plus 1 year of related experience, so it is a stretch for a new grad."
+  },
+  {
+    "id": "capital-one",
+    "name": "Capital One",
+    "org_type": "corporate",
+    "address": "1680 Capital One Dr, McLean, VA 22102",
+    "address_source": "https://data.sec.gov/submissions/CIK0000927628.json",
+    "careers_url": "https://www.capitalonecareers.com/",
+    "entry_roles": [],
+    "programs": [],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 2,
+      "clearance_access": 5,
+      "entry_access": 2
+    },
+    "why": "Capital One has a Government and Policy Affairs group, but the posting found is a Director role needing 8+ years, and its graduate programs require MBA or graduate degrees.",
+    "sources": [
+      "https://www.capitalonecareers.com/job/mclean/director-federal-government-relations/1732/80732278848",
+      "https://www.capitalonecareers.com/graduate-programs",
+      "https://www.capitalonecareers.com/"
+    ],
+    "notes": "BA-level titles not confirmed; the site has a 'Business Analyst' job-alert category, and internship pages exist at /internship-programs and /early-internships-program (not opened). Only McLean graduate-program listing seen was an MBA Product Intern."
+  },
+  {
+    "id": "hilton",
+    "name": "Hilton (corporate HQ)",
+    "org_type": "corporate",
+    "address": "7930 Jones Branch Dr, Suite 1100, McLean, VA 22102",
+    "address_source": "https://data.sec.gov/submissions/CIK0001585689.json",
+    "careers_url": "https://jobs.hilton.com/",
+    "entry_roles": [
+      "Corporate Internship",
+      "LAUNCH 2-Year Rotational Program participant",
+      "Management Development / Trainee Program participant"
+    ],
+    "programs": [
+      {
+        "name": "LAUNCH 2-Year Rotational Program",
+        "url": "https://jobs.hilton.com/early-career-paths/"
+      },
+      {
+        "name": "Corporate Internships",
+        "url": "https://jobs.hilton.com/early-career-paths/"
+      },
+      {
+        "name": "Management Development & Trainee Programs",
+        "url": "https://jobs.hilton.com/early-career-paths/"
+      }
+    ],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 1,
+      "clearance_access": 5,
+      "entry_access": 4
+    },
+    "why": "Hilton runs formal early-career programs open to new grads, but the work is hospitality and corporate operations, not policy.",
+    "sources": [
+      "https://jobs.hilton.com/early-career-paths/",
+      "https://jobs.hilton.com/"
+    ],
+    "notes": "The early-career page does not state eligibility or say which programs sit in McLean; LAUNCH and the other programs are listed for the United States. No government-affairs entry role confirmed."
+  },
+  {
+    "id": "mars-inc",
+    "name": "Mars, Incorporated",
+    "org_type": "corporate",
+    "address": "6885 Elm St, Suite 1, McLean, VA 22101",
+    "address_source": "https://phoenix.aws.mapquest.com/us/virginia/mars-incorporated-2757143",
+    "careers_url": "https://careers.mars.com/",
+    "entry_roles": [],
+    "programs": [],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 2,
+      "clearance_access": 5,
+      "entry_access": 2
+    },
+    "why": "Mars has a Corporate Affairs job category on its careers site, but no listings or BA-level titles could be confirmed, so it is a long shot.",
+    "sources": [
+      "https://careers.mars.com/",
+      "https://careers.mars.com/us/en/c/corporate-affairs-jobs",
+      "https://phoenix.aws.mapquest.com/us/virginia/mars-incorporated-2757143"
+    ],
+    "notes": "Address comes from a MapQuest listing (mars.com contact page gives no street address and its other pages return 403); treat as likely but check before routing. Corporate Affairs listings load dynamically and were empty in my fetch. The careers site mentions a 'Mars Associate' framing but no named graduate program."
+  },
+  {
+    "id": "amazon-hq2",
+    "name": "Amazon (HQ2, Arlington)",
+    "org_type": "corporate",
+    "address": "1400 S Eads St, Arlington, VA 22202",
+    "address_source": "https://www.arlingtoneconomicdevelopment.com/Locate-in-Arlington/Commercial-Development/Development-Summary-Listing-Directory-Folder/1400-S.-Eads-St.-Metropolitan-Park-Amazon-HQ2-Phase-I",
+    "careers_url": "https://www.amazon.jobs/content/en/locations/hq2",
+    "entry_roles": [],
+    "programs": [],
+    "clearance": "some",
+    "scores": {
+      "role_fit": 3,
+      "clearance_access": 3,
+      "entry_access": 2
+    },
+    "why": "Amazon runs a real public-policy organization at HQ2, but its roles are manager level and above (the policy comms posting wants 5+ years), and Arlington also hosts cleared AWS public-sector work.",
+    "sources": [
+      "https://www.amazon.jobs/en/job_categories/public-policy",
+      "https://www.mediabistro.com/jobs/3365564994-us-policy-comms-specialist-policy-communications-and-external-affairs",
+      "https://www.amazon.jobs/content/en/locations/hq2"
+    ],
+    "notes": "Address is Metropolitan Park (HQ2 Phase I). The Policy Comms posting does not mention a clearance; 'some' reflects the AWS public-sector presence, not a verified posting. The HQ2 page describes no early-career program (only a University Talent nav link)."
+  },
+  {
+    "id": "politico",
+    "name": "POLITICO",
+    "org_type": "media",
+    "address": "1000 Wilson Blvd, Arlington, VA 22209",
+    "address_source": "https://wikiwand.com/en/Rosslyn_Twin_Towers",
+    "careers_url": "https://www.politico.com/careers",
+    "entry_roles": [
+      "Editorial Intern, HQ (Breaking News, Policy or Congress)",
+      "Reporting Intern, HQ"
+    ],
+    "programs": [
+      {
+        "name": "Editorial / Reporting Internships (HQ, paid)",
+        "url": "https://www.politico.com/careers"
+      },
+      {
+        "name": "The POLITICO Fellows (12-month, requires 2 years experience)",
+        "url": "https://www.politico.com/careers"
+      }
+    ],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 4,
+      "clearance_access": 5,
+      "entry_access": 3
+    },
+    "why": "Policy and Congress beat reporting is a close match for a poli-sci degree, and the paid HQ internship runs full-time at $23/hr, though news experience is preferred and the Fellows program wants 2 years.",
+    "sources": [
+      "https://www.career.com/job/politico/reporting-intern-fall-2026-hq/j202605090943201803347",
+      "https://www.career.com/job/politico/the-politico-fellows/j202209160716143239154",
+      "https://wikiwand.com/en/Rosslyn_Twin_Towers"
+    ],
+    "notes": "politico.com blocks scripted fetches, so the careers URL could not be opened (clearly the official domain). ZIP 22209 is the standard ZIP for 1000 Wilson Blvd and is not printed in the Wikiwand source. Fall 2026 intern listing closed June 8, 2026. Unclear whether interns must be current students."
+  },
+  {
+    "id": "axios",
+    "name": "Axios",
+    "org_type": "media",
+    "address": "3100 Clarendon Blvd, Arlington, VA 22201",
+    "address_source": "https://www.arlnow.com/2017/12/11/fast-growing-media-startup-axios-signs-10-year-lease-in-clarendon/",
+    "careers_url": "https://www.axios.com/careers",
+    "entry_roles": [
+      "Business Development Associate (Arlington/DC)",
+      "Associate, Axios Live (DC, talent pool)",
+      "Administrative Assistant (Arlington)"
+    ],
+    "programs": [],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 3,
+      "clearance_access": 5,
+      "entry_access": 2
+    },
+    "why": "Axios covers politics and policy, but its open Arlington and DC entry roles are on the sales and events side, and its reporter openings are mostly remote and experienced.",
+    "sources": [
+      "https://job-boards.greenhouse.io/axios",
+      "https://job-boards.greenhouse.io/axioshq1/jobs/4402727006",
+      "https://www.axios.com/careers"
+    ],
+    "notes": "Address is from a 2017 ARLnow article (13th floor, 3100 Clarendon Blvd); the job posting only says Arlington, hybrid 2 days a week, so confirm the office is unchanged. ZIP 22201 is the standard ZIP and is not printed in the source. The Business Development role asks for 1+ years client-facing experience. No internship program listed."
+  },
+  {
+    "id": "fiscalnote",
+    "name": "FiscalNote",
+    "org_type": "media",
+    "address": "1201 Pennsylvania Ave NW, 6th Floor, Washington, DC 20004",
+    "address_source": "https://data.sec.gov/submissions/CIK0001823466.json",
+    "careers_url": "https://www.fiscalnote.com/careers",
+    "entry_roles": [
+      "Business Development Associate (DC/NYC)",
+      "Associate Consultant, Professional Services"
+    ],
+    "programs": [],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 3,
+      "clearance_access": 5,
+      "entry_access": 2
+    },
+    "why": "FiscalNote sells policy and legislative intelligence, but the entry roles on its careers page are in sales and consulting, and its Lever board listed a single opening.",
+    "sources": [
+      "https://www.fiscalnote.com/careers",
+      "https://jobs.lever.co/fiscalnote"
+    ],
+    "notes": "Search results showed past 'Policy Analyst, Junior' and Staff Writer (CQ Roll Call) postings, but the page I tried to confirm failed to load, so they are not counted. fiscalnote.com returns 403 to scripted requests but loaded via fetch tool."
+  },
+  {
+    "id": "bloomberg-government",
+    "name": "Bloomberg Government (Bloomberg Industry Group)",
+    "org_type": "media",
+    "address": "1801 S Bell St, Arlington, VA 22202",
+    "address_source": "https://builtin.com/company/bloomberg-industry-group",
+    "careers_url": "https://www.bloombergindustry.com/careers/",
+    "entry_roles": [
+      "Content Analyst, Associate (0-2 years, bachelor's required)",
+      "Summer Intern (paid, 10 weeks)"
+    ],
+    "programs": [
+      {
+        "name": "Paid summer internships",
+        "url": "https://www.bloombergindustry.com/careers/"
+      },
+      {
+        "name": "B-Launch (rotational sales and service program)",
+        "url": "https://www.bloombergindustry.com/careers/"
+      }
+    ],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 4,
+      "clearance_access": 5,
+      "entry_access": 3
+    },
+    "why": "Bloomberg Government covers legislation and regulation; the junior Content Analyst role (legal and tax legislation) takes a bachelor's with 0-2 years, while the Legislative Analyst role wants 5+ years.",
+    "sources": [
+      "https://builtin.com/job/content-analyst-associate/9423473",
+      "https://pac.org/job/legislative-analyst-bloomberg-government",
+      "https://www.bloombergindustry.com/careers/"
+    ],
+    "notes": "Associate Content Analyst posting was removed Jul 29, 2026, and it focuses on legal/tax topics, so it is only adjacent to political analysis. Applications go through Bloomberg Industry Group's Workday site (linked from the careers page). Address is from Built In (HQ), not the official site."
+  },
+  {
+    "id": "morning-consult",
+    "name": "Morning Consult",
+    "org_type": "polling-research",
+    "address": "1025 F St NW, Suite 800, Washington, DC 20004",
+    "address_source": "https://www.employbl.com/companies/Morning-Consult/office-locations",
+    "careers_url": "https://jobs.lever.co/morningconsult",
+    "entry_roles": [
+      "Research Associate (Research Solutions)",
+      "Associate, Research and Sample Strategy",
+      "Coordinator, Research and Sample Strategy"
+    ],
+    "programs": [],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 4,
+      "clearance_access": 5,
+      "entry_access": 4
+    },
+    "why": "A polling and survey research firm whose Research Associate posting names Political Science among target degrees and asks for a recent graduate.",
+    "sources": [
+      "https://jobs.lever.co/morningconsult/bfaf20b9-f2b1-4be0-8f09-50f9928bc2a8",
+      "https://jobs.lever.co/morningconsult",
+      "https://www.commercialcafe.com/blog/morning-consult-inks-49ksf-lease-dc-office/"
+    ],
+    "notes": "The Research Associate posting lists DC, Chicago or New York, but the Lever board I opened showed Research Associate only for Chicago/NY and DC's only entry listing was Business Development, so a current DC opening is unconfirmed. Office confirmed by two sources (1025 F St NW, Woodies Building, 8th floor). Associate/Coordinator titles come from search results (not opened)."
+  },
+  {
+    "id": "the-hill",
+    "name": "The Hill (Nexstar Media Group)",
+    "org_type": "media",
+    "address": "1625 K St NW, Suite 900, Washington, DC 20006",
+    "address_source": "https://en.wikipedia.org/wiki/The_Hill_(newspaper)",
+    "careers_url": "https://nexstar.wd5.myworkdayjobs.com/nexstar",
+    "entry_roles": [
+      "Editorial Intern (spring, summer, fall)",
+      "Associate Editor",
+      "Audience Engagement Editor"
+    ],
+    "programs": [
+      {
+        "name": "The Hill Editorial Internship (paid, $17.95/hr)",
+        "url": "https://nexstar.wd5.myworkdayjobs.com/nexstar"
+      }
+    ],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 4,
+      "clearance_access": 5,
+      "entry_access": 3
+    },
+    "why": "The Hill covers Congress and campaigns, and its paid editorial internships recur each season with Capitol assignments, though staff editor roles are experienced hires.",
+    "sources": [
+      "https://www.career.com/job/nexstar-media-group-inc/the-hill-summer-2026-editorial-intern-washington-dc/j202601162204251377520",
+      "https://en.wikipedia.org/wiki/The_Hill_(newspaper)",
+      "https://www.nexstar.tv/careers/"
+    ],
+    "notes": "Careers URL is the Workday board linked from nexstar.tv/careers (I did not open the board itself; thehill.com and Nexstar's own domains block scripted fetches). Summer 2026 intern deadline was Feb 15; the posting does not say if recent grads qualify. ZIP 20006 is the standard ZIP for 1625 K St NW and is not printed in the source. Associate Editor and Audience Engagement Editor titles are from search results (not opened)."
+  },
+  {
+    "id": "npr",
+    "name": "NPR",
+    "org_type": "media",
+    "address": "1111 North Capitol St NE, Washington, DC 20002",
+    "address_source": "https://en.wikipedia.org/wiki/NPR",
+    "careers_url": "https://job-boards.greenhouse.io/nationalpublicradioinc",
+    "entry_roles": [
+      "Policy and Representation Intern",
+      "Washington Desk and National Desk Intern",
+      "NPR News Now Intern"
+    ],
+    "programs": [
+      {
+        "name": "NPR paid internships (Fall/Winter and Spring/Summer cycles)",
+        "url": "https://job-boards.greenhouse.io/nationalpublicradioinc"
+      }
+    ],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 4,
+      "clearance_access": 5,
+      "entry_access": 3
+    },
+    "why": "NPR's Policy and Representation internship targets public policy and political science, and its Washington Desk internship covers Congress and politics, both paid at $20/hr.",
+    "sources": [
+      "https://diversityjobs.com/career/12882963/Policy-Representation-Internship-Fall-Winter-2025-D-C-Washington",
+      "https://veteranjobs.net/career/12882966/Washington-Desk-National-Desk-Internship-Fall-Winter-2025-D-C-Washington",
+      "https://job-boards.greenhouse.io/nationalpublicradioinc",
+      "https://builtin.com/job/npr-news-now-internship-fall-2026/9692992"
+    ],
+    "notes": "TIMING RISK: NPR internships accept current students or graduates within 12 months of the start month, so a May 2026 graduate is only eligible for cycles starting before about May 2027. Posted internships are fall/winter (apply by June) and have closed; the board I opened showed no internships, only two assistant roles. ZIP 20002 is the standard ZIP for the address and is not printed in the Wikipedia source. npr.org careers pages block scripted fetches."
+  },
+  {
+    "id": "gannett-usa-today",
+    "name": "Gannett / USA TODAY Co.",
+    "org_type": "media",
+    "address": "7950 Jones Branch Dr, McLean, VA 22107",
+    "address_source": "https://www.mediabistro.com/jobs/1956238246-gannett-is-hiring-sports-visuals-producer-programmer-in-mclean",
+    "careers_url": "https://careers.gannett.com/",
+    "entry_roles": [
+      "Content Intern (Gannett Forward Diverse 100 program, past cycle)"
+    ],
+    "programs": [
+      {
+        "name": "Gannett Forward Diverse 100 Summer Internship Program (2024 cycle)",
+        "url": "https://careers.gannett.com/"
+      }
+    ],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 3,
+      "clearance_access": 5,
+      "entry_access": 2
+    },
+    "why": "USA TODAY has a national politics desk, but the politics postings found are senior correspondent roles (5+ years, remote) and the one internship seen was based in Savannah.",
+    "sources": [
+      "https://www.bisnow.com/washington-dc/news/office/gannett-puts-mclean-corporate-headquarters-up-for-sublease-123191",
+      "https://www.mediabistro.com/jobs/1956238246-gannett-is-hiring-sports-visuals-producer-programmer-in-mclean",
+      "https://builtin.com/job/2024-intern-content/2438464",
+      "https://www.themuse.com/jobs/usatodayco/politics-team-senior-correspondent"
+    ],
+    "notes": "HQ left McLean: Gannett moved its corporate HQ to New York in 2024 (Bisnow) and the company is now USA TODAY Co., so the McLean office is a subleased newsroom hub, not a growth site. A McLean (22107) sports visuals posting exists, but its date is unknown, so McLean is a risk. careers.gannett.com loads via curl but WebFetch is blocked. The 2024 internship closed."
+  },
+  {
+    "id": "fauquier-health",
+    "name": "Fauquier Health",
+    "org_type": "education-health",
+    "address": "500 Hospital Dr, Warrenton, VA 20186",
+    "address_source": "https://www.fauquierhealth.org/careers",
+    "careers_url": "https://www.fauquierhealth.org/careers",
+    "entry_roles": [
+      "Billing and Registration (category; specific titles not listed)",
+      "Case Management / Social Work (category)",
+      "Human Resources (category)"
+    ],
+    "programs": [],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 1,
+      "clearance_access": 5,
+      "entry_access": 3
+    },
+    "why": "Local hospital with office-side jobs in registration, billing and HR, but none touch policy or political analysis.",
+    "sources": [
+      "https://www.fauquierhealth.org/careers",
+      "https://jobs.lifepointhealth.net/fauquier-health"
+    ],
+    "notes": "The LifePoint board showed 0 current Fauquier Health openings. Role titles are categories from the careers page, not confirmed BA-level postings. Close to home for a Warrenton-based job."
+  },
+  {
+    "id": "laurel-ridge-fauquier",
+    "name": "Laurel Ridge Community College (Fauquier Campus)",
+    "org_type": "education-health",
+    "address": "6480 College St, Warrenton, VA 20187",
+    "address_source": "https://laurelridge.edu/",
+    "careers_url": "https://laurelridge.edu/jobsearch",
+    "entry_roles": [
+      "Enrollment Services Specialist (Education Support Specialist II), Fauquier Campus",
+      "Career Coach (Education Support Specialist II)",
+      "Academic Advisor (Education Support Specialist III)"
+    ],
+    "programs": [],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 2,
+      "clearance_access": 5,
+      "entry_access": 3
+    },
+    "why": "State community college hiring for student-services and advising staff at the Fauquier campus, which is adjacent to civic work but not policy analysis.",
+    "sources": [
+      "https://www.edtech.com/jobs/enrollment-services-specialist-education-support-specialist-ii-fauquier-campus-7369",
+      "https://laurelridge.edu/jobsearch",
+      "https://jobs.vccs.edu/postings/search"
+    ],
+    "notes": "The jobsearch URL redirects to the Virginia Community College System job portal. Enrollment Services Specialist pays $38,828-$44,346; it was the only posting I opened (the Career Coach and Advisor titles are from search results). Adjunct faculty roles typically need a graduate degree."
+  },
+  {
+    "id": "path-foundation",
+    "name": "PATH Foundation",
+    "org_type": "ngo-advocacy",
+    "address": "321 Walker Dr, Suite 301, Warrenton, VA 20186",
+    "address_source": "https://pathforyou.org/who-we-are/careers/",
+    "careers_url": "https://pathforyou.org/who-we-are/careers/",
+    "entry_roles": [
+      "Summer Intern (communications/marketing, Resource Center or nonprofit placement)"
+    ],
+    "programs": [
+      {
+        "name": "PATH Summer Internship Program (recent graduates eligible)",
+        "url": "https://pathforyou.org/who-we-are/internship-program/"
+      }
+    ],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 3,
+      "clearance_access": 5,
+      "entry_access": 3
+    },
+    "why": "Health-focused grantmaker serving Fauquier, Rappahannock and Culpeper that takes recent grads as paid summer interns, with a Resource Center doing community data work.",
+    "sources": [
+      "https://pathforyou.org/who-we-are/careers/",
+      "https://pathforyou.org/who-we-are/internship-program/",
+      "https://jobs.y-axis.com/jobs/path-summer-intern-2026-the-path-foundation",
+      "https://www.career.com/job/the-path-foundation/program-officer/j202510210551154409336"
+    ],
+    "notes": "Summer intern deadline was Feb 27, 2026, with a June 1-July 31 term, so the next cycle is early 2027. Staff openings post on Paylocity when available; the Program Officer role needed 3-5 years and was based in Culpeper. A Resource Center Statistical Analyst posting appeared in search results (not opened)."
+  },
+  {
+    "id": "airlie",
+    "name": "Airlie Hotel and Conference Center (PM Hotel Group)",
+    "org_type": "corporate",
+    "address": "6809 Airlie Rd, Warrenton, VA 20187",
+    "address_source": "https://semxxi.mit.edu/sites/default/files/Airlie%20Directions%20%26%20Map_2.pdf",
+    "careers_url": "https://www.pmhotelgroup.com/careers/",
+    "entry_roles": [
+      "Guest Service Agent",
+      "Banquet Server",
+      "Front Desk Agent / Night Auditor"
+    ],
+    "programs": [
+      {
+        "name": "PM Hotel Group internship program (F+B, People+Culture, Operations, Sales+Marketing, Digital)",
+        "url": "https://www.pmhotelgroup.com/careers/"
+      }
+    ],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 1,
+      "clearance_access": 5,
+      "entry_access": 4
+    },
+    "why": "Hospitality and events employer with frequent openings and an internship program, but the work is service and operations rather than policy.",
+    "sources": [
+      "https://www.pmhotelgroup.com/careers/",
+      "https://www.career.com/job/airlie/full-time-banquet-server-airlie-hotel-conference-center-warrenton-va/j202605282345540035734",
+      "https://www.career.com/job/pm-new-logo/full-time-guest-service-agent-airlie-hotel-and-conference-center-warrenton-va/j202604160848249482370"
+    ],
+    "notes": "Airlie's own website blocks scripted fetches, so the careers URL is the manager PM Hotel Group's page (listings are posted under the PM Hotel Group / PM New Logo employer name). Address is from an MIT event directions PDF. Pay on the guest service posting was about $32k-$40k."
+  },
+  {
+    "id": "piedmont-environmental-council",
+    "name": "Piedmont Environmental Council",
+    "org_type": "ngo-advocacy",
+    "address": "45 Horner St, Warrenton, VA 20186",
+    "address_source": "https://www.pecva.org/",
+    "careers_url": "https://www.pecva.org/about-us/jobs-internships/",
+    "entry_roles": [
+      "Randal Fellow (summer, 8 weeks)",
+      "Multimedia Communications Fellow",
+      "Buy Fresh Buy Local Coordinator",
+      "Grants Financial Specialist"
+    ],
+    "programs": [
+      {
+        "name": "Randal Fellowship Program (summer, stipend $325/week)",
+        "url": "https://www.pecva.org/about-us/randal-fellowship-program/"
+      },
+      {
+        "name": "Summer Fellowship Program",
+        "url": "https://www.pecva.org/about-us/fellowship-program/"
+      }
+    ],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 4,
+      "clearance_access": 5,
+      "entry_access": 3
+    },
+    "why": "Land-use, energy and data-center policy advocacy group headquartered in Warrenton, with a policy-and-law-oriented fellowship and several small-team entry roles.",
+    "sources": [
+      "https://www.pecva.org/about-us/jobs-internships/",
+      "https://www.pecva.org/about-us/randal-fellowship-program/",
+      "https://www.pecva.org/"
+    ],
+    "notes": "The 2026 fellowship application closed; PEC says 2027 details will post in November. The fellowship targets 'college-age and graduate-level students', so recent-grad eligibility is not explicit. Titles listed are recently closed; open roles now are Database Specialist and HR and Payroll Specialist. The page also links the Coalition for Smarter Growth (a PEC division) for DC-area openings."
+  }
+]

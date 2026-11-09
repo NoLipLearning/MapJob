@@ -1,0 +1,800 @@
+[
+  {
+    "id": "rand-arlington",
+    "name": "RAND Corporation (Arlington office)",
+    "org_type": "think-tank",
+    "address": "1200 South Hayes Street, Arlington, VA 22202-5050",
+    "address_source": "https://www.rand.org/about/locations.html",
+    "careers_url": "https://www.rand.org/jobs.html",
+    "entry_roles": [
+      "Bachelor's Level Research Assistant - Qualitative (Term)",
+      "Bachelor's Level Research Assistant - Quantitative (Term)"
+    ],
+    "programs": [],
+    "clearance": "some",
+    "scores": {
+      "role_fit": 4,
+      "clearance_access": 2,
+      "entry_access": 4
+    },
+    "why": "RAND hires bachelor's-level research assistants for policy research, but the Arlington office is national-security heavy and RAND posts say staff doing that work must be able to obtain a clearance.",
+    "sources": [
+      "https://www.rand.org/jobs.html",
+      "https://www.rand.org/about/locations.html",
+      "https://diversityjobs.com/career/10329454/Bachelor-S-Level-Research-Assistant-Qualitative-Term-D-C-Washington"
+    ],
+    "notes": "Opened RA posting was a Jan 2025 expired term post for DC (Arlington not named) and says candidates interested in national security work must be able to obtain a clearance, so clearance mix is judged from that plus the office's focus; non-NS (health, education) RA posts exist. RAND is a federal contractor operating FFRDCs. No formal undergraduate program found; the RAND careers page itself lists no openings (dynamic)."
+  },
+  {
+    "id": "brookings",
+    "name": "Brookings Institution",
+    "org_type": "think-tank",
+    "address": "1775 Massachusetts Avenue NW, Washington, DC 20036",
+    "address_source": "https://www.brookings.edu/contact-brookings/",
+    "careers_url": "https://www.brookings.edu/careers/",
+    "entry_roles": [
+      "Research Assistant",
+      "Research and Communications Assistant",
+      "Intern (paid, Governance Studies / Foreign Policy / Economic Studies)"
+    ],
+    "programs": [
+      {
+        "name": "Brookings Internship Program",
+        "url": "https://www.brookings.edu/careers/internships/"
+      }
+    ],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 5,
+      "clearance_access": 5,
+      "entry_access": 5
+    },
+    "why": "Brookings posts Research Assistant jobs across its policy programs year after year and runs a paid internship cohort that occasionally takes recent grads.",
+    "sources": [
+      "https://www.brookings.edu/careers/",
+      "https://www.brookings.edu/careers/internships/",
+      "https://www.brookings.edu/contact-brookings/"
+    ],
+    "notes": "Internships mainly for degree-seeking students, only occasionally recent grads (spring 2027 deadline Nov 7, 2026). RA job titles seen in search listings of careers-brookings.icims.com; two specific job pages I opened were expired (HTTP 410). No clearance mentioned on pages opened."
+  },
+  {
+    "id": "carnegie-endowment",
+    "name": "Carnegie Endowment for International Peace",
+    "org_type": "think-tank",
+    "address": "1779 Massachusetts Avenue NW, Washington, DC 20036",
+    "address_source": "https://carnegieendowment.org/",
+    "careers_url": "https://carnegieendowment.org/about/careers",
+    "entry_roles": [
+      "Junior Fellow (research assistant to a senior scholar)",
+      "Research Assistant"
+    ],
+    "programs": [
+      {
+        "name": "James C. Gaither Junior Fellows Program",
+        "url": "https://carnegieendowment.org/james-c-gaither-junior-fellows-program"
+      },
+      {
+        "name": "Carnegie Internships",
+        "url": "https://carnegieendowment.org/about/careers"
+      }
+    ],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 5,
+      "clearance_access": 5,
+      "entry_access": 5
+    },
+    "why": "Carnegie's Gaither Junior Fellows Program hires about fifteen graduating seniors and recent grads a year as research assistants on international affairs, a near-direct fit.",
+    "sources": [
+      "https://carnegieendowment.org/about/careers",
+      "https://carnegieendowment.org/"
+    ],
+    "notes": "Fellowship is for graduating seniors and people who graduated in the past academic year; no deadline printed on the page, so confirm timing and whether a May 2026 grad still qualifies for the next cohort. Job search runs on carnegieendowment.applicantpro.com. No clearance mentioned."
+  },
+  {
+    "id": "csis",
+    "name": "Center for Strategic and International Studies (CSIS)",
+    "org_type": "think-tank",
+    "address": "1616 Rhode Island Avenue NW, Washington, DC 20036",
+    "address_source": "https://www.csis.org",
+    "careers_url": "https://www.csis.org/about/careers-culture",
+    "entry_roles": [
+      "Program Coordinator and Research Assistant",
+      "Intern (full or part-time)"
+    ],
+    "programs": [
+      {
+        "name": "CSIS Internship Program",
+        "url": "https://www.csis.org/about/careers-culture/internships"
+      }
+    ],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 5,
+      "clearance_access": 5,
+      "entry_access": 5
+    },
+    "why": "CSIS regularly posts combined Program Coordinator and Research Assistant jobs on foreign policy and security programs and takes recent grads as interns.",
+    "sources": [
+      "https://www.csis.org/about/careers-culture",
+      "https://www.csis.org/about/careers-culture/internships",
+      "https://www.csis.org"
+    ],
+    "notes": "Openings are on careers.csis.org (JS-rendered); I could not read live listings, titles come from search results. Internships accept undergrads, grad students and recent grads; pay not stated. No clearance mention found; security-focused programs may differ."
+  },
+  {
+    "id": "heritage-foundation",
+    "name": "The Heritage Foundation",
+    "org_type": "think-tank",
+    "address": "214 Massachusetts Avenue NE, Washington, DC 20002",
+    "address_source": "https://www.heritage.org/contact",
+    "careers_url": "https://www.heritage.org/careers",
+    "entry_roles": [
+      "Research Associate (e.g., Allison Center for National Security)",
+      "Editorial Associate",
+      "Social Media Fellow, Digital Productions"
+    ],
+    "programs": [
+      {
+        "name": "Heritage Foundation Internship Program",
+        "url": "https://www.heritage.org/careers"
+      },
+      {
+        "name": "George C. Marshall Fellows",
+        "url": "https://www.heritage.org/careers"
+      }
+    ],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 5,
+      "clearance_access": 5,
+      "entry_access": 4
+    },
+    "why": "Heritage is a large conservative policy shop whose current job board mixes Research Associate, policy analyst and editorial roles, plus an internship program, so it is a solid entry route for a poli-sci grad.",
+    "sources": [
+      "https://www.heritage.org/careers",
+      "https://heritage.applytojob.com/apply/jobs/details/Qsjg2OcL5F",
+      "https://www.heritage.org/contact"
+    ],
+    "notes": "Live job board (JazzHR) opened and lists DC roles; many listed are mid-level (Policy Analyst, Policy Advisor). Internship Program is for college students; program pages not individually opened, so program URLs point to the careers hub. No clearance mentioned. heritage.org blocks plain curl (403) but loads via fetch tool."
+  },
+  {
+    "id": "urban-institute",
+    "name": "Urban Institute",
+    "org_type": "think-tank",
+    "address": "500 L'Enfant Plaza SW, Washington, DC 20024",
+    "address_source": "https://www.urban.org/about/contact-us",
+    "careers_url": "https://www.urban.org/about/careers",
+    "entry_roles": [
+      "Research Assistant (various policy centers)",
+      "Research Associate"
+    ],
+    "programs": [
+      {
+        "name": "Urban Institute Summer Internship Program",
+        "url": "https://www.urban.org/about/careers"
+      }
+    ],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 4,
+      "clearance_access": 5,
+      "entry_access": 5
+    },
+    "why": "Urban hires bachelor's-level Research Assistants constantly across its policy centers, though the work leans toward domestic social and economic data analysis more than political analysis.",
+    "sources": [
+      "https://www.urban.org/about/careers",
+      "https://jobs.ffwd.org/companies/urban-institute/jobs/87099323-research-assistant-housing-and-communities-division",
+      "https://www.urban.org/about/contact-us"
+    ],
+    "notes": "Opened RA posting requires a bachelor's (or associate's with equivalent experience), preferably public policy or related. Applications run through urban.wd115.myworkdayjobs.com/Urban-Careers. Role fit 4 because research is quantitative domestic policy. No clearance."
+  },
+  {
+    "id": "aei",
+    "name": "American Enterprise Institute (AEI)",
+    "org_type": "think-tank",
+    "address": "1789 Massachusetts Avenue NW, Washington, DC 20036",
+    "address_source": "https://careers-aei.icims.com/jobs/search",
+    "careers_url": "https://careers-aei.icims.com/jobs/search",
+    "entry_roles": [
+      "Research Assistant (Education Policy, Domestic Policy, Economic Policy and other programs)",
+      "Assistant, Academic Programs"
+    ],
+    "programs": [],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 5,
+      "clearance_access": 5,
+      "entry_access": 5
+    },
+    "why": "AEI posts program-specific Research Assistant jobs frequently, the standard entry route into conservative policy research.",
+    "sources": [
+      "https://careers-aei.icims.com/jobs/search"
+    ],
+    "notes": "Address page prints ZIP as '200036' (typo); 20036 is the ZIP for 1789 Massachusetts Ave NW. aei.org itself returned 403 to automated fetch; the AEI-hosted iCIMS careers page loads and shows site contact block, but the job list is JS-rendered, so RA titles come from search-result listings of careers-aei.icims.com. Site nav lists Internships/For Students; page not opened. No clearance seen."
+  },
+  {
+    "id": "cato-institute",
+    "name": "Cato Institute",
+    "org_type": "think-tank",
+    "address": "1000 Massachusetts Avenue NW, Washington, DC 20001",
+    "address_source": "https://www.cato.org/about",
+    "careers_url": "https://www.cato.org/careers",
+    "entry_roles": [
+      "Research Associate (Cato Research Associate Program)",
+      "Research Associate, Center for Educational Freedom"
+    ],
+    "programs": [
+      {
+        "name": "Cato Research Associate Program",
+        "url": "https://www.cato.org/research-associate/about"
+      }
+    ],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 5,
+      "clearance_access": 5,
+      "entry_access": 4
+    },
+    "why": "Cato runs a Research Associate Program for early-career policy staff from a libertarian viewpoint, but I could not open its details.",
+    "sources": [
+      "https://www.cato.org/about"
+    ],
+    "notes": "cato.org returns an Incapsula bot block to curl; address was read through the fetch tool (ZIP 20001-5403), but the careers and Research Associate pages could not be read, so program/role titles are from search-result titles only. careers_url is the clearly official Cato careers path; unverified. Entry score held at 4 for that reason."
+  },
+  {
+    "id": "cfr-dc",
+    "name": "Council on Foreign Relations (Washington DC office)",
+    "org_type": "think-tank",
+    "address": "1777 F Street NW, Washington, DC 20006",
+    "address_source": "https://www.cfr.org/contact-us",
+    "careers_url": "https://www.cfr.org/career-opportunities",
+    "entry_roles": [
+      "Research Associate (program-specific)",
+      "Intern (Blavatnik Internship Program)"
+    ],
+    "programs": [
+      {
+        "name": "Blavatnik Internship Program",
+        "url": "https://www.cfr.org/career-opportunities"
+      }
+    ],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 5,
+      "clearance_access": 5,
+      "entry_access": 3
+    },
+    "why": "CFR's Research Associate roles are strong foreign-policy jobs but are mostly in New York and often want some prior experience, with few DC-based openings.",
+    "sources": [
+      "https://www.cfr.org/career-opportunities",
+      "https://www.cfr.org/contact-us"
+    ],
+    "notes": "Openings run on careers-cfr.icims.com; Research Associate titles (US Foreign Policy, Europe, Climate etc.) seen in search results, the two job pages I opened were expired (HTTP 410). Which are DC-based is unconfirmed. Page says many positions allow hybrid. No clearance mentioned."
+  },
+  {
+    "id": "atlantic-council",
+    "name": "Atlantic Council",
+    "org_type": "think-tank",
+    "address": "1400 L Street NW, 11th Floor, Washington, DC 20005",
+    "address_source": "https://www.atlanticcouncil.org/about/visiting-atlantic-council/",
+    "careers_url": "https://www.atlanticcouncil.org/careers/",
+    "entry_roles": [
+      "Project Assistant (e.g., Indo-Pacific Security Initiative)",
+      "Intern (spring, summer, fall)"
+    ],
+    "programs": [
+      {
+        "name": "Atlantic Council Internship Program",
+        "url": "https://www.atlanticcouncil.org/careers/internships/"
+      }
+    ],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 5,
+      "clearance_access": 5,
+      "entry_access": 4
+    },
+    "why": "The Atlantic Council posts entry-level Project Assistant roles and runs paid internships that explicitly accept recent graduates in international affairs.",
+    "sources": [
+      "https://www.atlanticcouncil.org/careers/",
+      "https://www.atlanticcouncil.org/careers/internships/",
+      "https://www.atlanticcouncil.org/about/visiting-atlantic-council/"
+    ],
+    "notes": "HQ moved in late 2024 from 1030 15th St NW to 1400 L St NW (press release dated Nov 13, 2024; visiting page gives floor and ZIP). Spring 2027 internship deadline was Nov 8, 2026, summer typically opens in Feb. Careers page listed two Project Assistant postings and mostly senior roles. No clearance mentioned."
+  },
+  {
+    "id": "wilson-center",
+    "name": "Wilson Center",
+    "org_type": "think-tank",
+    "address": "One Woodrow Wilson Plaza, 1300 Pennsylvania Avenue NW, Washington, DC 20004",
+    "address_source": "https://www.wilsoncenter.org",
+    "careers_url": "https://www.wilsoncenter.org/careers-internships",
+    "entry_roles": [
+      "Intern (part-time, paid)"
+    ],
+    "programs": [
+      {
+        "name": "Wilson Center Internships",
+        "url": "https://www.wilsoncenter.org/internships"
+      }
+    ],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 5,
+      "clearance_access": 5,
+      "entry_access": 3
+    },
+    "why": "The Wilson Center offers paid part-time internships to current and recent grads, but its job board currently lists no open positions.",
+    "sources": [
+      "https://www.wilsoncenter.org/careers-internships",
+      "https://www.wilsoncenter.org/internships",
+      "https://www.wilsoncenter.org/job-openings-the-wilson-center"
+    ],
+    "notes": "Job openings page said 'There are currently no open positions' when opened. Spring 2027 internship applications closed Nov 6, 2026. Address printed on site is 1300 Pennsylvania Ave NW, DC 20004-3027."
+  },
+  {
+    "id": "stimson-center",
+    "name": "Stimson Center",
+    "org_type": "think-tank",
+    "address": "1211 Connecticut Avenue NW, 8th Floor, Washington, DC 20036",
+    "address_source": "https://www.stimson.org/?p=44331",
+    "careers_url": "https://www.stimson.org/careers/",
+    "entry_roles": [
+      "Research Assistant (program-specific)",
+      "Research Associate or Assistant"
+    ],
+    "programs": [],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 5,
+      "clearance_access": 5,
+      "entry_access": 4
+    },
+    "why": "Stimson repeatedly posts Research Assistant or Research Associate jobs for its security and global governance programs, which fit a poli-sci BA.",
+    "sources": [
+      "https://www.stimson.org/careers/",
+      "https://www.stimson.org/?p=44331"
+    ],
+    "notes": "Careers page said postings are updated as available and listed none when read; role titles come from search-result listings of past postings. No formal internship URL confirmed. Donation section lists Suite 800 for the same floor. No clearance mentioned."
+  },
+  {
+    "id": "hudson-institute",
+    "name": "Hudson Institute",
+    "org_type": "think-tank",
+    "address": "1201 Pennsylvania Avenue NW, Fourth Floor, Washington, DC 20004",
+    "address_source": "https://www.hudson.org/about/contact-us",
+    "careers_url": "https://www.hudson.org/about/careers-internships",
+    "entry_roles": [
+      "Government Affairs Associate",
+      "Research Associate (Japan Chair)",
+      "Intern"
+    ],
+    "programs": [
+      {
+        "name": "Hudson Institute Internship Program",
+        "url": "https://www.hudson.org/about/careers-internships"
+      },
+      {
+        "name": "Hudson Institute Political Studies (summer fellowship)",
+        "url": "https://hudsonpoliticalstudies.org"
+      }
+    ],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 5,
+      "clearance_access": 5,
+      "entry_access": 4
+    },
+    "why": "Hudson posts associate-level government affairs and research roles plus internships and an undergraduate political studies fellowship, a good conservative foreign-policy entry point.",
+    "sources": [
+      "https://www.hudson.org/about/careers-internships",
+      "https://www.hudson.org/about/contact-us"
+    ],
+    "notes": "Japan Chair Research Associate post is restricted to Japanese nationals so not a fit; Government Affairs Associate level not stated. Internships take undergrad and postgrad students, in person or remote. Political Studies fellowship is for current undergrads. No clearance mentioned."
+  },
+  {
+    "id": "bipartisan-policy-center",
+    "name": "Bipartisan Policy Center",
+    "org_type": "think-tank",
+    "address": "1225 Eye Street NW, Suite 1000, Washington, DC 20005",
+    "address_source": "https://bipartisanpolicy.org/careers/",
+    "careers_url": "https://bipartisanpolicy.org/careers/",
+    "entry_roles": [
+      "Intern (Governance, Economics, Energy, Health, Housing, External Relations)"
+    ],
+    "programs": [
+      {
+        "name": "BPC Internship Program",
+        "url": "https://bipartisanpolicy.org/about-us/careers/internships/"
+      }
+    ],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 5,
+      "clearance_access": 5,
+      "entry_access": 3
+    },
+    "why": "BPC's paid internships (stipend of $3,000 or $6,000) cover governance and other policy areas and are open to recent grads, but staff openings were not visible.",
+    "sources": [
+      "https://bipartisanpolicy.org/careers/",
+      "https://bipartisanpolicy.org/about-us/careers/internships/"
+    ],
+    "notes": "Internship page says recent graduates can apply but each posting says currently enrolled, so eligibility for a May 2026 grad is unclear; Spring 2027 deadline was Sept 28, 2026, summer 2027 is Feb 8, 2027. No entry staff titles found. bipartisanpolicy.org returns 403 to curl but loads via fetch tool. No clearance mentioned."
+  },
+  {
+    "id": "pew-research-center",
+    "name": "Pew Research Center",
+    "org_type": "polling-research",
+    "address": "901 E Street NW, Suite 300, Washington, DC 20004",
+    "address_source": "https://www.pewresearch.org/about/careers/",
+    "careers_url": "https://www.pewresearch.org/about/careers/",
+    "entry_roles": [
+      "Research Assistant (e.g., Global Attitudes, Religion, Science & Society)",
+      "Research Associate"
+    ],
+    "programs": [],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 4,
+      "clearance_access": 5,
+      "entry_access": 4
+    },
+    "why": "Pew regularly hires bachelor's-level Research Assistants who run survey analysis on politics, religion and global attitudes, a strong polling-research start.",
+    "sources": [
+      "https://www.pewresearch.org/about/careers/",
+      "https://pewtrusts.wd5.myworkdayjobs.com/CenterExternal"
+    ],
+    "notes": "Address read from the careers page. Jobs live on Workday (JS-rendered, so titles come from search-result listings). All jobs are based in the DC office; no clearance mentioned. No intern program found. Role fit 4: survey methodology and quantitative work."
+  },
+  {
+    "id": "new-america",
+    "name": "New America",
+    "org_type": "think-tank",
+    "address": "740 15th Street NW, Suite 900, Washington, DC 20005",
+    "address_source": "https://www.newamerica.org/our-people/careers/",
+    "careers_url": "https://www.newamerica.org/our-people/careers/",
+    "entry_roles": [],
+    "programs": [],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 4,
+      "clearance_access": 5,
+      "entry_access": 2
+    },
+    "why": "New America mainly hires experienced staff and fellows; the openings I saw were senior or communications roles, with no entry research or program roles.",
+    "sources": [
+      "https://www.newamerica.org/our-people/careers/"
+    ],
+    "notes": "Careers page listed 4 openings (CEO, Digital Director, Senior Communications Associate, Senior Visual Designer). Fellowship programs exist (New America Fellows, Us@250, Future Security) but eligibility not stated and appear aimed at experienced people. entry_roles left empty because none confirmed. No clearance mentioned."
+  },
+  {
+    "id": "center-for-american-progress",
+    "name": "Center for American Progress (CAP)",
+    "org_type": "think-tank",
+    "address": "1333 H Street NW, Suite 100E, Washington, DC 20005",
+    "address_source": "https://www.americanprogress.org/about/contact-us/",
+    "careers_url": "https://www.americanprogress.org/about-us/jobs/",
+    "entry_roles": [
+      "Research Assistant",
+      "Research Associate",
+      "Intern (research, national security, digital)"
+    ],
+    "programs": [
+      {
+        "name": "CAP Internships",
+        "url": "https://www.americanprogress.org/about-us/internships/"
+      }
+    ],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 5,
+      "clearance_access": 5,
+      "entry_access": 4
+    },
+    "why": "CAP is the progressive counterpart to Heritage and AEI: it keeps a Research Assistant resume bank, posts associate roles, and runs internships including a national security and international policy track.",
+    "sources": [
+      "https://www.americanprogress.org/?p=69533",
+      "https://www.americanprogress.org/about-us/internships/",
+      "https://www.americanprogress.org/about/contact-us/"
+    ],
+    "notes": "Jobs page (opened) lists 'Research Assistant Resume Bank' (Oct 2024), Policy Analyst and digital roles. Internship details (pay, eligibility) not readable in the page I opened. Scored on the same standard as Heritage/AEI. No clearance mentioned."
+  },
+  {
+    "id": "german-marshall-fund",
+    "name": "German Marshall Fund of the United States (GMF)",
+    "org_type": "think-tank",
+    "address": "1744 R Street NW, Washington, DC 20009",
+    "address_source": "https://projects.propublica.org/nonprofits/api/v2/organizations/520954751.json",
+    "careers_url": "https://www.gmfus.org/about/careers",
+    "entry_roles": [
+      "Program Assistant",
+      "Program and Research Trainee",
+      "Program Coordinator"
+    ],
+    "programs": [
+      {
+        "name": "GMF internships and trainee positions (posted on GMF's Paylocity board)",
+        "url": "https://www.gmfus.org/about/careers"
+      }
+    ],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 5,
+      "clearance_access": 5,
+      "entry_access": 4
+    },
+    "why": "GMF posts transatlantic Program Assistant, Program Coordinator and trainee roles, close to the international affairs work this grad wants.",
+    "sources": [
+      "https://www.gmfus.org/about/careers",
+      "https://en.wikipedia.org/wiki/German_Marshall_Fund",
+      "https://projects.propublica.org/nonprofits/api/v2/organizations/520954751.json"
+    ],
+    "notes": "GMF's own pages I opened did not print the street address; 1744 R Street NW is given by Wikipedia and the IRS record (ProPublica, ZIP 20009-2410). Job titles come from search-result listings; a Paylocity posting I tried was no longer active. Careers page links to https://recruiting.paylocity.com board. No clearance mentioned."
+  },
+  {
+    "id": "freedom-house",
+    "name": "Freedom House",
+    "org_type": "ngo-advocacy",
+    "address": "1225 I Street NW, Suite 1200, Washington, DC 20005",
+    "address_source": "https://freedomhouse.org/about-us/careers",
+    "careers_url": "https://freedomhouse.org/about-us/careers",
+    "entry_roles": [
+      "Freedom in the World Junior Fellow",
+      "Program Associate",
+      "Research Analyst (bachelor's in political science preferred)"
+    ],
+    "programs": [
+      {
+        "name": "Freedom in the World Junior Fellowship",
+        "url": "https://freedomhouse.org/careers/freedom-world-junior-fellowship"
+      }
+    ],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 5,
+      "clearance_access": 5,
+      "entry_access": 5
+    },
+    "why": "Freedom House's eight-month Junior Fellowship is aimed at recent political science and international relations graduates who score democracy ratings, a very direct fit.",
+    "sources": [
+      "https://freedomhouse.org/about-us/careers",
+      "https://freedomhouse.org/careers/freedom-world-junior-fellowship",
+      "https://freedomhouse.org/careers/research-analyst-technology-elections"
+    ],
+    "notes": "Fellowship page opened is the 2025-26 cycle (applicants who finished a degree Aug 2024-June 2025, deadline Jan 29, 2025, NY or DC based); watch for the next cycle's eligibility window. Pay not stated. Jobs on Taleo. No clearance mentioned."
+  },
+  {
+    "id": "national-democratic-institute",
+    "name": "National Democratic Institute (NDI)",
+    "org_type": "ngo-advocacy",
+    "address": "455 Massachusetts Avenue NW, 8th Floor, Washington, DC 20001",
+    "address_source": "https://www.ndi.org/contact-us",
+    "careers_url": "https://www.ndi.org/careers",
+    "entry_roles": [
+      "Temporary Project Assistant",
+      "Program Assistant",
+      "Program Associate"
+    ],
+    "programs": [],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 4,
+      "clearance_access": 5,
+      "entry_access": 4
+    },
+    "why": "NDI hires project and program assistants for democracy-support work abroad, but its live job board currently shows few openings.",
+    "sources": [
+      "https://www.ndi.org/careers",
+      "https://ats.rippling.com/ndi_careers/jobs",
+      "https://www.ndi.org/contact-us"
+    ],
+    "notes": "Rippling job board listed only one opening (Chief Development Officer) when opened; assistant titles come from search-result listings of past postings. No internship program confirmed. Roles list no clearance in what I saw. Scored on the same standard as IRI."
+  },
+  {
+    "id": "international-republican-institute",
+    "name": "International Republican Institute (IRI)",
+    "org_type": "ngo-advocacy",
+    "address": "1225 I (Eye) Street NW, Suite 800, Washington, DC 20005",
+    "address_source": "https://www.iri.org/",
+    "careers_url": "https://www.iri.org/work-with-iri/",
+    "entry_roles": [
+      "Program Associate (entry-level program position)",
+      "Intern"
+    ],
+    "programs": [
+      {
+        "name": "IRI Internship Opportunities",
+        "url": "https://www.iri.org/work-with-iri/"
+      }
+    ],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 4,
+      "clearance_access": 5,
+      "entry_access": 4
+    },
+    "why": "IRI calls Program Associate its entry-level program job (political science or IR degree, 0-1 years experience) and runs an intern board, mirroring NDI's work on the Republican side.",
+    "sources": [
+      "https://www.iri.org/work-with-iri/",
+      "https://apsia.org/job-and-internship-openings/program-associate-mena-2",
+      "https://www.iri.org/"
+    ],
+    "notes": "Work-with-IRI page links to separate UltiPro boards for jobs, consulting and internships; I read the Program Associate requirements from a copy of the posting on apsia.org, not IRI's board. No clearance mentioned."
+  },
+  {
+    "id": "national-endowment-for-democracy",
+    "name": "National Endowment for Democracy (NED)",
+    "org_type": "ngo-advocacy",
+    "address": "1201 Pennsylvania Avenue NW, Suite 1100, Washington, DC 20004",
+    "address_source": "https://www.ned.org/",
+    "careers_url": "https://www.ned.org/about/jobs/",
+    "entry_roles": [
+      "Program Assistant (regional or Grants)",
+      "Program Assistant, International Forum for Democratic Studies"
+    ],
+    "programs": [],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 4,
+      "clearance_access": 5,
+      "entry_access": 4
+    },
+    "why": "NED posts Program Assistant jobs (bachelor's in political science or IR plus about one year of office experience) that support grantmaking and research on democracy.",
+    "sources": [
+      "https://www.ned.org/about/jobs/",
+      "https://www.ned.org/",
+      "https://apsia.org/job-and-internship-openings/program-assistant-global-2"
+    ],
+    "notes": "Footer address (1201 Pennsylvania Ave NW, Suite 1100) read from ned.org. Job board is a separate recruitment portal not rendered; Program Assistant requirements read from an apsia.org copy of a posting. Fellowship programs (Hurford Youth Fellows etc.) are listed but eligibility unconfirmed. No clearance mentioned."
+  },
+  {
+    "id": "world-bank-group",
+    "name": "World Bank Group",
+    "org_type": "international",
+    "address": "1818 H Street NW, Washington, DC 20433",
+    "address_source": "https://www.worldbank.org/en/about/contacts",
+    "careers_url": "https://www.worldbank.org/en/about/careers",
+    "entry_roles": [
+      "Intern (WBG Pioneers Internship Program)"
+    ],
+    "programs": [
+      {
+        "name": "WBG Pioneers (internship)",
+        "url": "https://www.worldbank.org/ext/en/careers/talent-programs/wbg-pioneers"
+      },
+      {
+        "name": "Young Professionals Program (graduate degree minimum)",
+        "url": "https://www.worldbank.org/ext/en/careers/talent-programs/young-professionals-program"
+      }
+    ],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 3,
+      "clearance_access": 5,
+      "entry_access": 2
+    },
+    "why": "The World Bank needs no clearance, but its Young Professionals Program requires a graduate-level degree and its internship is aimed at students, so a BA-only grad has few direct routes.",
+    "sources": [
+      "https://www.worldbank.org/en/about/careers",
+      "https://www.worldbank.org/ext/en/careers/talent-programs/young-professionals-program",
+      "https://www.worldbank.org/en/about/contacts"
+    ],
+    "notes": "YPP eligibility page says minimum graduate-level degree. WBG Pioneers is for undergraduate and postgraduate students; whether a recent grad qualifies is unconfirmed. Core work is development economics, so role fit 3. Other bachelor's-level roles (analyst, program assistant) exist but were not confirmed."
+  },
+  {
+    "id": "inter-american-development-bank",
+    "name": "Inter-American Development Bank (IDB)",
+    "org_type": "international",
+    "address": "1300 New York Avenue NW, Washington, DC 20577",
+    "address_source": "https://www.iadb.org/en/who-we-are/country-offices/idb-headquarters",
+    "careers_url": "https://www.iadb.org/en/who-we-are/careers",
+    "entry_roles": [
+      "Intern (IDB Summer/Winter Internship Program)"
+    ],
+    "programs": [],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 3,
+      "clearance_access": 5,
+      "entry_access": 2
+    },
+    "why": "The IDB requires no US clearance but hires mostly experienced economists and graduate-degree young professionals, leaving a BA-only grad mainly its student internships.",
+    "sources": [
+      "https://www.iadb.org/en/who-we-are/country-offices/idb-headquarters"
+    ],
+    "notes": "IDB careers pages returned 403 and could not be fetched, so the careers_url is the official path but unverified, and the internship and Young Professionals Program details come only from third-party search listings (Young Professionals Program reportedly needs a master's). Address from the IDB headquarters page. Lowest-confidence record."
+  },
+  {
+    "id": "gallup-dc",
+    "name": "Gallup (Washington DC headquarters)",
+    "org_type": "polling-research",
+    "address": "901 F Street NW, Washington, DC 20004",
+    "address_source": "https://www.gallup.com/corporate/212099/washington.aspx",
+    "careers_url": "https://www.gallup.com/careers/",
+    "entry_roles": [
+      "Intern (Gallup Internship Program)"
+    ],
+    "programs": [
+      {
+        "name": "Gallup Internships",
+        "url": "https://www.gallup.com/careers/398294/gallup-internships.aspx"
+      }
+    ],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 3,
+      "clearance_access": 5,
+      "entry_access": 3
+    },
+    "why": "Gallup is the best-known polling firm and has a DC headquarters, but its careers page names only an internship for early careers and much of its hiring is client-facing consulting and sales.",
+    "sources": [
+      "https://www.gallup.com/careers/",
+      "https://www.gallup.com/corporate/212099/washington.aspx"
+    ],
+    "notes": "Careers page lists teams including Data Analytics and Research and Internships; no entry-level job titles were visible, so entry_roles is thin. Many Gallup roles are sales/account-based, which this user does not want. No clearance."
+  },
+  {
+    "id": "democratic-national-committee",
+    "name": "Democratic National Committee (DNC)",
+    "org_type": "party-campaign",
+    "address": "430 South Capitol Street SE, Washington, DC 20003",
+    "address_source": "https://api.open.fec.gov/v1/committee/C00010603/?api_key=DEMO_KEY",
+    "careers_url": "https://democrats.org/about/careers/",
+    "entry_roles": [
+      "Research Associate",
+      "Intern (Spring/Summer 2027 General Internship)"
+    ],
+    "programs": [
+      {
+        "name": "DNC Internship Program",
+        "url": "https://ats.rippling.com/democratic-national-committee/jobs"
+      }
+    ],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 4,
+      "clearance_access": 5,
+      "entry_access": 4
+    },
+    "why": "The DNC runs several internship tracks for spring and summer 2027 and has a Research Associate opening and a Talent Bank, giving a political grad a direct path into party work.",
+    "sources": [
+      "https://democrats.org/about/careers/",
+      "https://ats.rippling.com/democratic-national-committee/jobs",
+      "https://api.open.fec.gov/v1/committee/C00010603/?api_key=DEMO_KEY"
+    ],
+    "notes": "Address and ZIP from the FEC committee record (Wikipedia agrees on the street). Research Associate qualifications not readable in the listing; may require experience. Intern eligibility not stated (likely students). Party jobs are often short-term and campaign-cycle dependent. No clearance. Scored on the same standard as the RNC."
+  },
+  {
+    "id": "republican-national-committee",
+    "name": "Republican National Committee (RNC)",
+    "org_type": "party-campaign",
+    "address": "310 First Street SE, Washington, DC 20003",
+    "address_source": "https://api.open.fec.gov/v1/committee/C00003418/?api_key=DEMO_KEY",
+    "careers_url": "https://www.gop.com/jobs/",
+    "entry_roles": [
+      "Communications Assistant",
+      "Intern (Spring/Fall Internship Program)",
+      "Rapid Response Specialist"
+    ],
+    "programs": [
+      {
+        "name": "RNC Internship Opportunities",
+        "url": "https://www.gop.com/internships/"
+      }
+    ],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 4,
+      "clearance_access": 5,
+      "entry_access": 4
+    },
+    "why": "The RNC posts assistant-level communications jobs and runs a semester internship program in DC, the Republican equivalent of the DNC route.",
+    "sources": [
+      "https://api.open.fec.gov/v1/committee/C00003418/?api_key=DEMO_KEY",
+      "https://www.polisci.washington.edu/news/2026/01/28/republican-national-committee-internship-and-employment-opportunities",
+      "https://en.wikipedia.org/wiki/Republican_National_Committee"
+    ],
+    "notes": "gop.com returns 403 to automated fetch (careers_url and internship URL were given by an RNC notice reposted by the UW political science department, so they are likely official but not directly verified). Job titles come from search-result listings I could not open (career.com blocked). Address from FEC committee record. No clearance mentioned. Scored same as DNC."
+  }
+]

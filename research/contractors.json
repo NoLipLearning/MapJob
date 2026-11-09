@@ -1,0 +1,624 @@
+[
+  {
+    "id": "leidos",
+    "name": "Leidos",
+    "org_type": "contractor",
+    "address": "1750 Presidents Street, Reston, VA 20190",
+    "address_source": "https://www.salestools.io/en/report/leidos-headquarters",
+    "careers_url": "https://www.leidos.com/careers",
+    "entry_roles": [
+      "Finance & Business Operations - Entry Level Program Analyst",
+      "Entry-Level Chinese OSINT Analyst",
+      "Apprentice Geospatial Analyst",
+      "Corporate Strategy Analyst (2+ yrs)"
+    ],
+    "programs": [],
+    "clearance": "some",
+    "scores": {
+      "role_fit": 3,
+      "clearance_access": 3,
+      "entry_access": 3
+    },
+    "why": "Big Reston employer with some entry postings that state no clearance (OSINT, geospatial apprentice) or only 'ability to obtain if the customer requires it', but its analyst work is mostly cleared national-security work.",
+    "sources": [
+      "https://www.themuse.com/jobs/leidos/finance-business-operations-entry-level-program-analyst",
+      "https://talents.vaia.com/companies/leidos/reston/entry-level-chinese-osint-analyst-115096890/",
+      "https://www.themuse.com/jobs/leidos/corporate-strategy-analyst",
+      "https://www.themuse.com/jobs/leidos/apprentice-geospatial-analyst-f48fcb"
+    ],
+    "notes": "Entry finance posting: 'ability to obtain and maintain a clearance if required by the customer' (grad dates 2025/26, GPA 3.2, finance/econ degrees, so not a poli-sci fit). OSINT and geospatial postings state no clearance but US citizenship is required; many comparable Leidos intel postings on ClearanceJobs need TS/SCI. Address from a third-party HQ listing (leidos.com contact page lists no street address). careers URL returns 403 to automated fetch but is Leidos's official page. No early-career program page could be opened."
+  },
+  {
+    "id": "saic",
+    "name": "SAIC",
+    "org_type": "contractor",
+    "address": "12010 Sunset Hills Road, Reston, VA 20190",
+    "address_source": "https://www.saic.com/contact-us",
+    "careers_url": "https://www.saic.com/careers",
+    "entry_roles": [
+      "Junior Security Analyst",
+      "Junior Change Management Analyst (title seen in search results, not opened)",
+      "Policy Analyst (DoD advisory committee; 2-5 yrs, not entry)"
+    ],
+    "programs": [],
+    "clearance": "most",
+    "scores": {
+      "role_fit": 3,
+      "clearance_access": 1,
+      "entry_access": 2
+    },
+    "why": "Policy and analyst roles I opened require TS/SCI, so SAIC is a poor fit for a no-clearance search.",
+    "sources": [
+      "https://www.clearancejobs.com/jobs/8561944/policy-analyst",
+      "https://www.talentify.io/job/junior-security-analyst-arlington-virginia-us-saic-51591494",
+      "https://www.saic.com/contact-us"
+    ],
+    "notes": "Opened SAIC postings: Policy Analyst (Rosslyn, 2-5 yrs, TS with SCI eligibility) and Junior Security Analyst (Arlington, TS/SCI, 1+ yr). No uncleared entry analyst posting found. saic.com/careers returns 403 to automated fetch; kept as the official URL. No early-career program page opened."
+  },
+  {
+    "id": "caci",
+    "name": "CACI",
+    "org_type": "contractor",
+    "address": "12021 Sunset Hills Road, Reston, VA 20190",
+    "address_source": "https://fr.finance.yahoo.com/quote/CACI/profile",
+    "careers_url": "https://careers.caci.com/",
+    "entry_roles": [
+      "Junior Business Systems Analyst",
+      "All-Source Intelligence Analyst, Junior (title seen in search results, not opened)",
+      "Junior Operations Research Analyst (title seen in search results, not opened)"
+    ],
+    "programs": [
+      {
+        "name": "Year-Round Internship Program",
+        "url": "https://careers.caci.com/intern"
+      }
+    ],
+    "clearance": "most",
+    "scores": {
+      "role_fit": 3,
+      "clearance_access": 1,
+      "entry_access": 3
+    },
+    "why": "Entry analyst postings require Secret or TS/SCI to start, so it scores low for someone who wants no clearance.",
+    "sources": [
+      "https://joinrise.co/caci/junior-business-systems-analyst-baon",
+      "https://careers.caci.com/intern",
+      "https://fr.finance.yahoo.com/quote/CACI/profile"
+    ],
+    "notes": "Opened posting: Junior Business Systems Analyst states 'Minimum Clearance Required to Start: Secret'. CACI careers page itself says nothing about clearance. Address from Yahoo Finance profile (company filing data); CACI site did not expose it to my fetch. CACI corporate roles (finance, M&A) exist at Reston HQ but are not poli-sci roles."
+  },
+  {
+    "id": "booz-allen-hamilton",
+    "name": "Booz Allen Hamilton",
+    "org_type": "contractor",
+    "address": "8283 Greensboro Drive, McLean, VA 22102",
+    "address_source": "https://www.boozallen.com/contact.html",
+    "careers_url": "https://www.boozallen.com/careers.html",
+    "entry_roles": [
+      "Open-Source Research Analyst, Junior",
+      "Policy and Communications Action Officer, Junior",
+      "Warfighting Analyst, Junior (title seen in search results, not opened)"
+    ],
+    "programs": [
+      {
+        "name": "Internships & Early Careers (Account Internships, Early Careers)",
+        "url": "https://www.boozallen.com/careers/internships-and-early-careers.html"
+      }
+    ],
+    "clearance": "most",
+    "scores": {
+      "role_fit": 5,
+      "clearance_access": 1,
+      "entry_access": 4
+    },
+    "why": "Strong analyst roles and a formal early-careers track, but the junior policy and OSINT roles require Secret or TS/SCI.",
+    "sources": [
+      "https://www.tealhq.com/job/open-source-research-analyst-junior_7ea1acb9cd3b7652389c74539f288f4149427",
+      "https://jobs.recruiter.com/jobs/11051878824-policy-and-communications-action-officer-junior",
+      "https://www.boozallen.com/careers/internships-and-early-careers.html"
+    ],
+    "notes": "Open-Source Research Analyst, Junior (McLean, Bachelor's): 'Ability to obtain a TS/SCI clearance'. Policy and Communications Action Officer, Junior (DC): 'Secret clearance is required' plus 1+ yr legislative experience. HQ address from the official contact page structured data. Booz Allen also has commercial/civil roles that may not need clearance but none were found for entry level. The two postings' pages may have since expired."
+  },
+  {
+    "id": "general-dynamics-gdit",
+    "name": "General Dynamics Information Technology (GDIT)",
+    "org_type": "contractor",
+    "address": "3150 Fairview Park Drive, Falls Church, VA 22042",
+    "address_source": "https://www.gdit.com/about-gdit/contact-us/",
+    "careers_url": "https://www.gdit.com/careers/",
+    "entry_roles": [
+      "Acquisition/Program Analyst (2 yrs exp.)",
+      "Program Analyst, Associate",
+      "Junior Management Analyst (Silver Spring, MD)"
+    ],
+    "programs": [
+      {
+        "name": "GDIT Summer Internship Program",
+        "url": "https://www.gdit.com/careers/featured-career-stages/early-talent/internship-program/"
+      },
+      {
+        "name": "GDIT Early Talent and Internships",
+        "url": "https://www.gdit.com/careers/featured-career-stages/early-talent-and-internships/"
+      }
+    ],
+    "clearance": "some",
+    "scores": {
+      "role_fit": 2,
+      "clearance_access": 3,
+      "entry_access": 3
+    },
+    "why": "Some GDIT program and acquisition analyst postings list no clearance, but the work is IT and acquisition support, not political analysis, and other GDIT analyst roles say clearance required.",
+    "sources": [
+      "https://www.gd.com/careers/acquisition-program-analyst-falls-church-va-us-rq222378-gdit-opportunity",
+      "https://www.gdit.com/careers/featured-career-stages/early-talent-and-internships/",
+      "https://www.gdit.com/about-gdit/contact-us/"
+    ],
+    "notes": "Brief gave General Dynamics corporate HQ as 11011 Sunset Hills Rd, Reston; I did not confirm that from an official page, and analysts work at GDIT, so the record uses the GDIT Falls Church HQ. Acquisition/Program Analyst posting: 'Clearance Level Must Currently Possess: None' / 'Able to Obtain: None' but 'must be able to meet agency specific clearance' and requires 2 years' experience. Other GDIT program analyst postings in search results are marked 'Clearance Required' (Senior) or 'Top Secret'. gd.com/careers returns 403 to automated fetch."
+  },
+  {
+    "id": "peraton",
+    "name": "Peraton",
+    "org_type": "contractor",
+    "address": "1875 Explorer Street, Reston, VA 20190",
+    "address_source": "https://www.peraton.com/contact-us/",
+    "careers_url": "https://www.careers.peraton.com/",
+    "entry_roles": [
+      "Junior Program Management Analyst",
+      "Security Operations Center (SOC) Analyst, Junior",
+      "Junior Knowledge Manager, Object Based Intelligence (title seen in search results, not opened)"
+    ],
+    "programs": [
+      {
+        "name": "Students and Early Career",
+        "url": "https://www.careers.peraton.com/students-early-career"
+      }
+    ],
+    "clearance": "some",
+    "scores": {
+      "role_fit": 2,
+      "clearance_access": 3,
+      "entry_access": 3
+    },
+    "why": "Junior program management roles take Public Trust (no clearance) but they are administrative; the intelligence and cyber junior roles need TS/SCI.",
+    "sources": [
+      "https://career.com/job/peraton/junior-program-management-analyst/j202504031431136515165",
+      "https://www.careers.peraton.com/jobs/security-operations-center-soc-analyst-junior-herndon-virginia-165283-jobs--cyber-security--",
+      "https://www.careers.peraton.com/"
+    ],
+    "notes": "Brief gave 12975 Worldgate Dr, Herndon; Peraton's official contact page lists corporate HQ at 1875 Explorer Street, Reston, VA 20190, so that is used (I could not confirm Worldgate as a current office; postings still say Herndon). Junior Program Management Analyst: Bachelor's, 0 yrs, 'ability to obtain and maintain a Public Trust', fully remote. SOC Analyst, Junior: 'Active TS/SCI'. Also note 1875 Explorer St is the address the brief gave for Rolls-Royce; Rolls-Royce is actually at 1900 Reston Metro Plaza (see that record)."
+  },
+  {
+    "id": "northrop-grumman",
+    "name": "Northrop Grumman (Space Systems, Dulles)",
+    "org_type": "contractor",
+    "address": "45101 Warp Drive, Dulles, VA 20166",
+    "address_source": "https://business.loudounchamber.org/list/member/northrop-grumman-1855",
+    "careers_url": "https://jobs.northropgrumman.com/careers",
+    "entry_roles": [
+      "Associate Program Cost and Schedule Control Analyst",
+      "Associate Configuration Analyst",
+      "Associate Business Management Analyst"
+    ],
+    "programs": [],
+    "clearance": "most",
+    "scores": {
+      "role_fit": 2,
+      "clearance_access": 1,
+      "entry_access": 3
+    },
+    "why": "The Dulles associate analyst roles are finance and program control, not policy, and require being able to obtain a US Government clearance.",
+    "sources": [
+      "https://www.clearancejobs.com/jobs/8904791/2026-associate-program-cost-and-schedule-control-analyst",
+      "https://jobs.northropgrumman.com/careers",
+      "https://www.govconinabox.com/explore/contractors/profile/Q11ZHUFBW741"
+    ],
+    "notes": "Associate Program Cost and Schedule Control Analyst (Dulles): 'Be able to obtain a U.S. Government security clearance'; 'CLEARANCE REQUIRED FOR START: No'. Clearance is still ultimately required, which conflicts with a no-clearance search. Associate Configuration/Business Management titles seen in search results, not opened. Address is the Dulles Space Systems campus (Loudoun Chamber listing and USAspending-based profile). Careers page shows no program names."
+  },
+  {
+    "id": "icf",
+    "name": "ICF",
+    "org_type": "consulting",
+    "address": "1902 Reston Metro Plaza, Reston, VA 20190",
+    "address_source": "https://investor.icf.com/static-files/604cc1df-e095-4c6f-8573-4d11fabf970e",
+    "careers_url": "https://careers.icf.com/us/en/search-results",
+    "entry_roles": [
+      "Public Policy Researcher (entry level)",
+      "Seasonal Associate, Public Policy",
+      "Environmental Policy Researcher",
+      "Economics Specialist (Entry Level)"
+    ],
+    "programs": [],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 4,
+      "clearance_access": 4,
+      "entry_access": 4
+    },
+    "why": "Reston HQ posts entry-level public policy researcher roles at bachelor's level with no clearance language.",
+    "sources": [
+      "https://www.politicaljobhunt.com/jobs/public-policy-researcher-waltham-ma-reston-va-remote-0b2aa469",
+      "https://careers.icf.com/",
+      "https://www.globenewswire.com/news-release/2019/10/30/1938347/8736/en/Comstock-Leases-Full-Building-at-Reston-Station-to-ICF.html"
+    ],
+    "notes": "Public Policy Researcher (Waltham MA / Reston VA / remote): bachelor's in public policy, economics, etc.; posting does not mention a clearance or background check. Work leans toward energy, environment, housing and health policy research. ICF also has federal-civil work where some roles may require suitability checks. No named early-career program found on careers.icf.com. Role titles from a job-board mirror, not ICF's own ATS."
+  },
+  {
+    "id": "rolls-royce-north-america",
+    "name": "Rolls-Royce North America",
+    "org_type": "corporate",
+    "address": "1900 Reston Metro Plaza, Suite 400, Reston, VA 20190",
+    "address_source": "https://lda.gov/api/v1/registrants/33647/",
+    "careers_url": "https://careers.rolls-royce.com/en",
+    "entry_roles": [
+      "Government Relations Associate (BA + 1 yr)",
+      "Executive Assistant - Defense and RRNA (Washington DC; title seen in search results, not opened)"
+    ],
+    "programs": [
+      {
+        "name": "Internships & Graduates (United States)",
+        "url": "https://careers.rolls-royce.com/en/students-and-graduates/united-states/internships-and-graduates"
+      }
+    ],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 3,
+      "clearance_access": 4,
+      "entry_access": 2
+    },
+    "why": "The Reston government affairs team hires a Government Relations Associate with no clearance requirement, but it wants about a year of Hill or government relations experience.",
+    "sources": [
+      "https://wwwdelta.career.com/job/rolls-royce/government-relations-associate/j202508040410423836785",
+      "https://careers.rolls-royce.com/en",
+      "https://lda.gov/api/v1/registrants/33647/"
+    ],
+    "notes": "Brief gave 1875 Explorer St; the federal Lobbying Disclosure registrant record for Rolls-Royce North America lists 1900 Reston Metro Plaza, Suite 400, Reston, VA 20190 (consistent with a 2019 Commercial Observer report of the Reston Station move), so that is used. The Government Relations Associate posting (BA + 1 yr, or Master's) mentions only US citizenship, closed Sept 3 2025 and is expired. Rolls-Royce defense work may involve export-control/ITAR eligibility rather than clearances. Careers site does not list Reston."
+  },
+  {
+    "id": "deloitte-gps",
+    "name": "Deloitte (Government & Public Services)",
+    "org_type": "consulting",
+    "address": "1919 North Lynn Street, Arlington, VA 22209",
+    "address_source": "https://managementconsulted.com/deloitte-rosslyn/",
+    "careers_url": "https://apply.deloitte.com/careers",
+    "entry_roles": [
+      "Government & Public Services Analyst (Business)",
+      "Government & Public Services Analyst (Sustainability, Climate & Equity)",
+      "Government & Public Services Summer Scholar"
+    ],
+    "programs": [
+      {
+        "name": "Deloitte Internships",
+        "url": "https://www.deloitte.com/us/en/careers/internships.html"
+      },
+      {
+        "name": "Government & Public Services campus careers",
+        "url": "https://www.deloitte.com/us/en/careers/join-deloitte/government-and-public-services-careers.html"
+      }
+    ],
+    "clearance": "some",
+    "scores": {
+      "role_fit": 3,
+      "clearance_access": 2,
+      "entry_access": 4
+    },
+    "why": "Large analyst classes and a public-sector practice, but GPS analyst postings I could open ask for ability to obtain a clearance and many sibling roles list TS/SCI.",
+    "sources": [
+      "https://jobs.anitab.org/companies/deloitte-2-548ffef4-5e36-4ac1-9d45-edef2fdcac69/jobs/40201572-deloitte-consulting-government-public-services-sustainability-climate-equity-analyst",
+      "https://www.deloitte.com/us/en/careers/student-careers.html",
+      "https://managementconsulted.com/deloitte-rosslyn/"
+    ],
+    "notes": "Sustainability, Climate & Equity Analyst (Rosslyn): 'Ability to obtain a U.S. Security Clearance' (3.0 GPA). The GPS Analyst - Business posting URL returned an error page, so its clearance text was not read; search results show other Deloitte GPS roles titled TS/SCI. Office address from a third-party guide (Deloitte did not expose it). Deloitte student page states no clearance policy."
+  },
+  {
+    "id": "accenture-federal-services",
+    "name": "Accenture Federal Services",
+    "org_type": "consulting",
+    "address": "800 North Glebe Road, Suite 300, Arlington, VA 22203",
+    "address_source": "https://nitaac.nih.gov/gwacs/cio-sp3/contract-holder/accenture-federal-services-llc",
+    "careers_url": "https://www.accenture.com/us-en/careers",
+    "entry_roles": [
+      "Federal - Functional Analyst (BA + 2 yrs)",
+      "Federal Business Analyst",
+      "Federal Strategy and Planning Analyst (title seen in search results, not opened)"
+    ],
+    "programs": [],
+    "clearance": "some",
+    "scores": {
+      "role_fit": 2,
+      "clearance_access": 2,
+      "entry_access": 2
+    },
+    "why": "Federal analyst postings are technology and business-function work that ask for 2+ years and mention possible clearance requirements, so it is a weak fit.",
+    "sources": [
+      "https://themuse.com/jobs/accenturefederalservices/federal-functional-analyst-e0bc8a",
+      "https://www.themuse.com/jobs/accenture/federal-business-analyst-3881746",
+      "https://job-boards.greenhouse.io/afscareersmarketplace/jobs/4620055006"
+    ],
+    "notes": "Federal - Functional Analyst (Arlington): Bachelor's + 2+ yrs; 'active security clearance or the ability to obtain one may be required'. Federal Business Analyst posting: 'U.S. citizenship; no dual citizens'. Another AFS posting (PMO Sr. Analyst, Arlington) states only 'Must be US Citizen'. accenturefederal.com/careers blocks automated fetch; used accenture.com careers page, which loads but showed no federal listings in my fetch. No named early-career program confirmed."
+  },
+  {
+    "id": "guidehouse",
+    "name": "Guidehouse",
+    "org_type": "consulting",
+    "address": "1676 International Drive, Suite 800, McLean, VA 22102",
+    "address_source": "https://guidehouse.com/locations",
+    "careers_url": "https://guidehouse.com/careers",
+    "entry_roles": [
+      "Consultant, Defense & Security (Campus)",
+      "Business Analyst (entry level)",
+      "Consultant, Public Sector / Financial Services (Campus)"
+    ],
+    "programs": [
+      {
+        "name": "Summer Internship Program and Early Career Opportunities",
+        "url": "https://guidehouse.com/careers/early-career-and-internships"
+      }
+    ],
+    "clearance": "some",
+    "scores": {
+      "role_fit": 3,
+      "clearance_access": 3,
+      "entry_access": 4
+    },
+    "why": "Large campus-hire program for public-sector consulting where many roles ask for Public Trust (workable) but defense/security tracks want Secret.",
+    "sources": [
+      "https://jobs.recruiter.com/jobs/9880628354-consultant-defense-security-technology-consulting-campus-2025",
+      "https://jobs.jobg8.com/jobs/business-analyst-in-arlington-virginia-united-states/4658-2946832606DE",
+      "https://guidehouse.com/careers/early-career-and-internships"
+    ],
+    "notes": "Defense & Security campus consultant (McLean): 'must be able to obtain and maintain a Public Trust, Secret, or higher'. Business Analyst (Arlington, entry level): 'Active Public Trust' (a new grad would need a sponsor to hold one). Careers page itself states nothing on clearance. Guidehouse also has an Arlington office at 1000 Wilson Blvd, Suite 1400, 22209."
+  },
+  {
+    "id": "mitre",
+    "name": "MITRE",
+    "org_type": "contractor",
+    "address": "7525 Colshire Drive, McLean, VA 22102",
+    "address_source": "https://mitre.org/locations",
+    "careers_url": "https://careers.mitre.org/us/en",
+    "entry_roles": [
+      "Intelligence Analyst Associate",
+      "Entry Level - Data Science, AI, Operations Research, Math and Statistics",
+      "Associate Systems Engineer"
+    ],
+    "programs": [
+      {
+        "name": "Student Programs",
+        "url": "https://careers.mitre.org/us/en/student-programs"
+      },
+      {
+        "name": "Early Career Professionals",
+        "url": "https://careers.mitre.org/us/en/early-career-professionals"
+      }
+    ],
+    "clearance": "some",
+    "scores": {
+      "role_fit": 4,
+      "clearance_access": 2,
+      "entry_access": 3
+    },
+    "why": "Nonprofit FFRDC with an entry Intelligence Analyst Associate role for IR majors, but that role requires TS/SCI with polygraph.",
+    "sources": [
+      "https://www.clearancejobs.com/jobs/8784103/intelligence-analyst-associate-intelligence-center",
+      "https://www.career.com/job/mitre/entry-level-data-science-artificial-intelligence-operations-research-math-and-statistics/j202511192101349604557",
+      "https://www.mitre.org/careers"
+    ],
+    "notes": "Intelligence Analyst Associate (McLean, BA in intelligence studies/IR/economics, <1 yr): requisition lists no clearance on day one but basic qualification is 'Ability to gain and maintain a TS/SCI clearance with CI Polygraph'. Entry data-science role says 'you may be submitted for a U.S. Government Security clearance'. Address is MITRE 1; MITRE 2 (7515 Colshire) is also on the campus. mitre.org/careers loaded via WebFetch though curl got 403."
+  },
+  {
+    "id": "grant-thornton-public-sector",
+    "name": "Grant Thornton (Advisory / Public Sector)",
+    "org_type": "consulting",
+    "address": "1000 Wilson Boulevard, 14th Floor, Arlington, VA 22209",
+    "address_source": "https://www.arlnow.com/2017/02/10/advisory-firm-grant-thornton-opens-office-in-rosslyn/",
+    "careers_url": "https://www.grantthornton.com/careers",
+    "entry_roles": [
+      "Process Risk Experienced Associate (Arlington)",
+      "IT Risk Experienced Associate (Arlington; title seen in search results, not opened)",
+      "Audit IT Assurance Associate (Summer 2026; title seen in search results, not opened)"
+    ],
+    "programs": [
+      {
+        "name": "Early Career",
+        "url": "https://www.grantthornton.com/careers/early-career"
+      },
+      {
+        "name": "Students (growth and internship programs)",
+        "url": "https://www.grantthornton.com/careers/students"
+      }
+    ],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 1,
+      "clearance_access": 4,
+      "entry_access": 3
+    },
+    "why": "Arlington office hires entry associates, but the roles are accounting, audit and IT risk rather than policy analysis, so role fit is low.",
+    "sources": [
+      "https://www.hirebase.org/company/grant-thornton/jobs/process-risk-experienced-associate",
+      "https://www.grantthornton.com/careers",
+      "https://www.grantthornton.com/careers/early-career"
+    ],
+    "notes": "Process Risk Experienced Associate: bachelor's in accounting/finance/IT/MIS, 1+ yr; clearance not stated. No public-sector policy entry role found; the careers page does not mention public sector. Street address and 14th floor come from a 2017 news item and a 2019 Grant Thornton press release (both say 1000 Wilson Blvd); ZIP 22209 taken from Guidehouse's listing of the same building. Verify current office before relying on it."
+  },
+  {
+    "id": "chemonics",
+    "name": "Chemonics International",
+    "org_type": "contractor",
+    "address": "1275 New Jersey Avenue SE, Suite 200, Washington, DC 20003",
+    "address_source": "https://chemonics.com/contact-us/",
+    "careers_url": "https://chemonics.com/careers/",
+    "entry_roles": [
+      "Associate, Project Management (regional division)",
+      "Program Associate / Senior Program Associate",
+      "Operations Associate"
+    ],
+    "programs": [],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 4,
+      "clearance_access": 5,
+      "entry_access": 4
+    },
+    "why": "Large DC international development contractor whose project management associate roles accept a bachelor's, mention no clearance and fit an international affairs interest.",
+    "sources": [
+      "https://www.devex.com/jobs/associate-project-management-europe-and-eurasia-hybrid-1292426",
+      "https://www.devex.com/jobs/intern-agriculture-and-food-security-hybrid-1260971",
+      "https://chemonics.com/contact-us/"
+    ],
+    "notes": "Associate, Project Management, Europe and Eurasia (Hybrid): 'Bachelor's degree or equivalent work experience', on-site in DC, travel up to 8 weeks a year, no clearance mentioned. Internships exist but the one I opened is for graduate students. chemonics.com/careers returns 403 to automated fetch; kept as the official URL. Other titles (Program Associate, Operations Associate) appear in job-board search results. Capitol Hill SE location, not on the Silver Line."
+  },
+  {
+    "id": "dai-global",
+    "name": "DAI Global",
+    "org_type": "contractor",
+    "address": "7700 Wisconsin Avenue, Suite 340, Bethesda, MD 20814",
+    "address_source": "https://www.dai.com/contact-us",
+    "careers_url": "https://www.dai.com/careers",
+    "entry_roles": [
+      "Associate, Project Management (Africa, Europe, Central America regions)",
+      "Associate I/II, Global",
+      "Assistant, Project Management Central America and Mexico"
+    ],
+    "programs": [],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 4,
+      "clearance_access": 5,
+      "entry_access": 3
+    },
+    "why": "International development contractor with associate-level project management roles that need a college degree and about a year of experience, and no clearance.",
+    "sources": [
+      "https://career.com/job/dai/associate-project-management-east-and-southern-africa/j202501171757460744303",
+      "https://www.dai.com/careers",
+      "https://www.dai.com/contact-us"
+    ],
+    "notes": "Associate, Project Management (East and Southern Africa): 'minimum of 1 year of relevant administrative or professional experience and a college degree'; no clearance, but 'stringent vetting and reference checks'. Bethesda is a long commute from Reston/Warrenton. Careers page lists no internship or early-career program."
+  },
+  {
+    "id": "abt-global",
+    "name": "Abt Global",
+    "org_type": "polling-research",
+    "address": "6130 Executive Boulevard, Rockville, MD 20852",
+    "address_source": "https://abtassociates.com/contact",
+    "careers_url": "https://www.abtglobal.com/careers",
+    "entry_roles": [
+      "Research Assistant",
+      "Program Analyst / Associate Analyst (international programs)",
+      "Economics Research Assistant"
+    ],
+    "programs": [
+      {
+        "name": "Abternship",
+        "url": "https://www.abtglobal.com/insights/abternship"
+      },
+      {
+        "name": "Management Consultant Program (early career, no link on careers page)",
+        "url": "https://www.abtglobal.com/careers"
+      }
+    ],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 3,
+      "clearance_access": 5,
+      "entry_access": 4
+    },
+    "why": "Research assistant roles at bachelor's level with 0-1 yr experience and no clearance, though most research is health, social policy and evaluation rather than political analysis.",
+    "sources": [
+      "https://tealhq.com/job/research-assistant-summer-2025_cb3b77f2-7c06-408a-8eaf-acc4076fed40",
+      "https://www.abtglobal.com/careers",
+      "https://abtassociates.com/contact"
+    ],
+    "notes": "Research Assistant (full-time, entry level): bachelor's in social sciences/public health, 0-1 yr, remote with Rockville base, no clearance mentioned. Program Analyst and Economics Research Assistant titles come from job-board search results and were not opened. I did not find a Washington DC office address on abtglobal.com, so Rockville is used. The careers page needs JavaScript but loads."
+  },
+  {
+    "id": "mathematica",
+    "name": "Mathematica",
+    "org_type": "polling-research",
+    "address": "1100 First Street NE, 12th Floor, Washington, DC 20002",
+    "address_source": "https://mathematica.org/contact-us",
+    "careers_url": "https://careers.mathematica.org",
+    "entry_roles": [
+      "Medicare Value-Based Care Policy Associate (Entry-Level)",
+      "Research Associate, Healthcare & Human Services",
+      "Research Analyst (some require Master's)"
+    ],
+    "programs": [],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 4,
+      "clearance_access": 5,
+      "entry_access": 3
+    },
+    "why": "Policy research firm in DC (near Union Station/NoMa Metro) with an explicitly entry-level policy associate role, and its postings reference public trust background checks, not clearances.",
+    "sources": [
+      "https://www.monster.com/job-openings/medicare-value-based-care-policy-associate-entry-level-washington-dc--12ea7946-a11d-4b81-afd5-beb510a7a42b",
+      "https://careers.mathematica.org/job/washington/research-analyst-disability-programs-remote-eligible/727/66889638128",
+      "https://mathematica.org/contact-us"
+    ],
+    "notes": "Research Analyst, Disability Programs posting: 'Willing to undergo background investigation to obtain public trust security clearance' and Master's or equivalent experience required; offers are contingent on a background check. Entry-Level Policy Associate posting (Monster mirror) asks for a bachelor's and mentions no clearance. Many Mathematica analyst roles prefer quantitative skills or a Master's. ZIP 20002-4221 shortened to 20002. No formal early-career program page found. careers.mathematica.org redirects to mathematica.csod.com."
+  },
+  {
+    "id": "westat",
+    "name": "Westat",
+    "org_type": "polling-research",
+    "address": "7501 Wisconsin Avenue, Suite 1000E, Bethesda, MD 20814",
+    "address_source": "https://www.westat.com/contact-us",
+    "careers_url": "https://www.westat.com/careers",
+    "entry_roles": [
+      "Research Assistant",
+      "Research Associate, Project Management",
+      "Research Assistant, Clinical Research"
+    ],
+    "programs": [
+      {
+        "name": "Summer Internship Program (11 weeks)",
+        "url": "https://www.westat.com/careers"
+      }
+    ],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 3,
+      "clearance_access": 5,
+      "entry_access": 4
+    },
+    "why": "Employee-owned survey and policy research firm that hires bachelor's-level Research Assistants (social science) with no clearance, but its work leans toward health and education studies.",
+    "sources": [
+      "https://www.talentify.io/job/research-assistant-rockville-maryland-westat-26609br",
+      "https://www.westat.com/careers",
+      "https://www.westat.com/contact-us"
+    ],
+    "notes": "Research Assistant (Rockville MD, remote-eligible): 'typically requires a Bachelor's degree in social science'; only an I-9 is mentioned, and the posting is closed (rolling applications). Westat's HQ moved from Rockville to Bethesda around Dec 2025 (press release), so older postings still say Rockville. Bethesda is a long commute from Reston/Warrenton. Titles other than the first come from search results."
+  },
+  {
+    "id": "ey-government-public-sector",
+    "name": "Ernst & Young (Government & Public Sector)",
+    "org_type": "consulting",
+    "address": "1775 Tysons Boulevard, McLean, VA 22102",
+    "address_source": "https://bisnow.com/washington-dc/news/office/ey-leases-in-lerner-tysons-corner-office-48637",
+    "careers_url": "https://careers.ey.com",
+    "entry_roles": [
+      "Government and Infrastructure - Assurance - Staff",
+      "Government and Infrastructure - Assurance - Analyst",
+      "Government and Public Sector - Junior Business Analyst (posting expired)"
+    ],
+    "programs": [
+      {
+        "name": "EY Early Careers (student and graduate jobs)",
+        "url": "https://eyglobal.yello.co/job_boards/c1riT--B2O-KySgYWsZO1Q"
+      }
+    ],
+    "clearance": "most",
+    "scores": {
+      "role_fit": 1,
+      "clearance_access": 1,
+      "entry_access": 3
+    },
+    "why": "McLean government practice entry roles are accounting-degree audit staff positions that require Secret or Top Secret clearance, so they do not fit a poli-sci grad who wants no clearance.",
+    "sources": [
+      "https://careers.ey.com/ey/job/mclean-government-and-public-sector-assurance-staff-va-22102/1416447733",
+      "https://careers.ey.com/ey/job/McLean-Government-and-Public-Sector-Assurance-Staff-Top-Secret-Clearance-VA-22102/1417275333/",
+      "https://careers.ey.com"
+    ],
+    "notes": "Assurance Staff (McLean): bachelor's + about 1 yr, accounting/finance degree, 'must be able to obtain and maintain secret clearance or higher'. Assurance Analyst: Top Secret. Junior Business Analyst page said 'no longer available', so its requirements were not read. Address from a 2015 Bisnow lease article (EY expanding from 8484 Westpark Dr to 1775 Tysons Blvd); postings still list McLean 22102 but verify the current office. careers.ey.com search results did not render listings."
+  }
+]

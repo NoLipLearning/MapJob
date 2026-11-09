@@ -1,0 +1,717 @@
+[
+  {
+    "id": "us-department-of-state",
+    "name": "U.S. Department of State",
+    "org_type": "federal",
+    "address": "2201 C Street NW, Washington, DC 20520",
+    "address_source": "https://www.gsa.gov/real-estate/gsa-properties/visiting-public-buildings/harry-s-truman-federal-building",
+    "careers_url": "https://careers.state.gov/",
+    "entry_roles": [
+      "Student Trainee (Program Analysis), Pathways Internship (GS-04/05)",
+      "Foreign Service Officer (generalist, political track)",
+      "Civil Service program/policy analyst roles (titles vary by bureau)"
+    ],
+    "programs": [
+      {
+        "name": "Pathways Internship Experience Program (Student Trainee)",
+        "url": "https://careers.state.gov/"
+      }
+    ],
+    "clearance": "most",
+    "scores": {
+      "role_fit": 5,
+      "clearance_access": 2,
+      "entry_access": 3
+    },
+    "why": "Core foreign-policy work that matches a poli-sci BA, but Pathways interns and most Foreign Service/civil service hires are processed for Secret or higher, which conflicts with the no-clearance rule.",
+    "sources": [
+      "https://careers.state.gov/",
+      "https://www.usajobs.gov/job/680749800",
+      "https://www.gsa.gov/real-estate/gsa-properties/visiting-public-buildings/harry-s-truman-federal-building"
+    ],
+    "notes": "Sample opened Pathways posting (Oct 2022, AF/EX) listed Secret clearance; Foreign Service requires Top Secret (general knowledge, not shown on the pages opened). The careers.state.gov internship and civil service subpages returned errors. Some domestic public-trust (non-clearance) civil service jobs exist, so not scored 1. Entry titles other than the Pathways one are generic, not tied to a current posting."
+  },
+  {
+    "id": "us-house-of-representatives",
+    "name": "U.S. House of Representatives (member and committee offices)",
+    "org_type": "legislative",
+    "address": "Rayburn House Office Building, 45 Independence Avenue SW, Washington, DC 20515",
+    "address_source": "https://mrvan.house.gov/contact/offices/washington-dc-office",
+    "careers_url": "https://www.house.gov/employment/positions-with-members-and-committees",
+    "entry_roles": [
+      "Staff Assistant / Legislative Correspondent",
+      "Staff Assistant"
+    ],
+    "programs": [],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 5,
+      "clearance_access": 5,
+      "entry_access": 4
+    },
+    "why": "Staff Assistant and Legislative Correspondent jobs are the classic poli-sci entry route, hired office by office with a basic background or criminal-history check and no clearance.",
+    "sources": [
+      "https://www.house.gov/employment",
+      "https://www.house.gov/employment/positions-with-members-and-committees",
+      "https://moulton.house.gov/news/updates/open-staff-assistantlegislative-correspondent-position",
+      "https://walkinshaw.house.gov/contact"
+    ],
+    "notes": "Each member office hires on its own; resumes go through the House Resume Bank and the Vacancy Announcement and Placement Service. Example NoVA district office (Rep. Walkinshaw): 10680 Main Street, Suite 140, Fairfax, VA 22030. The Staff Assistant/LC posting opened is from Jan 2021 (title confirmation only). Entry_access of 4 reflects normal Hill turnover and the new Congress starting Jan 2027, which is general knowledge, not shown on the pages opened. Internship info not on the House employment page. Building shown is an example; offices are spread across Cannon, Longworth and Rayburn."
+  },
+  {
+    "id": "us-senate",
+    "name": "U.S. Senate (senator and committee offices)",
+    "org_type": "legislative",
+    "address": "Hart Senate Office Building, 120 Constitution Avenue NE, Washington, DC 20002",
+    "address_source": "https://banks.senate.gov/?p=1599",
+    "careers_url": "https://careers.employment.senate.gov/",
+    "entry_roles": [
+      "Constituent Services Representative (state office)",
+      "Staff Assistant / Legislative Correspondent-type roles (titles vary by office; none shown in the current bulletin)"
+    ],
+    "programs": [],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 5,
+      "clearance_access": 5,
+      "entry_access": 4
+    },
+    "why": "Senate offices post legislative, communications and constituent-service jobs through one bulletin, with no clearance needed for the staff jobs shown.",
+    "sources": [
+      "https://www.senate.gov/pagelayout/visiting/h_multi_sections_and_teasers/employment.htm",
+      "https://careers.employment.senate.gov/",
+      "https://www.warner.senate.gov/public/index.cfm/contact"
+    ],
+    "notes": "The bulletin page I opened (Nov 2026) showed five postings, all above entry level (directors, a constituent services rep), so entry_access of 4 rests on normal Hill turnover rather than a listing. Sen. Warner's Northern Virginia office: 8150 Leesburg Pike, Suite 700, Vienna, VA 22182. The Senate Employment Office also keeps a resume bank. The second entry_roles item is generic, not a confirmed posting."
+  },
+  {
+    "id": "library-of-congress-crs",
+    "name": "Library of Congress (including Congressional Research Service)",
+    "org_type": "legislative",
+    "address": "Thomas Jefferson Building, 10 First Street SE, Washington, DC 20540",
+    "address_source": "https://www.loc.gov/visit/",
+    "careers_url": "https://www.loc.gov/careers/",
+    "entry_roles": [
+      "Research Assistant, Congressional Research Service (GS-05/07/09)",
+      "Research Assistant, Congress and American National Government (CRS, GS-09)"
+    ],
+    "programs": [
+      {
+        "name": "Junior Fellows Summer Internship Program (paid, 10 weeks, undergrads, grad students and recent graduates)",
+        "url": "https://www.loc.gov/careers/"
+      }
+    ],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 5,
+      "clearance_access": 5,
+      "entry_access": 3
+    },
+    "why": "CRS Research Assistant posts ask for a bachelor's in political science or international relations and no clearance, which is close to a perfect match, though they are posted only occasionally.",
+    "sources": [
+      "https://www.loc.gov/careers/",
+      "https://www.usajobs.gov/job/820236000",
+      "https://content.govdelivery.com/accounts/USLOC/bulletins/36fbc71",
+      "https://ccrf.uchicago.edu/content/library-congress-junior-fellows-summer-internship-program-0"
+    ],
+    "notes": "The LoC careers page I opened (Nov 2026) listed only a Work Study program and non-CRS jobs; its CRS postings were experienced roles. The CRS RA postings I read are from Sept 2023 (FDT Division, temporary, GS-5/7/9) and Dec 2024 (Gov and Finance, GS-9, no education requirement). Junior Fellows eligibility comes from a UChicago page; the official loc.gov program page did not load, so the program url points to the careers page. CRS offices are in the Madison Building (101 Independence Ave SE), which I did not confirm. Appointment is subject to a suitability investigation, not a clearance."
+  },
+  {
+    "id": "government-accountability-office",
+    "name": "Government Accountability Office (GAO)",
+    "org_type": "legislative",
+    "address": "441 G Street NW, Washington, DC 20548",
+    "address_source": "https://www.gao.gov/about/careers/office-locations",
+    "careers_url": "https://www.gao.gov/about/careers",
+    "entry_roles": [
+      "Management and Program Analyst (Professional Development Program operations)",
+      "Student Trainee (Management and Program Analysis), GS-7/9 (graduate students only)",
+      "Paid intern or student volunteer (students)"
+    ],
+    "programs": [
+      {
+        "name": "Professional Development Program (2-year entry-level program)",
+        "url": "https://www.gao.gov/about/careers/our-teams/PDP"
+      },
+      {
+        "name": "Interns and Student Volunteers, Summer Associates, Externships",
+        "url": "https://www.gao.gov/about/careers"
+      }
+    ],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 4,
+      "clearance_access": 4,
+      "entry_access": 3
+    },
+    "why": "GAO evaluates federal programs for Congress and hires entry-level staff, but its analyst work is audit and data heavy and some defense and international teams need a clearance.",
+    "sources": [
+      "https://www.gao.gov/about/careers",
+      "https://www.gao.gov/about/careers/our-teams/PDP",
+      "https://www.usajobs.gov/job/855577000",
+      "https://www.gao.gov/about/careers/office-locations"
+    ],
+    "notes": "I could not open a current posting for the core evaluator-analyst job, so that title is unconfirmed. The Student Trainee posting I read (closed Feb 2026) requires current graduate enrollment, so he does not qualify. The PDP page lists management and program analysts and calls the program entry-level. No clearance is mentioned on the pages opened, but GAO teams that cover defense or national security may require one (general knowledge)."
+  },
+  {
+    "id": "usgs-reston-national-center",
+    "name": "U.S. Geological Survey (Reston National Center)",
+    "org_type": "federal",
+    "address": "12201 Sunrise Valley Drive, Reston, VA 20192",
+    "address_source": "https://www.usgs.gov/connect/headquarters/directions",
+    "careers_url": "https://www.usgs.gov/human-capital/students-and-recent-graduates",
+    "entry_roles": [
+      "Student Trainee (Communication), Pathways",
+      "Pathways Recent Graduate (series varies by office)"
+    ],
+    "programs": [
+      {
+        "name": "USGS Pathways Internship and Recent Graduates Programs",
+        "url": "https://www.usgs.gov/human-capital/students-and-recent-graduates"
+      }
+    ],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 2,
+      "clearance_access": 5,
+      "entry_access": 3
+    },
+    "why": "It is a 10-minute commute from Reston with no clearance needed, but the work is science and the poli-sci-friendly jobs (communications, congressional affairs support, program analysis) are few.",
+    "sources": [
+      "https://www.usgs.gov/human-capital/students-and-recent-graduates",
+      "https://www.usajobs.gov/job/499492400",
+      "https://www.usgs.gov/connect/headquarters/directions"
+    ],
+    "notes": "usgs.gov/careers and usgs.gov/employment returned client errors, so the careers_url is the Pathways page that did load. The Pathways posting opened is from 2018 (closed): Student Trainee (Communication), Reston, no clearance, with some congressional-affairs research support. Recent Graduates must graduate within two years (May 2026 qualifies). Program Analyst titles are common at USGS but I did not open a current one."
+  },
+  {
+    "id": "congressional-budget-office",
+    "name": "Congressional Budget Office (CBO)",
+    "org_type": "legislative",
+    "address": "Ford House Office Building, Second and D Streets SW, Washington, DC 20515",
+    "address_source": "https://www.cbo.gov/about/contact",
+    "careers_url": "https://www.cbo.gov/about/careers",
+    "entry_roles": [
+      "Assistant Analyst (undergraduate program, 3-year, recruited each January)"
+    ],
+    "programs": [
+      {
+        "name": "Undergraduate Assistant Analyst program",
+        "url": "https://www.cbo.gov/about/careers/for-students"
+      }
+    ],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 4,
+      "clearance_access": 5,
+      "entry_access": 4
+    },
+    "why": "CBO's three-year Assistant Analyst program takes people with only an undergraduate degree and no clearance, though the research is quantitative and economics-leaning.",
+    "sources": [
+      "https://www.cbo.gov/about/careers",
+      "https://www.cbo.gov/about/careers/for-students",
+      "https://www.cbo.gov/about/careers/jobs",
+      "https://www.cbo.gov/about/contact"
+    ],
+    "notes": "The Assistant Analyst cohort is recruited each January, which is soon. The page says work usually involves research, data and statistical analysis, so strong quantitative skills help; his 3.3 GPA and poli-sci background may be a stretch. The address has no street number on CBO's page (building and intersection only). The job board showed only a Visiting Scholar opening; the page notes a background investigation, not a clearance. The Graduate Summer Intern program is for graduate students only."
+  },
+  {
+    "id": "us-department-of-commerce-ita",
+    "name": "U.S. Department of Commerce (including International Trade Administration)",
+    "org_type": "federal",
+    "address": "1401 Constitution Avenue NW, Washington, DC 20230",
+    "address_source": "https://www.trade.gov/contact-us",
+    "careers_url": "https://www.commerce.gov/work-with-us/careers",
+    "entry_roles": [
+      "International Trade Specialist (series 1140)",
+      "Import Policy Analyst (series 1101)",
+      "International Economist (series 0110)",
+      "Student intern, Office of the Secretary Internship Program"
+    ],
+    "programs": [
+      {
+        "name": "Office of the Secretary Internship Program",
+        "url": "https://www.commerce.gov/work-with-us/careers"
+      },
+      {
+        "name": "ITA student internship and cooperative education programs",
+        "url": "https://www.trade.gov/careers"
+      }
+    ],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 4,
+      "clearance_access": 4,
+      "entry_access": 3
+    },
+    "why": "ITA trade-specialist and policy-analyst jobs mix international affairs with business and are mostly civil service roles that do not list a clearance.",
+    "sources": [
+      "https://www.commerce.gov/work-with-us/careers",
+      "https://www.trade.gov/careers",
+      "https://www.trade.gov/contact-us"
+    ],
+    "notes": "These are ITA job series from its careers page, not confirmed entry-level postings; the three open ITA jobs on the page were supervisory or posted abroad. The pages opened do not mention Pathways, PMF or clearances. Some Commerce bureaus (export control enforcement, Foreign Commercial Service overseas) may need higher clearances, so clearance_access is 4 rather than 5. Commerce HQ and ITA share the Herbert C. Hoover Building address."
+  },
+  {
+    "id": "us-department-of-education",
+    "name": "U.S. Department of Education",
+    "org_type": "federal",
+    "address": "400 Maryland Avenue SW, Washington, DC 20202",
+    "address_source": "https://www.ed.gov/about/contact-us",
+    "careers_url": "https://www.ed.gov/about/doing-business-ed/working-ed",
+    "entry_roles": [
+      "Pathways Intern (student)",
+      "Pathways Recent Graduate (series varies by office)"
+    ],
+    "programs": [
+      {
+        "name": "ED Internships: Pathways, Student Volunteer Trainee, OPE and IFLE internships",
+        "url": "https://www.ed.gov/about/doing-business-ed/working-ed/internships-ed"
+      }
+    ],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 3,
+      "clearance_access": 5,
+      "entry_access": 2
+    },
+    "why": "Education policy work is a reasonable fit with no clearance, but the pages show internships and no confirmed entry-level job titles.",
+    "sources": [
+      "https://www.ed.gov/about/doing-business-ed/working-ed",
+      "https://www.ed.gov/about/doing-business-ed/working-ed/internships-ed",
+      "https://www.ed.gov/about/contact-us"
+    ],
+    "notes": "Entry titles are program names from the internships page, not current USAJOBS postings; I did not find a current one. The agency has been downsizing and moving functions since 2025 (general knowledge, not checked in this research), which would limit hiring, hence entry_access of 2. The Student Volunteer Trainee program requires enrollment, so he may not qualify. Clearances are not mentioned."
+  },
+  {
+    "id": "us-department-of-labor",
+    "name": "U.S. Department of Labor",
+    "org_type": "federal",
+    "address": "Frances Perkins Building, 200 Constitution Avenue NW, Washington, DC 20210",
+    "address_source": "https://www.dol.gov/general/contact",
+    "careers_url": "https://www.dol.gov/general/jobs",
+    "entry_roles": [
+      "Pathways Recent Graduate (administrative or professional series, up to GS-11)",
+      "Pathways Intern (student)"
+    ],
+    "programs": [
+      {
+        "name": "Pathways Recent Graduates Program and College Graduate hiring authority",
+        "url": "https://www.dol.gov/general/jobs/students-and-recent-grads"
+      },
+      {
+        "name": "Internship at DOL",
+        "url": "https://www.dol.gov/agencies/oasam/programs/internships"
+      }
+    ],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 3,
+      "clearance_access": 5,
+      "entry_access": 3
+    },
+    "why": "DOL offers a recent-graduate route into labor, workforce and program-analysis work, with internships suited to public policy majors and no clearance mentioned.",
+    "sources": [
+      "https://www.dol.gov/general/jobs",
+      "https://www.dol.gov/general/jobs/students-and-recent-grads",
+      "https://www.dol.gov/general/contact"
+    ],
+    "notes": "The students page says the College Graduate hiring authority covers administrative or professional jobs at or below GS-11 for degrees finished within two years (May 2026 qualifies), and names public policy among internship fields. It gives no job titles and no clearance mention, so entry titles are program names. I did not find a current posting."
+  },
+  {
+    "id": "us-census-bureau",
+    "name": "U.S. Census Bureau (Suitland, MD headquarters)",
+    "org_type": "federal",
+    "address": "4600 Silver Hill Road, Suitland, MD 20746",
+    "address_source": "https://www.census.gov/about/contact-us.html",
+    "careers_url": "https://www.census.gov/about/census-careers.html",
+    "entry_roles": [
+      "Survey Statistician (Recent Graduate), GS-7/9",
+      "Pathways Internship (student)",
+      "Economic Measurement and Research Internship (EMRI)"
+    ],
+    "programs": [
+      {
+        "name": "Pathways Internship and Pathways Recent Graduate Programs",
+        "url": "https://www.census.gov/about/census-careers/jobs/internships-fellowships.html"
+      },
+      {
+        "name": "Presidential Management Fellows (advanced degree)",
+        "url": "https://www.census.gov/about/census-careers/jobs/internships-fellowships.html"
+      }
+    ],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 2,
+      "clearance_access": 5,
+      "entry_access": 3
+    },
+    "why": "Hiring includes no-clearance recent-graduate jobs, but the work is statistics and survey methodology rather than political analysis, and Suitland is a long commute from Reston.",
+    "sources": [
+      "https://www.census.gov/about/census-careers.html",
+      "https://www.census.gov/about/census-careers/jobs/internships-fellowships.html",
+      "https://www.usajobs.gov/job/786423100",
+      "https://www.census.gov/about/contact-us.html"
+    ],
+    "notes": "The Survey Statistician (Recent Graduate) posting opened (closed May 2024) listed no clearance, Non-sensitive Low Risk. Statistician jobs usually require math or statistics coursework, which a poli-sci degree may lack (general knowledge). USPS mail uses Washington, DC 20233; private carriers use Suitland, MD 20746. The Suitland office is far from Reston (about an hour by car)."
+  },
+  {
+    "id": "national-archives-and-records-administration",
+    "name": "National Archives and Records Administration (Washington, DC)",
+    "org_type": "federal",
+    "address": "701 Constitution Avenue NW, Washington, DC 20408",
+    "address_source": "https://visit.archives.gov/visit",
+    "careers_url": "https://www.archives.gov/careers",
+    "entry_roles": [
+      "Pathways Intern (student)",
+      "Voluntary intern",
+      "Archives or program/records specialist (titles vary; none confirmed)"
+    ],
+    "programs": [
+      {
+        "name": "Pathways Program",
+        "url": "https://www.archives.gov/careers"
+      },
+      {
+        "name": "Voluntary Internships",
+        "url": "https://www.archives.gov/careers"
+      }
+    ],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 2,
+      "clearance_access": 5,
+      "entry_access": 3
+    },
+    "why": "NARA runs Pathways and voluntary internships with no clearance mentioned, but its jobs focus on archives and records, not political analysis.",
+    "sources": [
+      "https://www.archives.gov/careers",
+      "https://visit.archives.gov/visit"
+    ],
+    "notes": "The careers page names Pathways and Voluntary Internships but no job titles, so entry titles are programs, not postings. Address is the public Archives Museum (Archives I) building; NARA's main headquarters is Archives II in College Park, MD, which I did not verify. Clearance not mentioned."
+  },
+  {
+    "id": "federal-election-commission",
+    "name": "Federal Election Commission (FEC)",
+    "org_type": "federal",
+    "address": "1050 First Street NE, Washington, DC 20463",
+    "address_source": "https://www.fec.gov/contact/",
+    "careers_url": "https://www.fec.gov/about/careers/",
+    "entry_roles": [
+      "Attorney-Adviser (GS-11/14, requires law degree)",
+      "Summer extern, Office of General Counsel (law students, unpaid)"
+    ],
+    "programs": [
+      {
+        "name": "Office of General Counsel summer externship (law students)",
+        "url": "https://www.fec.gov/about/careers/"
+      }
+    ],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 4,
+      "clearance_access": 5,
+      "entry_access": 1
+    },
+    "why": "Campaign finance enforcement matches his interests, but the only posting and program shown are for lawyers and law students.",
+    "sources": [
+      "https://www.fec.gov/about/careers/",
+      "https://www.fec.gov/contact/"
+    ],
+    "notes": "The careers page (Nov 2026) showed one opening, Attorney-Adviser. No BA-level role was found, so neither listed title fits him. ZIP 20463 is the USPS ZIP; delivery services use 20002. Clearance not mentioned. Worth checking USAJOBS later for non-lawyer analyst roles."
+  },
+  {
+    "id": "election-assistance-commission",
+    "name": "U.S. Election Assistance Commission (EAC)",
+    "org_type": "federal",
+    "address": "633 3rd Street NW, Suite 200, Washington, DC 20001",
+    "address_source": "https://www.eac.gov/contact",
+    "careers_url": "https://www.eac.gov/about/careers",
+    "entry_roles": [],
+    "programs": [],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 5,
+      "clearance_access": 5,
+      "entry_access": 1
+    },
+    "why": "Election administration policy is a perfect topical fit, but the agency has under 100 staff and its careers page lists no openings or internships.",
+    "sources": [
+      "https://www.eac.gov/about/careers",
+      "https://www.eac.gov/contact"
+    ],
+    "notes": "The careers page said 'no positions available' and 'no internships available' when opened (Nov 2026). Future openings are on USAJOBS. No clearance mentioned. Keep as a watch-list employer."
+  },
+  {
+    "id": "smithsonian-institution",
+    "name": "Smithsonian Institution",
+    "org_type": "federal",
+    "address": "Smithsonian Institution Building, 1000 Jefferson Drive SW, Washington, DC 20560",
+    "address_source": "https://www.govinfo.gov/content/pkg/GOVMAN-2009-09-15/html/GOVMAN-2009-09-15-Pg545.htm",
+    "careers_url": "https://si.edu/ohr/jobs",
+    "entry_roles": [
+      "Program Assistant (IS-0344-06)"
+    ],
+    "programs": [],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 3,
+      "clearance_access": 5,
+      "entry_access": 3
+    },
+    "why": "Smithsonian program and administrative jobs are low-risk and clearance-free, but museum and research work is only loosely tied to political analysis.",
+    "sources": [
+      "https://si.edu/ohr/jobs",
+      "https://talents.vaia.com/companies/smithsonian-institution/program-assistant-is-0344-06-104330320/",
+      "https://www.si.edu/museums/smithsonian-institution-building"
+    ],
+    "notes": "The Program Assistant posting (Apr 29 to May 13, 2026, on-site in DC) was designated Non-Sensitive/Low Risk. The jobs board (55 openings) showed no internships; job types included public affairs, education, budget and collections. careers.si.edu blocked automated fetch. The address is from the US Government Manual (2009), and the si.edu page confirms the street but gives no ZIP; Smithsonian has many other sites. NED is a private nonprofit, so it was skipped."
+  },
+  {
+    "id": "virginia-dls-general-assembly",
+    "name": "Virginia General Assembly (Division of Legislative Services)",
+    "org_type": "state-local",
+    "address": "General Assembly Building, 201 North 9th Street, Richmond, VA 23219",
+    "address_source": "https://dls.virginia.gov/",
+    "careers_url": "https://dls.virginia.gov/jobs.html",
+    "entry_roles": [
+      "Fiscal Assistant"
+    ],
+    "programs": [],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 4,
+      "clearance_access": 5,
+      "entry_access": 2
+    },
+    "why": "It is true legislative staff work with no clearance, but the office is in Richmond (about 100 miles from Reston) and the only postings seen were fiscal and legal.",
+    "sources": [
+      "https://dls.virginia.gov/",
+      "https://dls.virginia.gov/jobs.html"
+    ],
+    "notes": "UNSURE ON FIT. The jobs page showed two openings, Fiscal Assistant and Attorney/Legislative Counsel (law degree). Not commutable from Reston or Warrenton. Delegates and senators also hire their own session staff, which I did not research. Some listings for a 'Legislative Summer Research Associate' and a 'Committee Operations Intern' appeared in search but I could not open a posting. Included because the brief asked for the General Assembly."
+  },
+  {
+    "id": "virginia-vdot-northern-virginia",
+    "name": "Virginia Department of Transportation (Northern Virginia District)",
+    "org_type": "state-local",
+    "address": "4975 Alliance Drive, Fairfax, VA 22030",
+    "address_source": "https://search.211virginia.org/search/67d92268-a5ce-5396-829b-1531589c408e",
+    "careers_url": "https://www.jobs.virginia.gov/",
+    "entry_roles": [
+      "Summer Business Intern (enrolled undergraduate or graduate students)"
+    ],
+    "programs": [
+      {
+        "name": "VDOT Summer Business Intern (Northern Virginia District)",
+        "url": "https://www.jobs.virginia.gov/"
+      }
+    ],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 2,
+      "clearance_access": 5,
+      "entry_access": 3
+    },
+    "why": "A large state agency near Reston with business, communications and analyst jobs and no clearance, but transportation operations is the main work and I found no confirmed entry-level analyst posting.",
+    "sources": [
+      "https://www.jobs.virginia.gov/",
+      "https://search.211virginia.org/search/67d92268-a5ce-5396-829b-1531589c408e",
+      "https://content.sitemasonry.gmu.edu/news/2022-11/summer-business-intern-vdot"
+    ],
+    "notes": "UNSURE ON ROLES. VDOT's own pages (virginiadot.org, vdot.virginia.gov) blocked automated fetch, so careers_url is the Commonwealth's job board. The intern info is a 2022 GMU news item and is for enrolled students. The statewide board I opened showed titles such as Agency Management Analyst and Human Resource Analyst at other agencies, which suggests similar jobs, but nothing VDOT-specific was confirmed. No background-check details were on the page."
+  },
+  {
+    "id": "fairfax-county-government",
+    "name": "Fairfax County Government",
+    "org_type": "state-local",
+    "address": "12000 Government Center Parkway, Fairfax, VA 22035",
+    "address_source": "https://www.fairfaxcounty.gov/topics/facilities-and-locations",
+    "careers_url": "https://www.fairfaxcounty.gov/hr",
+    "entry_roles": [
+      "Management Analyst I (including 'Junior Associate, Economic Innovation & Strategy')",
+      "Management Analyst I (Coordinated Entry Support Specialist)",
+      "Non-merit intern"
+    ],
+    "programs": [
+      {
+        "name": "Fairfax County non-merit internships",
+        "url": "https://www.fairfaxcounty.gov/hr/non-merit-internships"
+      }
+    ],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 4,
+      "clearance_access": 5,
+      "entry_access": 4
+    },
+    "why": "Management Analyst I jobs are county policy and program analysis roles for new graduates, 20 minutes from Reston, with no clearance.",
+    "sources": [
+      "https://www.fairfaxcounty.gov/hr",
+      "https://www.fairfaxcounty.gov/topics/facilities-and-locations"
+    ],
+    "notes": "Management Analyst I titles come from search-result listings on governmentjobs.com (the county's official job site), which blocked automated fetch, so education requirements and current openings are unconfirmed. The internships page is linked from the HR page I opened but I could not read it. Standard background check applies; no clearance."
+  },
+  {
+    "id": "arlington-county-government",
+    "name": "Arlington County Government",
+    "org_type": "state-local",
+    "address": "2100 Clarendon Boulevard, Arlington, VA 22201",
+    "address_source": "https://meetings.arlingtonva.us/CountyBoard/Home/Contact",
+    "careers_url": "https://www.arlingtonva.us/Government/Careers",
+    "entry_roles": [
+      "Management Intern (one-year Management Intern Cohort)",
+      "GIS and Planning Intern (Parks and Recreation)"
+    ],
+    "programs": [
+      {
+        "name": "Management Intern Cohort (recent college graduates, one year)",
+        "url": "https://www.arlingtonva.us/Government/Careers/5-Internships"
+      }
+    ],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 4,
+      "clearance_access": 5,
+      "entry_access": 5
+    },
+    "why": "The one-year Management Intern Cohort is built for recent graduates with little work experience, rotating through county government, and is on the Silver Line corridor.",
+    "sources": [
+      "https://www.arlingtonva.us/Government/Careers",
+      "https://www.arlingtonva.us/Government/Careers/5-Internships",
+      "https://meetings.arlingtonva.us/CountyBoard/Home/Contact"
+    ],
+    "notes": "The internships page does not give a start date or pay for the Management cohort, so check timing soon. The GIS and Planning internship (deadline Nov 13, 2026) is a poor fit. The address is the Ellen M. Bozman Government Center (County Board office, Suite 300). New hires must pass a background check; no clearance."
+  },
+  {
+    "id": "loudoun-county-government",
+    "name": "Loudoun County Government",
+    "org_type": "state-local",
+    "address": "1 Harrison Street SE, Leesburg, VA 20175",
+    "address_source": "https://www.loudoun.gov/jobs",
+    "careers_url": "https://www.loudoun.gov/jobs",
+    "entry_roles": [
+      "Office of Management and Budget, Management Analyst",
+      "VICAP Program Assistant"
+    ],
+    "programs": [],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 3,
+      "clearance_access": 5,
+      "entry_access": 3
+    },
+    "why": "A growing county with analyst and program-assistant jobs and no clearance, but I found no formal new-graduate program, and Leesburg is a longer commute from Reston.",
+    "sources": [
+      "https://www.loudoun.gov/jobs"
+    ],
+    "notes": "UNSURE ON ROLES. The titles came from search-result listings on governmentjobs.com/careers/loudoun, which blocked automated fetch, so I did not check their grade or education requirements. The same search showed Management Analyst III/IV postings, which are experienced roles. The county page lists no internship program."
+  },
+  {
+    "id": "prince-william-county-government",
+    "name": "Prince William County Government",
+    "org_type": "state-local",
+    "address": "1 County Complex Court, Woodbridge, VA 22192",
+    "address_source": "https://www.pwcva.gov/department/human-resources",
+    "careers_url": "https://www.pwcva.gov/department/human-resources/careers",
+    "entry_roles": [
+      "Summer Intern (enrolled undergraduates only, $18/hour)"
+    ],
+    "programs": [
+      {
+        "name": "Prince William County Summer Internship Program",
+        "url": "https://www.pwcva.gov/department/human-resources/internship-programs"
+      }
+    ],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 3,
+      "clearance_access": 5,
+      "entry_access": 3
+    },
+    "why": "The county offers internships and entry-level roles with no clearance, but the internship requires current undergraduate enrollment and the page lists no specific entry-level job titles.",
+    "sources": [
+      "https://www.pwcva.gov/department/human-resources",
+      "https://www.pwcva.gov/department/human-resources/careers",
+      "https://www.pwcva.gov/department/human-resources/internship-programs"
+    ],
+    "notes": "He no longer qualifies for the 2026 internship (enrolled undergraduates only; applications closed Mar 29, 2026); the 2027 session opens in early 2027. The address is the Office of Human Resources (Ste. 155). Jobs are on governmentjobs.com/careers/pwcgov, which blocked automated fetch, so specific titles are unconfirmed."
+  },
+  {
+    "id": "fauquier-county-government",
+    "name": "Fauquier County Government",
+    "org_type": "state-local",
+    "address": "10 Hotel Street, Warrenton, VA 20186",
+    "address_source": "https://www.fauquiercounty.gov/",
+    "careers_url": "https://www.fauquiercounty.gov/government/departments-h-z/human-resources/employment",
+    "entry_roles": [
+      "Social Services Program Assistant"
+    ],
+    "programs": [],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 2,
+      "clearance_access": 5,
+      "entry_access": 3
+    },
+    "why": "It is his hometown county with no clearance needed, but jobs skew to local services and planning and I found no policy-analysis entry role.",
+    "sources": [
+      "https://www.fauquiercounty.gov/government/departments-h-z/human-resources/employment",
+      "https://www.fauquiercounty.gov/",
+      "https://wwwdelta.career.com/job/fauquier-county-government/social-services-program-assistant/j202303250029194646816"
+    ],
+    "notes": "Street address is from the county site footer; the ZIP 20186 comes from a county job posting (the home page text omitted it). The Social Services Program Assistant posting is from Jan 2024 (expired). Current openings are at jobs.fauquiercounty.gov, which blocked automated fetch. Phone for HR is (540) 422-8300."
+  },
+  {
+    "id": "town-of-warrenton",
+    "name": "Town of Warrenton",
+    "org_type": "state-local",
+    "address": "21 Main Street, Warrenton, VA 20186",
+    "address_source": "https://www.warrentonva.gov/",
+    "careers_url": "https://www.warrentonva.gov/195/Job-Opportunities",
+    "entry_roles": [],
+    "programs": [],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 2,
+      "clearance_access": 5,
+      "entry_access": 2
+    },
+    "why": "Hometown employer with no clearance needed, but a small town staff rarely posts policy or analyst jobs.",
+    "sources": [
+      "https://www.warrentonva.gov/195/Job-Opportunities",
+      "https://www.warrentonva.gov/"
+    ],
+    "notes": "The jobs page lists no openings and directs applicants to the Town's Paylocity portal; no entry-level roles confirmed, so entry_roles is empty. HR email: applications@warrentonva.gov. The Town Hall address is 21 Main Street, not 18 Court Street."
+  },
+  {
+    "id": "metropolitan-washington-council-of-governments",
+    "name": "Metropolitan Washington Council of Governments (MWCOG)",
+    "org_type": "state-local",
+    "address": "777 North Capitol Street NE, Suite 300, Washington, DC 20002",
+    "address_source": "https://mwcog.org/hiring",
+    "careers_url": "https://mwcog.org/hiring",
+    "entry_roles": [
+      "Intern (environmental, human services and public safety, regional planning, administrative)",
+      "Transportation Data Analyst I or II (title seen in an outside listing)"
+    ],
+    "programs": [
+      {
+        "name": "MWCOG internships (paid and unpaid; recent graduates not enrolled may apply)",
+        "url": "https://www.mwcog.org/about-us/human-resources/internships/"
+      }
+    ],
+    "clearance": "none",
+    "scores": {
+      "role_fit": 3,
+      "clearance_access": 5,
+      "entry_access": 3
+    },
+    "why": "A regional government body working on planning, public safety and policy, with internships open to recent graduates and no clearance.",
+    "sources": [
+      "https://mwcog.org/hiring",
+      "https://www.mwcog.org/about-us/human-resources/internships/"
+    ],
+    "notes": "Internship page says those who have finished their degree and are not enrolled may also apply; it asks for a cover letter, resume, 3-5 page writing sample and transcript, and does not accept emailed resumes. Jobs are on Paylocity. The analyst title is from a Planetizen listing I did not open, so it is unconfirmed. Some internships are unpaid. The office is near Union Station (Red Line)."
+  }
+]

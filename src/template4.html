@@ -1,0 +1,847 @@
+<title>Reston Hiring Map</title>
+<meta charset="utf-8">
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout concept: a 3D model of Northern Virginia and DC on the right, a ranked sidebar on the left. Employers are
+   ranked by a match score built from researched ratings (role fit, no-clearance access, entry-level access) plus
+   commute from the viewer's home, with weights the viewer can tune. */
+:root {
+  --bg: #f1f2ee; --panel: #fafaf7; --ink: #1a2528; --muted: #5a676b; --line: #d6dad3; --soft: #e9ece5;
+  --ground: #e4e8df; --road: #fbfbf8; --road-line: #aeb6a9; --road-a: #d9bc72; --water: #aecbd6; --rail: #3b5f8a;
+  --bld-est: #d3d7cd; --bld: #b4bdb2; --bld-tall: #2d62a8; --sel: #e07a2e;
+  --accent: #1f4f8f; --accent-ink: #ffffff;
+  --m1: #1f7a4a; --m2: #3f8f8a; --m3: #b07a1c; --m4: #8b8f8c;
+  --f-body: "Archivo", "Helvetica Neue", Arial, sans-serif; --f-mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #121819; --panel: #192123; --ink: #e6ecea; --muted: #97a5a8; --line: #2c383b; --soft: #202a2d;
+    --ground: #162023; --road: #33444a; --road-line: #3b4d53; --road-a: #7a6a3a; --water: #1f3a44; --rail: #7aa2d6;
+    --bld-est: #2b393d; --bld: #3c4e53; --bld-tall: #6fa6ea; --sel: #f0a05a;
+    --accent: #7fb0f0; --accent-ink: #0d1a2b;
+    --m1: #5cc486; --m2: #6cc3bd; --m3: #e0a24a; --m4: #8e9a9c; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #121819; --panel: #192123; --ink: #e6ecea; --muted: #97a5a8; --line: #2c383b; --soft: #202a2d;
+  --ground: #162023; --road: #33444a; --road-line: #3b4d53; --road-a: #7a6a3a; --water: #1f3a44; --rail: #7aa2d6;
+  --bld-est: #2b393d; --bld: #3c4e53; --bld-tall: #6fa6ea; --sel: #f0a05a;
+  --accent: #7fb0f0; --accent-ink: #0d1a2b;
+  --m1: #5cc486; --m2: #6cc3bd; --m3: #e0a24a; --m4: #8e9a9c; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 15px; line-height: 1.45;
+  padding-block: 18px 28px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.wrap { max-width: 1440px; margin: 0 auto; display: grid; gap: 12px; }
+header { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 6px 20px; }
+h1 { margin: 0; font-size: clamp(1.5rem, 3vw, 2.1rem); font-weight: 700; letter-spacing: -0.02em; }
+.sub { margin: 2px 0 0; color: var(--muted); max-width: 74ch; font-size: 14px; }
+.homechip { font-size: 13px; color: var(--muted); }
+.controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.search { flex: 1 1 220px; min-width: 0; }
+input[type="search"], select {
+  font: inherit; font-size: 14px; color: var(--ink); background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 8px 11px; max-width: 100%;
+}
+input[type="search"] { width: 100%; }
+input::placeholder { color: var(--muted); }
+.tool {
+  font: inherit; font-size: 13px; color: var(--ink); background: var(--panel); border: 1px solid var(--line);
+  border-radius: 999px; padding: 7px 12px; cursor: pointer; display: inline-flex; align-items: center; gap: 7px;
+}
+.tool[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.tool.cta { border-color: var(--accent); color: var(--accent); font-weight: 600; }
+.tool.cta[aria-pressed="true"] { color: var(--accent-ink); }
+.check { display: inline-flex; align-items: center; gap: 7px; font-size: 13px; color: var(--ink); background: var(--panel); border: 1px solid var(--line); border-radius: 999px; padding: 6px 12px; cursor: pointer; }
+.check input { accent-color: var(--accent); margin: 0; }
+.dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; flex: none; }
+.sw { width: 11px; height: 11px; border-radius: 2px; display: inline-block; flex: none; }
+button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+[hidden] { display: none !important; }
+
+.main { display: grid; grid-template-columns: minmax(300px, 400px) minmax(0, 1fr); gap: 14px; align-items: start; }
+.side { order: 1; display: grid; gap: 10px; min-width: 0; }
+.tabs { display: grid; grid-template-columns: 1fr 1fr; background: var(--soft); border-radius: 8px; padding: 3px; gap: 3px; }
+.tabs button { font: inherit; font-size: 14px; font-weight: 600; color: var(--muted); background: transparent; border: 0; border-radius: 6px; padding: 8px 10px; cursor: pointer; }
+.tabs button[aria-selected="true"] { background: var(--panel); color: var(--ink); box-shadow: 0 1px 3px rgba(0,0,0,.12); }
+.tabs .c { font-family: var(--f-mono); font-weight: 400; font-size: 12px; color: var(--muted); margin-left: 4px; }
+details.tune { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 8px 12px; }
+details.tune summary { cursor: pointer; font-weight: 600; font-size: 14px; display: flex; justify-content: space-between; gap: 8px; list-style: none; }
+details.tune summary::-webkit-details-marker { display: none; }
+details.tune summary::after { content: "Adjust"; font-weight: 400; font-size: 13px; color: var(--accent); }
+details.tune[open] summary::after { content: "Done"; }
+.tune .rows { display: grid; gap: 8px; margin-top: 10px; }
+.tune label { display: grid; grid-template-columns: minmax(0, 1fr) 40px; gap: 2px 10px; font-size: 13px; align-items: center; }
+.tune label small { grid-column: 1 / -1; color: var(--muted); font-size: 12px; }
+.tune input[type="range"] { grid-column: 1; width: 100%; accent-color: var(--accent); }
+.tune output { font-family: var(--f-mono); font-size: 12.5px; text-align: right; color: var(--muted); }
+.tune .row2 { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 12.5px; color: var(--muted); }
+.tune .row2 button { font: inherit; font-size: 12.5px; color: var(--accent); background: none; border: 0; cursor: pointer; padding: 2px 0; }
+.chiprow { display: flex; flex-wrap: wrap; gap: 6px; }
+.chiprow button { font: inherit; font-size: 12.5px; color: var(--ink); background: var(--panel); border: 1px solid var(--line); border-radius: 999px; padding: 5px 10px; cursor: pointer; }
+.chiprow button[aria-pressed="true"] { background: var(--ink); color: var(--panel); border-color: var(--ink); }
+.list { display: grid; gap: 12px; max-height: calc(min(82vh, 860px) - 150px); overflow: auto; padding-right: 2px; align-content: start; }
+.list h3 { margin: 0 0 6px; font-size: 11.5px; font-weight: 600; letter-spacing: .09em; text-transform: uppercase; color: var(--muted); }
+.intro { margin: 0; font-size: 12.5px; color: var(--muted); }
+.items { display: grid; gap: 6px; }
+.item {
+  display: grid; grid-template-columns: 30px minmax(0, 1fr) auto; gap: 2px 10px; text-align: left; font: inherit; color: var(--ink);
+  background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 9px 11px; cursor: pointer; width: 100%;
+}
+.item:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--line)); }
+.item[aria-current="true"] { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
+.num { grid-row: 1 / span 2; width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; font-family: var(--f-mono); font-size: 12px; font-weight: 500; color: #fff; background: var(--m4); }
+.num.rk { border-radius: 6px; background: var(--ink); color: var(--panel); }
+.num.m1 { background: var(--m1); } .num.m2 { background: var(--m2); } .num.m3 { background: var(--m3); } .num.m4 { background: var(--m4); }
+:root[data-theme="dark"] .num:not(.rk) { color: #0e1517; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .num:not(.rk) { color: #0e1517; } }
+.item .t { font-weight: 600; min-width: 0; }
+.item .s { font-size: 12.5px; color: var(--muted); grid-column: 2 / span 2; min-width: 0; }
+.item .m { font-family: var(--f-mono); font-size: 12.5px; color: var(--ink); align-self: start; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.item .m small { color: var(--muted); font-size: 11px; }
+.bar { grid-column: 2 / span 2; height: 5px; background: var(--soft); border-radius: 3px; overflow: hidden; margin-top: 3px; }
+.bar i { display: block; height: 100%; background: var(--bld-tall); border-radius: 3px; }
+.empty { color: var(--muted); padding: 10px 2px; }
+.more { font: inherit; font-size: 13px; color: var(--accent); background: none; border: 1px dashed var(--line); border-radius: 8px; padding: 8px; cursor: pointer; }
+
+.mapbox {
+  position: relative; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; background: var(--ground);
+  height: min(82vh, 860px); min-height: 440px; order: 2; touch-action: none;
+}
+#gl { position: absolute; inset: 0; width: 100%; height: 100%; display: block; cursor: grab; }
+#gl.pick { cursor: pointer; } #gl.set { cursor: crosshair; }
+.tip {
+  position: absolute; pointer-events: none; transform: translate(14px, -50%); background: var(--panel); color: var(--ink);
+  border: 1px solid var(--line); border-radius: 6px; padding: 3px 8px; font-size: 12.5px; font-weight: 600; white-space: nowrap; box-shadow: 0 2px 10px rgba(0,0,0,.15);
+}
+.places { position: absolute; left: 10px; top: 10px; display: flex; flex-wrap: wrap; gap: 6px; max-width: calc(100% - 70px); }
+.places button { font: inherit; font-size: 12.5px; color: var(--ink); background: var(--panel); border: 1px solid var(--line); border-radius: 999px; padding: 5px 11px; cursor: pointer; }
+.places button:hover { border-color: var(--accent); }
+.zoom { position: absolute; top: 10px; right: 10px; display: grid; gap: 4px; }
+.zoom button {
+  width: 36px; height: 36px; font: inherit; font-size: 13px; font-weight: 600; line-height: 1; color: var(--ink); background: var(--panel);
+  border: 1px solid var(--line); border-radius: 6px; cursor: pointer; display: grid; place-items: center;
+}
+.zoom button.big { font-size: 18px; font-weight: 400; }
+.zoom button[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.zoom button.sm { font-size: 11px; letter-spacing: -.01em; }
+.zoom { z-index: 3; }
+.zoom button svg, .pad button svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; pointer-events: none; }
+#needle { transform-origin: 50% 50%; }
+.pad { position: absolute; right: 10px; bottom: 54px; display: grid; grid-template-columns: repeat(3, 34px); gap: 3px; z-index: 2; user-select: none; -webkit-user-select: none; }
+.pad button {
+  width: 34px; height: 34px; padding: 0; color: var(--ink); background: color-mix(in srgb, var(--panel) 92%, transparent); border: 1px solid var(--line); border-radius: 6px;
+  cursor: pointer; display: grid; place-items: center; touch-action: none;
+}
+.pad button:active, .pad button.on { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.pad .gap { visibility: hidden; }
+#gl:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+.help {
+  position: absolute; right: 54px; top: 10px; width: min(340px, calc(100% - 130px)); z-index: 6; background: var(--panel); border: 1px solid var(--line); border-radius: 8px;
+  padding: 10px 12px; font-size: 12.5px; color: var(--muted); box-shadow: 0 6px 24px rgba(0,0,0,.2); max-height: calc(100% - 20px); overflow: auto;
+}
+.help h3 { margin: 0 0 6px; font-size: 13px; color: var(--ink); display: flex; justify-content: space-between; align-items: center; }
+.help h3 button { font: inherit; font-size: 12.5px; color: var(--accent); background: none; border: 0; cursor: pointer; padding: 0; }
+.help dl { margin: 0; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 10px; }
+.help dt { color: var(--ink); font-weight: 600; white-space: nowrap; } .help dd { margin: 0; }
+kbd { font-family: var(--f-mono); font-size: 11.5px; background: var(--soft); border: 1px solid var(--line); border-radius: 4px; padding: 0 4px; color: var(--ink); }
+.stepper { display: flex; align-items: center; gap: 8px; margin: 0 32px 8px 0; font-size: 12.5px; color: var(--muted); }
+.stepper button { font: inherit; font-size: 12.5px; color: var(--accent); background: var(--soft); border: 0; border-radius: 999px; padding: 3px 11px; cursor: pointer; }
+.stepper .cmin { margin-left: auto; }
+.card.min { max-height: 122px; overflow: hidden; }
+.legend { z-index: 5; position: absolute; right: 54px; top: 10px; background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 8px 11px; font-size: 12px; color: var(--muted); display: grid; gap: 4px; }
+.legend span { display: inline-flex; align-items: center; gap: 7px; }
+.attr { position: absolute; right: 8px; bottom: 6px; font-size: 10.5px; color: var(--muted); background: color-mix(in srgb, var(--panel) 85%, transparent); padding: 1px 6px; border-radius: 4px; }
+.status { position: absolute; right: 8px; bottom: 26px; font-size: 11.5px; color: var(--muted); background: var(--panel); border: 1px solid var(--line); padding: 2px 8px; border-radius: 4px; }
+.hint { position: absolute; left: 50%; bottom: 44px; transform: translateX(-50%); background: var(--accent); color: var(--accent-ink); border-radius: 999px; padding: 6px 14px; font-size: 13px; font-weight: 600; max-width: calc(100% - 24px); text-align: center; }
+.fallback { position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; text-align: center; color: var(--muted); }
+
+.card {
+  position: absolute; left: 10px; bottom: 28px; width: min(480px, calc(100% - 20px)); max-height: 66%; overflow: auto;
+  background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; box-shadow: 0 6px 24px rgba(0,0,0,.2);
+}
+.card h2 { margin: 0; font-size: 1.12rem; line-height: 1.25; text-wrap: balance; }
+.card .close { position: absolute; top: 8px; right: 8px; width: 28px; height: 28px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); border-radius: 6px; cursor: pointer; font: inherit; }
+.chead { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 12px; align-items: center; padding-right: 30px; }
+.score { width: 54px; height: 54px; border-radius: 10px; display: grid; place-items: center; color: #fff; font-family: var(--f-mono); font-size: 20px; font-weight: 500; line-height: 1; text-align: center; }
+.score small { display: block; font-size: 9.5px; letter-spacing: .06em; font-family: var(--f-body); font-weight: 600; margin-top: 2px; opacity: .9; }
+.score.m1 { background: var(--m1); } .score.m2 { background: var(--m2); } .score.m3 { background: var(--m3); } .score.m4 { background: var(--m4); }
+:root[data-theme="dark"] .score { color: #0e1517; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .score { color: #0e1517; } }
+.eyebrow { font-size: 11.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 600; margin: 0 0 2px; }
+.addr { font-family: var(--f-mono); font-size: 12px; color: var(--muted); margin: 8px 0 0; }
+.note { margin: 6px 0 0; font-size: 13px; color: var(--muted); }
+.why { margin: 10px 0 0; font-size: 14px; }
+.factors { display: grid; gap: 6px; margin-top: 10px; }
+.factor { display: grid; grid-template-columns: 150px minmax(0, 1fr) 104px; gap: 8px; align-items: center; font-size: 12.5px; }
+.factor .fb { height: 7px; background: var(--soft); border-radius: 4px; overflow: hidden; }
+.factor .fb i { display: block; height: 100%; background: var(--accent); }
+.factor b { font-family: var(--f-mono); font-weight: 500; font-size: 12px; text-align: right; white-space: nowrap; }
+.sect { margin: 12px 0 0; font-size: 11.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+.roles { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; }
+.roles span { font-size: 12.5px; background: var(--soft); border-radius: 999px; padding: 2px 9px; }
+.plist { margin: 6px 0 0; padding-left: 18px; font-size: 13px; }
+.plist a, .srcs a { color: var(--accent); }
+.srcs { display: flex; flex-wrap: wrap; gap: 4px 12px; margin-top: 6px; font-size: 12.5px; }
+.facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 10px 0 0; }
+.facts div { background: var(--soft); border-radius: 6px; padding: 6px 8px; min-width: 0; }
+.facts b { display: block; font-family: var(--f-mono); font-size: 14px; font-weight: 500; font-variant-numeric: tabular-nums; }
+.facts span { font-size: 11.5px; color: var(--muted); }
+.actions { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; margin-top: 12px; }
+a.go { font: inherit; font-size: 13.5px; font-weight: 600; text-decoration: none; border-radius: 6px; padding: 8px 13px; background: var(--accent); color: var(--accent-ink); }
+a.dir { font-size: 13px; font-weight: 600; color: var(--accent); text-decoration: none; }
+.foot { color: var(--muted); font-size: 12.5px; max-width: 110ch; display: grid; gap: 6px; }
+.foot p { margin: 0; } .foot a { color: var(--accent); }
+
+@media (max-width: 900px) {
+  .main { grid-template-columns: minmax(0, 1fr); }
+  .mapbox { order: 1; height: 64vh; min-height: 400px; }
+  .side { order: 2; }
+  .list { max-height: none; overflow: visible; }
+  .legend { left: 10px; right: 54px; top: auto; bottom: 28px; }
+  .help { left: 10px; right: 54px; top: auto; bottom: 28px; width: auto; }
+  .card { max-height: 70%; bottom: 8px; }
+  .card:not([hidden]):not(.min) ~ .pad { display: none; }
+  .card.min:not([hidden]) ~ .pad { bottom: 136px; }
+  .factor { grid-template-columns: 116px minmax(0, 1fr) 96px; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <div>
+      <h1>Reston Hiring Map</h1>
+      <p class="sub">Ninety-plus researched employers from Warrenton to Capitol Hill, ranked for a political science grad who wants work without a security clearance. Tune the ranking, open a careers page, or explore the biggest office buildings in 3D.</p>
+    </div>
+    <span class="homechip" id="homechip"></span>
+  </header>
+
+  <div class="controls">
+    <div class="search"><input type="search" id="q" placeholder="Search, then Enter to fly there" aria-label="Search employers, roles and buildings. Press Enter to fly to the top result."></div>
+    <select id="area" aria-label="Area"></select>
+    <select id="kind" aria-label="Employer type"></select>
+    <label class="check" id="clearwrap"><input type="checkbox" id="hideclear" checked> Hide employers where most entry jobs need a clearance</label>
+    <button type="button" class="tool cta" id="sethome" aria-pressed="false">Set my home</button>
+  </div>
+
+  <div class="main">
+    <div class="mapbox" id="mapbox">
+      <canvas id="gl" tabindex="0" aria-label="3D map of employers and office buildings from Warrenton to Washington, DC. Arrow keys move the map, Q and E rotate, plus and minus zoom. The list beside it has the same information as text."></canvas>
+      <div class="places" id="places" role="group" aria-label="Jump to a place">
+        <button type="button" data-p="home">Home</button>
+        <button type="button" data-p="reston">Reston</button>
+        <button type="button" data-p="tysons">Tysons</button>
+        <button type="button" data-p="dc">DC</button>
+        <button type="button" data-p="warrenton">Warrenton</button>
+        <button type="button" data-p="region">Whole region</button>
+        <button type="button" data-p="fit" title="Zoom to fit everything in the list">Fit list</button>
+      </div>
+      <div class="zoom">
+        <button type="button" id="compass" aria-label="Rotate the map so north is up" title="North up"><svg viewBox="0 0 24 24" id="needle" style="fill:currentColor;stroke:none"><path d="M12 2.5l4.2 9.5H7.8z" style="fill:var(--sel)"/><path d="M12 21.5L7.8 12h8.4z" style="opacity:.4"/></svg></button>
+        <button type="button" class="big" id="zin" aria-label="Zoom in" title="Zoom in (+)">+</button>
+        <button type="button" class="big" id="zout" aria-label="Zoom out" title="Zoom out (&minus;)">&minus;</button>
+        <button type="button" id="tilt" aria-pressed="true" title="Switch between 3D and top-down (T)">3D</button>
+        <button type="button" class="sm" id="dragmode" aria-pressed="false" title="What dragging does: Move slides the map, Turn rotates and tilts it">Move</button>
+        <button type="button" id="keybtn" aria-pressed="false" aria-controls="legend" title="Show map key">Key</button>
+        <button type="button" id="helpbtn" aria-pressed="false" aria-controls="help" title="How to get around (?)">?</button>
+      </div>
+      <div class="help" id="help" hidden>
+        <h3>Getting around <button type="button" id="helpx">Got it</button></h3>
+        <dl>
+          <dt>Mouse</dt><dd>Drag to slide the map. Right-drag or Shift-drag to rotate and tilt. Scroll to zoom at the cursor. Double-click to zoom in, Shift-double-click to zoom out.</dd>
+          <dt>Touch</dt><dd>One finger slides, two fingers pinch to zoom. Switch the <b>Move</b> button to <b>Turn</b> to rotate and tilt.</dd>
+          <dt>Keys</dt><dd><kbd>&uarr;&darr;&larr;&rarr;</kbd> or <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> move, <kbd>Q</kbd><kbd>E</kbd> rotate, <kbd>R</kbd><kbd>F</kbd> tilt, <kbd>+</kbd><kbd>&minus;</kbd> zoom, <kbd>N</kbd> north up, <kbd>T</kbd> 3D or top-down, <kbd>H</kbd> home.</dd>
+          <dt>Browse</dt><dd><kbd>[</kbd> <kbd>]</kbd> or the Prev and Next buttons step through the list. <kbd>/</kbd> searches, and Enter flies to the top result.</dd>
+        </dl>
+      </div>
+      <div class="legend" id="legend" hidden>
+        <span><i class="dot" style="background:var(--m1)"></i>Match 80 and up</span>
+        <span><i class="dot" style="background:var(--m2)"></i>Match 65 to 79</span>
+        <span><i class="dot" style="background:var(--m3)"></i>Match 50 to 64</span>
+        <span><i class="dot" style="background:var(--m4)"></i>Match under 50</span>
+        <span><i class="sw" style="background:var(--bld-est)"></i>Building, height estimated</span>
+        <span><i class="sw" style="background:var(--bld)"></i>Height from map data</span>
+        <span><i class="sw" style="background:var(--bld-tall)"></i>30 m or taller</span>
+        <span><i class="sw" style="background:var(--sel)"></i>Selected building</span>
+      </div>
+      <div class="hint" id="hint" hidden></div>
+      <div class="tip" id="tip" hidden></div>
+      <div class="status" id="status" hidden></div>
+      <div class="card" id="card" hidden></div>
+      <div class="pad" id="pad" role="group" aria-label="Move the map">
+        <button type="button" data-a="rotL" aria-label="Rotate left" title="Rotate left (Q)"><svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 3-6.2"/><path d="M4 4v5h5"/></svg></button>
+        <button type="button" data-a="up" aria-label="Move north" title="Move up (W)"><svg viewBox="0 0 24 24"><path d="M6 15l6-6 6 6"/></svg></button>
+        <button type="button" data-a="rotR" aria-label="Rotate right" title="Rotate right (E)"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-3-6.2"/><path d="M20 4v5h-5"/></svg></button>
+        <button type="button" data-a="left" aria-label="Move left" title="Move left (A)"><svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button>
+        <button type="button" id="padhome" aria-label="Go to home" title="Go home (H)"><svg viewBox="0 0 24 24"><path d="M4 11l8-7 8 7"/><path d="M6 10v9h12v-9"/></svg></button>
+        <button type="button" data-a="right" aria-label="Move right" title="Move right (D)"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>
+        <button type="button" data-a="tiltLow" aria-label="Tilt toward the horizon" title="Tilt toward the horizon (R)"><svg viewBox="0 0 24 24"><path d="M3 18l5-11h8l5 11z"/></svg></button>
+        <button type="button" data-a="down" aria-label="Move down" title="Move down (S)"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button>
+        <button type="button" data-a="tiltTop" aria-label="Tilt top-down" title="Tilt top-down (F)"><svg viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="14" rx="1.5"/></svg></button>
+      </div>
+      <div class="attr">Map data &copy; OpenStreetMap contributors</div>
+    </div>
+
+    <div class="side">
+      <div class="tabs" role="tablist" aria-label="List">
+        <button type="button" role="tab" id="tab-emp" aria-selected="true" aria-controls="list">Top matches<span class="c" id="cnt-emp"></span></button>
+        <button type="button" role="tab" id="tab-rank" aria-selected="false" aria-controls="list">Biggest offices<span class="c" id="cnt-rank"></span></button>
+      </div>
+      <details class="tune" id="tune">
+        <summary>How matches are ranked</summary>
+        <div class="rows">
+          <label for="w0">Role fit <output id="o0"></output><input type="range" id="w0" min="0" max="50" step="5"><small>Political, policy, international or legislative work</small></label>
+          <label for="w1">No-clearance access <output id="o1"></output><input type="range" id="w1" min="0" max="50" step="5"><small>Entry jobs that don't need a security clearance</small></label>
+          <label for="w2">Entry-level access <output id="o2"></output><input type="range" id="w2" min="0" max="50" step="5"><small>Hires recent grads, with programs or BA-level postings</small></label>
+          <label for="w3">Commute <output id="o3"></output><input type="range" id="w3" min="0" max="50" step="5"><small>Distance from your home, with a bonus near Metro</small></label>
+          <div class="row2"><span id="wsum"></span><button type="button" id="wreset">Reset to my defaults</button></div>
+        </div>
+      </details>
+      <div class="chiprow" id="rankareas" hidden></div>
+      <div class="list" id="list" role="tabpanel" aria-labelledby="tab-emp"></div>
+    </div>
+  </div>
+
+  <div class="foot">
+    <p>How the match score works: researchers rated each employer 1 to 5 on role fit, no-clearance access and entry-level access, citing the pages in each card. Commute is scored from straight-line distance to your home (Reston until you set it), with a bonus for offices near a Metro station. The score is the weighted average on a 0 to 100 scale. Ratings are judgments from public postings and pages as of November 2026, so check each listing before you apply.</p>
+    <p>Office sizes are estimates: footprint from OpenStreetMap times tagged floors, in gross square feet. Names in map data can be out of date. Pins are placed from address lookups; a few are placed at street level. Your home point and ranking weights are stored only in this browser.</p>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+const D = __DATA__;
+const toXZ = (lat, lon) => [(lon - D.lon0) * D.kx, (D.lat0 - lat) * D.ky];
+const toLL = (x, z) => [D.lat0 - z / D.ky, D.lon0 + x / D.kx];
+const miles = (a, b, c, d) => { const R = 3958.8, r = Math.PI / 180, dl = (c - a) * r, dn = (d - b) * r; const h = Math.sin(dl / 2) ** 2 + Math.cos(a * r) * Math.cos(c * r) * Math.sin(dn / 2) ** 2; return 2 * R * Math.asin(Math.sqrt(h)); };
+const $ = id => document.getElementById(id);
+const esc = t => String(t == null ? "" : t).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const cssv = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const store = { get(k) { try { return JSON.parse(localStorage.getItem(k)); } catch (_) { return null; } }, set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (_) {} } };
+
+const AREAS = ["Reston, Herndon and Loudoun", "Tysons, McLean and Fairfax", "Arlington and Alexandria", "Washington, DC", "Maryland suburbs", "Warrenton and Prince William"];
+const KINDS = { gov: ["Government", ["federal", "legislative", "state-local"]], policy: ["Think tanks and nonprofits", ["think-tank", "ngo-advocacy", "international", "party-campaign"]],
+  media: ["Media and research", ["media", "polling-research"]], firms: ["Consulting and contractors", ["consulting", "contractor"]], corp: ["Companies, health and education", ["corporate", "education-health"]] };
+const TYPE_LABEL = { federal: "Federal agency", legislative: "Legislative branch", "state-local": "State or local government", "think-tank": "Think tank", "ngo-advocacy": "Nonprofit", international: "International organization",
+  "party-campaign": "Party committee", media: "Media", "polling-research": "Polling and research", consulting: "Consulting", contractor: "Government contractor", corporate: "Company", "education-health": "Education or health" };
+const CL_LABEL = { none: "No clearance for entry roles", some: "Some entry roles need a clearance", most: "Most entry roles need a clearance" };
+const PLACES = { reston: [38.9585, -77.3578, 3500], tysons: [38.9187, -77.2311, 3500], dc: [38.8977, -77.0300, 5000], warrenton: [38.7135, -77.7953, 3500], region: [38.83, -77.41, 76000] };
+const DEFAULT_HOME = [38.9585, -77.3578];
+const W_DEFAULT = [35, 30, 20, 15];
+
+// ---------- State ----------
+let home = store.get("reston-map-home");
+let weights = (store.get("reston-map-weights") || W_DEFAULT).slice(0, 4);
+let tab = "emp", query = "", area = "all", kind = "all", hideCleared = store.get("reston-map-hideclear") !== false, rankArea = "all", showCount = 200;
+let selected = null; // {kind:'emp'|'rank', id}
+const E = D.emps; const RANK = D.rank;
+E.forEach(e => { [e.x, e.z] = toXZ(e.lat, e.lon); e.roof = e.bp ? e.bp[0] / 10 : 0; });
+RANK.forEach(r => { r.title = r.name || r.addr || "Unnamed office building"; });
+const RANK_AREAS = [...new Set(RANK.map(r => r.area))];
+
+// ---------- Scoring ----------
+const homeLL = () => home ? [home.lat, home.lon] : DEFAULT_HOME;
+function commuteMi(e) { const h = homeLL(); return miles(h[0], h[1], e.lat, e.lon); }
+function commuteScore(e) { const m = commuteMi(e); let s = m <= 5 ? 1 : m <= 10 ? .8 : m <= 18 ? .6 : m <= 28 ? .4 : m <= 40 ? .2 : 0; if (e.metro) s = Math.min(1, s + .15); return s; }
+function factors(e) { return [(e.s[0] - 1) / 4, (e.s[1] - 1) / 4, (e.s[2] - 1) / 4, commuteScore(e)]; }
+function score(e) { const f = factors(e), tot = weights.reduce((a, b) => a + b, 0) || 1; return Math.round(100 * f.reduce((a, v, i) => a + v * weights[i], 0) / tot); }
+const band = s => s >= 80 ? "m1" : s >= 65 ? "m2" : s >= 50 ? "m3" : "m4";
+let ranked = [];
+function computeRanking() {
+  E.forEach(e => { e.score = score(e); });
+  ranked = E.filter(visEmp).sort((a, b) => b.score - a.score || commuteMi(a) - commuteMi(b) || a.name.localeCompare(b.name));
+  ranked.forEach((e, i) => e.rank = i + 1);
+  E.forEach(e => { if (!ranked.includes(e)) e.rank = null; });
+}
+function qmatch(s) { const q = query.trim().toLowerCase(); return !q || s.toLowerCase().includes(q); }
+function visEmp(e) {
+  return (area === "all" || e.reg === area) && (kind === "all" || KINDS[kind][1].includes(e.type)) && !(hideCleared && e.cl === "most") &&
+    qmatch([e.name, e.addr, e.reg, TYPE_LABEL[e.type], e.roles.join(" "), e.why].join(" "));
+}
+function visRank(r) { return (rankArea === "all" || r.area === rankArea) && qmatch(r.title + " " + r.addr + " " + r.area + " " + (r.emps || []).map(id => (E.find(e => e.id === id) || {}).name).join(" ")); }
+
+// ---------- 3D ----------
+const box = $("mapbox"), canvas = $("gl"), card = $("card"), listEl = $("list"), tip = $("tip"), hint = $("hint");
+let renderer, scene, camera, controls, glOK = true, needs = true, fly = null, setMode = false, tiltOn = true, W = 800, H = 600;
+const held = new Map(); let lastT = 0, overMap = false, dragMode = "move", cardMin = false;
+const BOUNDS = { x0: -55000, x1: 50000, z0: -30000, z1: 45000 };
+const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+const layers = {}, bld = { est: [], tag: [], tall: [] }, sprites = []; let homeSprite = null, selMesh = null, hoverKey = null;
+const tiles = {}; const TILT = 1.0, TOP = 0.06;
+function fail(msg) {
+  glOK = false; canvas.style.display = "none"; box.querySelectorAll(".places,.zoom,.legend,.hint,.pad,.help").forEach(n => n.hidden = true);
+  const d = document.createElement("div"); d.className = "fallback"; d.textContent = msg; box.appendChild(d);
+}
+function init() {
+  if (typeof THREE === "undefined" || !THREE.OrbitControls) return fail("The 3D library could not load. The ranked list still works, with every careers link.");
+  try { renderer = new THREE.WebGLRenderer({ canvas, antialias: true }); } catch (e) { return fail("This browser could not start 3D graphics. The ranked list still works, with every careers link."); }
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  scene = new THREE.Scene(); camera = new THREE.PerspectiveCamera(45, 1, 30, 260000);
+  controls = new THREE.OrbitControls(camera, canvas);
+  Object.assign(controls, { enableDamping: true, dampingFactor: 0.12, screenSpacePanning: false, minDistance: 120, maxDistance: 110000, minPolarAngle: 0.02, maxPolarAngle: 1.45 });
+  controls.addEventListener("change", () => { needs = true; });
+  setDragMode("move");
+  scene.add(new THREE.AmbientLight(0xffffff, 0.78)); const sun = new THREE.DirectionalLight(0xffffff, 0.62); sun.position.set(-0.6, 1, 0.8); scene.add(sun); scene.userData.sun = sun;
+  buildWorld(); applyTheme();
+  const [x, z] = toXZ(...homeLL()); controls.target.set(x, 0, z);
+  camera.position.copy(new THREE.Vector3().setFromSpherical(new THREE.Spherical(3500, TILT, 0)).add(controls.target)); camera.lookAt(controls.target); controls.update();
+  new ResizeObserver(resize).observe(box); resize();
+  const mq = matchMedia("(prefers-color-scheme: dark)"); mq.addEventListener && mq.addEventListener("change", applyTheme);
+  new MutationObserver(applyTheme).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+  requestAnimationFrame(loop);
+}
+const geo = pos => { const g = new THREE.BufferGeometry(); g.setAttribute("position", new THREE.Float32BufferAttribute(pos, 3)); return g; };
+function ribbon(lines, w) {
+  const pos = [];
+  for (const L of lines) for (let i = 0; i + 3 < L.length; i += 2) {
+    const ax = L[i], az = L[i + 1], bx = L[i + 2], bz = L[i + 3], dx = bx - ax, dz = bz - az, len = Math.hypot(dx, dz); if (!len) continue;
+    const nx = -dz / len * w / 2, nz = dx / len * w / 2;
+    pos.push(ax + nx, 0, az + nz, ax - nx, 0, az - nz, bx + nx, 0, bz + nz, ax - nx, 0, az - nz, bx - nx, 0, bz - nz, bx + nx, 0, bz + nz);
+  }
+  return geo(pos);
+}
+function segs(lines) { const pos = []; for (const L of lines) for (let i = 0; i + 3 < L.length; i += 2) pos.push(L[i], 0, L[i + 1], L[i + 2], 0, L[i + 3]); return geo(pos); }
+function flatPoly(polys) {
+  const pos = [];
+  for (const L of polys) {
+    const pts = []; for (let i = 0; i + 1 < L.length; i += 2) pts.push(new THREE.Vector2(L[i], L[i + 1]));
+    if (pts.length > 1 && pts[0].equals(pts[pts.length - 1])) pts.pop(); if (pts.length < 3) continue;
+    for (const t of THREE.ShapeUtils.triangulateShape(pts, [])) pos.push(pts[t[0]].x, 0, pts[t[0]].y, pts[t[1]].x, 0, pts[t[1]].y, pts[t[2]].x, 0, pts[t[2]].y);
+  }
+  return geo(pos);
+}
+function pushBuilding(pos, b, lift) {
+  const h = b[0] / 10 + (lift || 0); const pts = []; for (let i = 2; i + 1 < b.length; i += 2) pts.push([b[i] / 10, b[i + 1] / 10]);
+  if (pts.length < 3) return;
+  let area = 0; for (let i = 0; i < pts.length; i++) { const p = pts[i], q = pts[(i + 1) % pts.length]; area += p[0] * q[1] - q[0] * p[1]; }
+  if (area > 0) pts.reverse();
+  const n = pts.length;
+  for (let i = 0; i < n; i++) { const p = pts[i], q = pts[(i + 1) % n]; pos.push(p[0], 0, p[1], q[0], 0, q[1], q[0], h, q[1], p[0], 0, p[1], q[0], h, q[1], p[0], h, p[1]); }
+  for (const t of THREE.ShapeUtils.triangulateShape(pts.map(p => new THREE.Vector2(p[0], p[1])), [])) {
+    let a = pts[t[0]], bb = pts[t[1]], c = pts[t[2]];
+    if ((bb[0] - a[0]) * (c[1] - a[1]) - (bb[1] - a[1]) * (c[0] - a[0]) > 0) { const tmp = bb; bb = c; c = tmp; }
+    pos.push(a[0], h, a[1], bb[0], h, bb[1], c[0], h, c[1]);
+  }
+}
+function addBuildings(list) {
+  const groups = { est: [], tag: [], tall: [] };
+  for (const b of list) pushBuilding(b[1] && b[0] >= 300 ? groups.tall : b[1] ? groups.tag : groups.est, b);
+  for (const k in groups) {
+    if (!groups[k].length) continue;
+    const g = geo(groups[k]); g.computeVertexNormals();
+    const m = new THREE.Mesh(g, new THREE.MeshLambertMaterial({ color: new THREE.Color(cssv({ est: "--bld-est", tag: "--bld", tall: "--bld-tall" }[k])) }));
+    m.renderOrder = 5; scene.add(m); bld[k].push(m);
+  }
+  needs = true;
+}
+function addLayer(name, g, k, order, y) {
+  const mat = k === "line" ? new THREE.LineBasicMaterial({ depthWrite: false }) : new THREE.MeshBasicMaterial({ side: THREE.DoubleSide, depthWrite: false });
+  const m = k === "line" ? new THREE.LineSegments(g, mat) : new THREE.Mesh(g, mat); m.renderOrder = order; m.position.y = y; scene.add(m); layers[name] = m;
+}
+function buildWorld() {
+  const r = D.r;
+  const ground = new THREE.Mesh(new THREE.PlaneGeometry(500000, 500000), new THREE.MeshBasicMaterial({ depthWrite: false }));
+  ground.rotation.x = -Math.PI / 2; ground.position.y = -2; ground.renderOrder = -20; scene.add(ground); layers.ground = ground;
+  addLayer("river", ribbon(r.river, 260), "mesh", -10, 0);
+  addLayer("water", flatPoly(r.water), "mesh", -9, 0.1);
+  addLayer("wrail", segs(r.wrail), "line", -8, 0.2);
+  addLayer("wb", segs(r.wb), "line", -7, 0.3);
+  addLayer("wa", segs(r.wa), "line", -6, 0.4);
+  addLayer("d", ribbon(r.d, 6), "mesh", -5, 0.5);
+  addLayer("c", ribbon(r.c, 9), "mesh", -4, 0.6);
+  addLayer("b", ribbon(r.b, 13), "mesh", -3, 0.7);
+  addLayer("a", ribbon(r.a, 22), "mesh", -2, 0.8);
+  addLayer("rail", ribbon(r.rail, 8), "mesh", -1, 0.9);
+  addBuildings(D.b);
+}
+function checkTiles() {
+  if (!glOK) return;
+  const d = camera.position.distanceTo(controls.target);
+  if (d > 18000) return;
+  for (const t of D.tiles) {
+    if (tiles[t.id]) continue;
+    if (Math.hypot(controls.target.x - t.cx, controls.target.z - t.cz) > t.rad + 5000) continue;
+    tiles[t.id] = "loading"; const st = $("status"); st.hidden = false; st.textContent = "Loading " + t.name + " buildings…";
+    fetch(t.file).then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+      .then(list => { addBuildings(list); tiles[t.id] = "done"; st.hidden = true; })
+      .catch(() => { tiles[t.id] = "failed"; st.textContent = t.name + " buildings could not load"; setTimeout(() => st.hidden = true, 3000); });
+  }
+}
+function highlight(bp) {
+  if (selMesh) { scene.remove(selMesh); selMesh.geometry.dispose(); selMesh = null; }
+  if (!glOK || !bp) { needs = true; return; }
+  const pos = []; pushBuilding(pos, bp, 0.6); const g = geo(pos); g.computeVertexNormals();
+  selMesh = new THREE.Mesh(g, new THREE.MeshLambertMaterial({ color: new THREE.Color(cssv("--sel")), polygonOffset: true, polygonOffsetFactor: -2, polygonOffsetUnits: -2 }));
+  const ox = bp[2] / 10, oz = bp[3] / 10; selMesh.scale.set(1.004, 1, 1.004); selMesh.position.set(-ox * 0.004, 0, -oz * 0.004);
+  selMesh.renderOrder = 6; scene.add(selMesh); needs = true;
+}
+function applyTheme() {
+  if (!scene) return;
+  const c = n => new THREE.Color(cssv(n)); const ground = c("--ground");
+  scene.background = ground; scene.fog = new THREE.Fog(ground.getHex(), 8000, 60000); layers.ground.material.color.copy(ground);
+  layers.river.material.color.copy(c("--water")); layers.water.material.color.copy(c("--water"));
+  layers.wrail.material.color.copy(c("--rail")); layers.wb.material.color.copy(c("--road-line")); layers.wa.material.color.copy(c("--road-a"));
+  ["d", "c", "b"].forEach(k => layers[k].material.color.copy(c("--road"))); layers.a.material.color.copy(c("--road-a")); layers.rail.material.color.copy(c("--rail"));
+  bld.est.forEach(m => m.material.color.copy(c("--bld-est"))); bld.tag.forEach(m => m.material.color.copy(c("--bld"))); bld.tall.forEach(m => m.material.color.copy(c("--bld-tall")));
+  if (selMesh) selMesh.material.color.copy(c("--sel"));
+  const dark = document.documentElement.dataset.theme === "dark" || (document.documentElement.dataset.theme !== "light" && matchMedia("(prefers-color-scheme: dark)").matches);
+  scene.children.forEach(o => { if (o.isAmbientLight) o.intensity = dark ? 0.95 : 0.78; }); scene.userData.sun.intensity = dark ? 0.5 : 0.62;
+  rebuildMarkers(); needs = true;
+}
+
+// ---------- Markers ----------
+function badge(label, fill, ring, txt, round) {
+  const s = 96, cv = document.createElement("canvas"); cv.width = cv.height = s; const x = cv.getContext("2d");
+  const shape = inset => { x.beginPath(); if (round) x.arc(s / 2, s / 2, s / 2 - inset, 0, 7); else if (x.roundRect) x.roundRect(inset, inset, s - 2 * inset, s - 2 * inset, 14); else x.rect(inset, inset, s - 2 * inset, s - 2 * inset); };
+  x.fillStyle = ring; shape(4); x.fill(); x.fillStyle = fill; shape(12); x.fill();
+  x.fillStyle = txt; x.font = `600 ${label.length > 2 ? 30 : 40}px 'IBM Plex Mono', monospace`; x.textAlign = "center"; x.textBaseline = "middle"; x.fillText(label, s / 2, s / 2 + 2);
+  return new THREE.CanvasTexture(cv);
+}
+function makeSprite(tex, order) { const sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, sizeAttenuation: false, depthTest: false, transparent: true })); sp.renderOrder = order; scene.add(sp); return sp; }
+function clearSprites() { sprites.forEach(s => { scene.remove(s.sp); s.sp.material.map.dispose(); s.sp.material.dispose(); }); sprites.length = 0; }
+function rebuildMarkers() {
+  if (!glOK || !scene) return;
+  clearSprites();
+  const ring = cssv("--panel"), dark = ring !== "#fafaf7";
+  if (tab === "emp") ranked.slice(0, showCount).forEach(e => {
+    const sp = makeSprite(badge(String(e.rank), cssv("--" + band(e.score)), ring, dark ? "#0e1517" : "#ffffff", true), 100);
+    sp.position.set(e.x, Math.max(e.roof, 14) + 10, e.z); sprites.push({ key: "emp:" + e.id, kind: "emp", ref: e, sp });
+  });
+  if (tab === "emp" && selected && selected.kind === "emp") {
+    const e = E.find(x => x.id === selected.id);
+    if (e && !sprites.some(s => s.ref === e)) { const sp = makeSprite(badge(e.rank ? String(e.rank) : "•", cssv("--" + band(e.score)), ring, dark ? "#0e1517" : "#ffffff", true), 100); sp.position.set(e.x, Math.max(e.roof, 14) + 10, e.z); sprites.push({ key: "emp:" + e.id, kind: "emp", ref: e, sp }); }
+  }
+  if (tab === "rank") RANK.filter(visRank).forEach(r => {
+    const sp = makeSprite(badge(String(r.n), cssv("--ink"), ring, cssv("--panel"), false), 99); sp.position.set(r.x, r.bp[0] / 10 + 10, r.z);
+    sprites.push({ key: "rank:" + r.n, kind: "rank", ref: r, sp });
+  });
+  if (homeSprite) { scene.remove(homeSprite); homeSprite.material.map.dispose(); homeSprite = null; }
+  if (home) { const [x, z] = toXZ(home.lat, home.lon); homeSprite = makeSprite(badge("⌂", cssv("--accent"), ring, cssv("--accent-ink"), false), 101); homeSprite.position.set(x, 30, z); }
+  sizeMarkers();
+}
+function sizeMarkers() {
+  if (!glOK || !scene) return;
+  const k = 1 / (H * 1.207);
+  sprites.forEach(s => { const isSel = selected && selected.kind === s.kind && String(selected.id) === String(s.kind === "emp" ? s.ref.id : s.ref.n); const px = isSel ? 40 : s.kind === "rank" ? 26 : 28; s.sp.scale.set(px * k, px * k, 1); });
+  if (homeSprite) homeSprite.scale.set(36 * k, 36 * k, 1);
+  needs = true;
+}
+
+// ---------- Loop, picking ----------
+function resize() { const r = box.getBoundingClientRect(); W = Math.max(1, r.width); H = Math.max(1, r.height); renderer.setSize(W, H, false); camera.aspect = W / H; camera.updateProjectionMatrix(); sizeMarkers(); }
+let lastTileCheck = 0;
+function loop(t) {
+  requestAnimationFrame(loop);
+  const dt = Math.min(0.05, Math.max(0, (t - lastT) / 1000)); lastT = t;
+  if (held.size) applyHeld(dt);
+  if (fly) {
+    const k = Math.min(1, (t - fly.t0) / fly.ms), e = k < .5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;
+    controls.target.lerpVectors(fly.t, fly.t2, e);
+    camera.position.copy(new THREE.Vector3().setFromSpherical(new THREE.Spherical(fly.d + (fly.d2 - fly.d) * e, fly.p + (fly.p2 - fly.p) * e, fly.a + (fly.a2 - fly.a) * e)).add(controls.target));
+    camera.lookAt(controls.target); if (k >= 1) fly = null; needs = true;
+  }
+  const changed = controls.update();
+  const tg = controls.target, cx = clamp(tg.x, BOUNDS.x0, BOUNDS.x1), cz = clamp(tg.z, BOUNDS.z0, BOUNDS.z1);
+  if (cx !== tg.x || cz !== tg.z) { camera.position.x += cx - tg.x; camera.position.z += cz - tg.z; tg.x = cx; tg.z = cz; needs = true; }
+  if (changed || needs) {
+    const dist = camera.position.distanceTo(controls.target); scene.fog.near = dist * 2.2; scene.fog.far = dist * 7;
+    renderer.render(scene, camera); needs = false; placeTip();
+    $("needle").style.transform = "rotate(" + controls.getAzimuthalAngle() + "rad)";
+    if (!fly) { const on = controls.getPolarAngle() > 0.5; if (on !== tiltOn) setTilt(on); }
+  }
+  if (t - lastTileCheck > 500) { lastTileCheck = t; checkTiles(); }
+}
+function flyTo(x, z, dist, polar, az) {
+  if (!glOK) return;
+  const sp = new THREE.Spherical().setFromVector3(camera.position.clone().sub(controls.target));
+  let a2 = sp.theta; if (az !== undefined) { let d = (az - sp.theta) % (2 * Math.PI); if (d > Math.PI) d -= 2 * Math.PI; if (d < -Math.PI) d += 2 * Math.PI; a2 = sp.theta + d; }
+  fly = { t0: performance.now(), ms: 800, t: controls.target.clone(), t2: new THREE.Vector3(clamp(x, BOUNDS.x0, BOUNDS.x1), 0, clamp(z, BOUNDS.z0, BOUNDS.z1)), d: sp.radius, d2: dist, p: sp.phi, p2: polar === undefined ? sp.phi : polar, a: sp.theta, a2 };
+}
+// Held actions (buttons and keys): move, rotate, tilt and zoom, frame by frame
+function applyHeld(dt) {
+  let f = 0, r = 0, rot = 0, tilt = 0, zm = 0;
+  held.forEach(h => {
+    switch (h.act) {
+      case "up": f++; break; case "down": f--; break; case "left": r--; break; case "right": r++; break;
+      case "rotL": rot--; break; case "rotR": rot++; break; case "tiltLow": tilt++; break; case "tiltTop": tilt--; break;
+      case "zin": zm--; break; case "zout": zm++; break;
+    }
+  });
+  if (!(f || r || rot || tilt || zm)) return;
+  fly = null;
+  const off = camera.position.clone().sub(controls.target), sp = new THREE.Spherical().setFromVector3(off);
+  const n = Math.hypot(f, r) || 1, v = sp.radius * 0.9 * dt, s = Math.sin(sp.theta), c = Math.cos(sp.theta);
+  controls.target.x += ((-s * f + c * r) / n) * v * (f || r ? 1 : 0); controls.target.z += ((-c * f - s * r) / n) * v * (f || r ? 1 : 0);
+  sp.theta += rot * 1.2 * dt; sp.phi = clamp(sp.phi + tilt * 0.8 * dt, controls.minPolarAngle, controls.maxPolarAngle);
+  sp.radius = clamp(sp.radius * Math.exp(zm * 1.3 * dt), controls.minDistance, controls.maxDistance);
+  camera.position.setFromSpherical(sp).add(controls.target); camera.lookAt(controls.target); needs = true;
+}
+function startHeld(key, act) { held.set(key, { act, t0: performance.now() }); fly = null; }
+function stopHeld(key) {
+  const h = held.get(key); if (!h) return; const left = 220 - (performance.now() - h.t0);
+  if (left > 0) setTimeout(() => { if (held.get(key) === h) held.delete(key); }, left); else held.delete(key);
+}
+function zoomAbout(px, pz, f) {
+  const d = camera.position.distanceTo(controls.target), nd = clamp(d * f, controls.minDistance, controls.maxDistance); f = nd / d; if (Math.abs(f - 1) < 1e-4) return;
+  const t = controls.target, p = camera.position;
+  t.x = px + (t.x - px) * f; t.z = pz + (t.z - pz) * f; p.x = px + (p.x - px) * f; p.z = pz + (p.z - pz) * f; p.y *= f;
+  camera.lookAt(t); needs = true;
+}
+function project(v) { const p = v.clone().project(camera); return p.z > 1 ? null : [(p.x * 0.5 + 0.5) * W, (-p.y * 0.5 + 0.5) * H]; }
+function nearest(px, py, max) { let best = null, bd = max; sprites.forEach(s => { const p = project(s.sp.position); if (!p) return; const d = Math.hypot(p[0] - px, p[1] - py); if (d < bd) { bd = d; best = s; } }); return best; }
+function groundPoint(px, py) { const r = new THREE.Raycaster(); r.setFromCamera(new THREE.Vector2(px / W * 2 - 1, -(py / H) * 2 + 1), camera); const pt = new THREE.Vector3(); return r.ray.intersectPlane(new THREE.Plane(new THREE.Vector3(0, 1, 0), 0), pt) ? pt : null; }
+let down = null;
+canvas.addEventListener("pointerdown", e => { down = [e.clientX, e.clientY]; fly = null; try { canvas.focus({ preventScroll: true }); } catch (_) {} });
+canvas.addEventListener("contextmenu", e => e.preventDefault());
+canvas.addEventListener("dblclick", e => {
+  if (!glOK || setMode) return; const r = canvas.getBoundingClientRect(), g = groundPoint(e.clientX - r.left, e.clientY - r.top); if (!g) return;
+  flyTo(g.x, g.z, clamp(curDist() * (e.shiftKey ? 2.2 : 0.45), 150, 110000), curPolar());
+});
+// Scroll zooms toward the cursor instead of the screen centre
+box.addEventListener("wheel", e => {
+  if (e.target !== canvas || !glOK) return; e.preventDefault(); e.stopPropagation(); fly = null;
+  const dy = clamp(e.deltaY * (e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? 400 : 1), -300, 300), f = Math.exp(dy * (e.ctrlKey ? 0.01 : 0.0016));
+  const r = canvas.getBoundingClientRect(), g = groundPoint(e.clientX - r.left, e.clientY - r.top), d = curDist();
+  if (g && Math.hypot(g.x - controls.target.x, g.z - controls.target.z) < d * 3) zoomAbout(g.x, g.z, f); else zoomAbout(controls.target.x, controls.target.z, f);
+}, { capture: true, passive: false });
+box.addEventListener("mouseenter", () => { overMap = true; }); box.addEventListener("mouseleave", () => { overMap = false; });
+canvas.addEventListener("pointerup", e => {
+  if (!down || Math.hypot(e.clientX - down[0], e.clientY - down[1]) > 6) { down = null; return; } down = null;
+  const r = canvas.getBoundingClientRect(), px = e.clientX - r.left, py = e.clientY - r.top;
+  if (setMode) { const g = groundPoint(px, py); if (g) { const [lat, lon] = toLL(g.x, g.z); home = { lat, lon }; store.set("reston-map-home", home); endSetMode(); homeChip(); refresh(); flyTo(g.x, g.z, 3000, TILT); setTilt(true); } return; }
+  const s = nearest(px, py, 20); if (s) s.kind === "emp" ? selectEmp(s.ref.id, true) : selectRank(s.ref.n, true);
+});
+canvas.addEventListener("pointermove", e => {
+  if (e.buttons) { hoverKey = null; placeTip(); return; }
+  const r = canvas.getBoundingClientRect(), s = setMode ? null : nearest(e.clientX - r.left, e.clientY - r.top, 18);
+  hoverKey = s ? s.key : null; canvas.classList.toggle("pick", !!s); placeTip();
+});
+canvas.addEventListener("pointerleave", () => { hoverKey = null; placeTip(); });
+function placeTip() {
+  if (!glOK) return;
+  const selKey = selected ? selected.kind + ":" + selected.id : null; const s = sprites.find(q => q.key === (hoverKey || selKey));
+  if (!s) { tip.hidden = true; return; } const p = project(s.sp.position); if (!p) { tip.hidden = true; return; }
+  tip.hidden = false; tip.textContent = s.kind === "emp" ? `${s.ref.name} · ${s.ref.score}` : `#${s.ref.n} ${s.ref.title} · ${sqft(s.ref.sqft)} sq ft`;
+  tip.style.left = p[0] + 12 + "px"; tip.style.top = p[1] + "px";
+}
+
+// ---------- Map controls ----------
+const curDist = () => camera.position.distanceTo(controls.target), curPolar = () => controls.getPolarAngle();
+function setTilt(on) { tiltOn = on; $("tilt").setAttribute("aria-pressed", String(on)); $("tilt").textContent = on ? "3D" : "2D"; }
+function goHome() { if (!glOK) return; if (!home) return beginSetMode(); const [x, z] = toXZ(home.lat, home.lon); flyTo(x, z, 3000, curPolar()); }
+function toggleTilt() { if (!glOK) return; setTilt(!tiltOn); flyTo(controls.target.x, controls.target.z, curDist(), tiltOn ? TILT : TOP); }
+function northUp() { if (glOK) flyTo(controls.target.x, controls.target.z, curDist(), curPolar(), 0); }
+function fitPoints(pts) {
+  if (!glOK || !pts.length) return; let x0 = 1e9, x1 = -1e9, z0 = 1e9, z1 = -1e9;
+  pts.forEach(([x, z]) => { x0 = Math.min(x0, x); x1 = Math.max(x1, x); z0 = Math.min(z0, z); z1 = Math.max(z1, z); });
+  const need = Math.max((x1 - x0) / (W / H), (z1 - z0) * 1.35) * 1.2;
+  flyTo((x0 + x1) / 2, (z0 + z1) / 2, clamp(need / (2 * Math.tan(22.5 * Math.PI / 180)), 900, 90000), curPolar());
+}
+const listPts = () => tab === "emp" ? ranked.map(e => [e.x, e.z]) : RANK.filter(visRank).map(r => [r.x, r.z]);
+const fitList = () => fitPoints(listPts());
+function setDragMode(m) {
+  dragMode = m; const b = $("dragmode"); b.textContent = m === "move" ? "Move" : "Turn"; b.setAttribute("aria-pressed", String(m === "turn"));
+  const M = THREE.MOUSE, T = THREE.TOUCH;
+  controls.mouseButtons = m === "move" ? { LEFT: M.PAN, MIDDLE: M.DOLLY, RIGHT: M.ROTATE } : { LEFT: M.ROTATE, MIDDLE: M.DOLLY, RIGHT: M.PAN };
+  controls.touches = m === "move" ? { ONE: T.PAN, TWO: T.DOLLY_PAN } : { ONE: T.ROTATE, TWO: T.DOLLY_ROTATE };
+}
+$("dragmode").onclick = () => glOK && setDragMode(dragMode === "move" ? "turn" : "move");
+$("compass").onclick = northUp;
+$("padhome").onclick = goHome;
+$("places").addEventListener("click", e => {
+  const b = e.target.closest("button"); if (!b || !glOK) return;
+  if (b.dataset.p === "home") return goHome();
+  if (b.dataset.p === "fit") return fitList();
+  const p = PLACES[b.dataset.p]; const [x, z] = toXZ(p[0], p[1]); flyTo(x, z, p[2], curPolar());
+});
+// Press and hold for continuous motion; a quick tap or a keyboard activation still moves a clear step
+function bindHold(el, act) {
+  const key = "btn:" + act;
+  el.addEventListener("pointerdown", e => { if (e.button) return; e.preventDefault(); try { el.setPointerCapture(e.pointerId); } catch (_) {} el.classList.add("on"); startHeld(key, act); });
+  const up = () => { el.classList.remove("on"); stopHeld(key); };
+  el.addEventListener("pointerup", up); el.addEventListener("pointercancel", up); el.addEventListener("lostpointercapture", up);
+  el.addEventListener("click", e => { if (e.detail === 0 && glOK) { startHeld(key, act); stopHeld(key); } });
+}
+$("pad").querySelectorAll("button[data-a]").forEach(b => bindHold(b, b.dataset.a));
+bindHold($("zin"), "zin"); bindHold($("zout"), "zout");
+$("tilt").onclick = toggleTilt;
+function toggleHelp(on) { const h = $("help"); h.hidden = on === undefined ? !h.hidden : !on; $("helpbtn").setAttribute("aria-pressed", String(!h.hidden)); if (!h.hidden) { $("legend").hidden = true; $("keybtn").setAttribute("aria-pressed", "false"); store.set("reston-map-help-seen", true); } }
+$("helpbtn").onclick = () => toggleHelp(); $("helpx").onclick = () => toggleHelp(false);
+$("keybtn").onclick = () => { const l = $("legend"); l.hidden = !l.hidden; $("keybtn").setAttribute("aria-pressed", String(!l.hidden)); if (!l.hidden) toggleHelp(false); };
+function beginSetMode() {
+  if (!glOK) return; setMode = true; $("sethome").setAttribute("aria-pressed", "true"); $("sethome").textContent = "Click the map to place home";
+  hint.hidden = false; hint.textContent = "Click your street or building. Press Esc to cancel."; canvas.classList.add("set");
+  setTilt(false); const [x, z] = toXZ(...homeLL()); flyTo(x, z, 2200, TOP);
+}
+function endSetMode() { setMode = false; $("sethome").setAttribute("aria-pressed", "false"); $("sethome").textContent = home ? "Move my home" : "Set my home"; hint.hidden = true; canvas.classList.remove("set"); }
+$("sethome").onclick = () => setMode ? endSetMode() : beginSetMode();
+function homeChip() { $("homechip").textContent = home ? "Commute measured from your home" : "Commute measured from Reston until you set your home"; }
+
+// ---------- Filters and tuning ----------
+$("area").innerHTML = `<option value="all">All areas</option>` + AREAS.map(a => `<option>${esc(a)}</option>`).join("");
+$("kind").innerHTML = `<option value="all">All employer types</option>` + Object.entries(KINDS).map(([k, v]) => `<option value="${k}">${esc(v[0])}</option>`).join("");
+$("hideclear").checked = hideCleared;
+$("q").addEventListener("input", e => { query = e.target.value; refresh(); });
+$("area").addEventListener("change", e => { area = e.target.value; refresh(); });
+$("kind").addEventListener("change", e => { kind = e.target.value; refresh(); });
+$("hideclear").addEventListener("change", e => { hideCleared = e.target.checked; store.set("reston-map-hideclear", hideCleared); refresh(); });
+function syncWeights() {
+  weights.forEach((w, i) => { $("w" + i).value = w; });
+  const tot = weights.reduce((a, b) => a + b, 0) || 1;
+  weights.forEach((w, i) => { $("o" + i).textContent = Math.round(w / tot * 100) + "%"; });
+  const same = weights.every((w, i) => w === W_DEFAULT[i]);
+  $("wsum").textContent = same ? "Using your defaults" : "Custom weights";
+}
+[0, 1, 2, 3].forEach(i => $("w" + i).addEventListener("input", e => { weights[i] = +e.target.value; store.set("reston-map-weights", weights); syncWeights(); refresh(); }));
+$("wreset").onclick = () => { weights = W_DEFAULT.slice(); store.set("reston-map-weights", weights); syncWeights(); refresh(); };
+$("rankareas").innerHTML = ["all", ...RANK_AREAS].map(a => `<button type="button" data-a="${esc(a)}" aria-pressed="${a === "all"}">${a === "all" ? "All areas" : esc(a)}</button>`).join("");
+$("rankareas").addEventListener("click", e => {
+  const b = e.target.closest("button"); if (!b) return; rankArea = b.dataset.a;
+  $("rankareas").querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", String(x === b))); refresh();
+});
+function setTab(t) {
+  tab = t; $("tab-emp").setAttribute("aria-selected", String(t === "emp")); $("tab-rank").setAttribute("aria-selected", String(t === "rank"));
+  $("list").setAttribute("aria-labelledby", "tab-" + t);
+  ["area", "kind", "clearwrap", "tune"].forEach(id => $(id).hidden = t !== "emp"); $("rankareas").hidden = t !== "rank";
+  refresh();
+}
+$("tab-emp").onclick = () => setTab("emp"); $("tab-rank").onclick = () => setTab("rank");
+
+// ---------- Lists ----------
+const sqft = n => n >= 1e6 ? (n / 1e6).toFixed(2) + "M" : Math.round(n / 1000) + "k";
+const fmtMi = m => m < 10 ? m.toFixed(1) + " mi" : Math.round(m) + " mi";
+function empRow(e) {
+  const isSel = selected && selected.kind === "emp" && selected.id === e.id;
+  return `<button type="button" class="item" data-kind="emp" data-id="${esc(e.id)}" ${isSel ? 'aria-current="true"' : ""}>
+    <span class="num ${band(e.score)}">${e.rank}</span><span class="t">${esc(e.name)}</span><span class="m">${e.score}<small>/100</small></span>
+    <span class="s">${esc(TYPE_LABEL[e.type] || "")} &middot; ${esc(e.reg)} &middot; ${fmtMi(commuteMi(e))}</span></button>`;
+}
+function rankRow(r) {
+  const isSel = selected && selected.kind === "rank" && selected.id === r.n, maxSq = RANK[0].sqft;
+  return `<button type="button" class="item" data-kind="rank" data-id="${r.n}" ${isSel ? 'aria-current="true"' : ""}>
+    <span class="num rk">${r.n}</span><span class="t">${esc(r.title)}</span><span class="m">${sqft(r.sqft)} ft²</span>
+    <span class="s">${esc(r.name && r.addr ? r.addr + " · " : "")}${r.floors} floors &middot; ${esc(r.area)}</span>
+    <span class="bar" aria-hidden="true"><i style="width:${(r.sqft / maxSq * 100).toFixed(1)}%"></i></span></button>`;
+}
+let listLimit = 40;
+function refresh() {
+  computeRanking();
+  let html = "";
+  if (tab === "emp") {
+    const shown = ranked.slice(0, listLimit);
+    const hidden = hideCleared ? E.filter(e => e.cl === "most").length : 0;
+    html = `<p class="intro">Ranked for you by the weights above.${hidden ? ` ${hidden} employers where most entry jobs need a clearance are hidden.` : ""} Numbers on the map match this list.</p>`;
+    html += shown.length ? `<div class="items">${shown.map(empRow).join("")}</div>` : `<p class="empty">No employers match. Clear the search or widen the filters.</p>`;
+    if (ranked.length > listLimit) html += `<button type="button" class="more" id="more">Show all ${ranked.length}</button>`;
+  } else {
+    const items = RANK.filter(visRank);
+    html = `<p class="intro">The largest office buildings by estimated floor area (footprint times floors). Click one to see it in 3D.</p>` +
+      (items.length ? `<div class="items">${items.map(rankRow).join("")}</div>` : `<p class="empty">No buildings match the search.</p>`);
+  }
+  listEl.innerHTML = html;
+  const mb = $("more"); if (mb) mb.onclick = () => { listLimit = 1000; refresh(); };
+  $("cnt-emp").textContent = ranked.length; $("cnt-rank").textContent = RANK.filter(visRank).length;
+  if (selected && selected.kind === "emp") { const e = E.find(x => x.id === selected.id); if (e) renderEmpCard(e); }
+  rebuildMarkers();
+}
+listEl.addEventListener("click", e => {
+  const i = e.target.closest(".item"); if (!i) return;
+  i.dataset.kind === "emp" ? selectEmp(i.dataset.id, true) : selectRank(+i.dataset.id, true);
+  if (window.innerWidth <= 900 && box.scrollIntoView) box.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
+});
+
+// ---------- Cards ----------
+const host = u => { try { return new URL(u).hostname.replace(/^www\./, ""); } catch (_) { return u; } };
+const curList = () => tab === "emp" ? ranked.map(e => ({ kind: "emp", id: e.id })) : RANK.filter(visRank).map(r => ({ kind: "rank", id: r.n }));
+function stepSel(dir) {
+  const L = curList(); if (!L.length) return;
+  let i = selected ? L.findIndex(x => x.kind === selected.kind && x.id === selected.id) : -1;
+  i = i < 0 ? (dir > 0 ? 0 : L.length - 1) : (i + dir + L.length) % L.length;
+  const n = L[i]; n.kind === "emp" ? selectEmp(n.id, true) : selectRank(n.id, true);
+}
+function stepperHTML() {
+  const L = curList(), i = selected ? L.findIndex(x => x.kind === selected.kind && x.id === selected.id) : -1;
+  return `<div class="stepper"><button type="button" id="prevb" aria-label="Previous in the list" title="Previous ([)">&lsaquo; Prev</button><span>${i >= 0 ? i + 1 + " of " + L.length : ""}</span><button type="button" id="nextb" aria-label="Next in the list" title="Next (])">Next &rsaquo;</button><button type="button" class="cmin" id="cminb" aria-pressed="${cardMin}" title="Shrink the card to see more map">${cardMin ? "Expand" : "Shrink"}</button></div>`;
+}
+function showCard(html) {
+  card.hidden = false; card.classList.toggle("min", cardMin);
+  card.innerHTML = `<button type="button" class="close" id="cc" aria-label="Close details">&times;</button>` + stepperHTML() + html;
+  $("cc").onclick = closeCard; $("prevb").onclick = () => stepSel(-1); $("nextb").onclick = () => stepSel(1);
+  $("cminb").onclick = () => { cardMin = !cardMin; card.classList.toggle("min", cardMin); $("cminb").textContent = cardMin ? "Expand" : "Shrink"; $("cminb").setAttribute("aria-pressed", String(cardMin)); };
+}
+function renderEmpCard(e) {
+  const f = factors(e), mi = commuteMi(e), keep = card.scrollTop;
+  const rows = [["Role fit", f[0], e.s[0] + " / 5"], ["No-clearance access", f[1], e.s[1] + " / 5"], ["Entry-level access", f[2], e.s[2] + " / 5"], ["Commute", f[3], fmtMi(mi) + (e.metro ? " · Metro" : "")]];
+  showCard(`<div class="chead"><div class="score ${band(e.score)}">${e.score}<small>MATCH</small></div>
+      <div><p class="eyebrow">${e.rank ? "#" + e.rank + " · " : ""}${esc(TYPE_LABEL[e.type] || "")}</p><h2>${esc(e.name)}</h2></div></div>
+    <p class="addr">${esc(e.addr)}${e.gc === "street" ? " (pin at street level)" : ""}</p>
+    <p class="why">${esc(e.why)}</p>
+    <div class="factors">${rows.map(([l, v, t]) => `<div class="factor"><span>${l}</span><span class="fb"><i style="width:${Math.round(v * 100)}%"></i></span><b>${t}</b></div>`).join("")}</div>
+    <p class="note">${esc(CL_LABEL[e.cl] || "")}. Distance is from ${home ? "your home" : "Reston"}, straight-line.</p>
+    ${e.roles.length ? `<p class="sect">Entry roles they post</p><div class="roles">${e.roles.map(r => `<span>${esc(r)}</span>`).join("")}</div>` : ""}
+    ${e.progs.length ? `<p class="sect">Programs</p><ul class="plist">${e.progs.map(p => `<li><a href="${esc(p.url)}" target="_blank" rel="noopener">${esc(p.name)}</a></li>`).join("")}</ul>` : ""}
+    <div class="actions"><a class="go" href="${esc(e.url)}" target="_blank" rel="noopener">Careers page &#8599;</a>
+      <a class="dir" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(e.name + " " + e.addr)}" target="_blank" rel="noopener">Directions &#8599;</a></div>
+    ${e.src.length ? `<p class="sect">Research sources</p><div class="srcs">${e.src.map(u => `<a href="${esc(u)}" target="_blank" rel="noopener">${esc(host(u))}</a>`).join("")}</div>` : ""}
+    ${e.notes ? `<p class="note">Research notes: ${esc(e.notes)}</p>` : ""}`);
+  card.scrollTop = keep;
+}
+function selectEmp(id, go) {
+  const e = E.find(x => x.id === id); if (!e) return;
+  const fresh = !(selected && selected.kind === "emp" && selected.id === id); selected = { kind: "emp", id };
+  if (tab !== "emp") setTab("emp");
+  highlight(e.bp); if (go && glOK) flyTo(e.x, e.z, Math.min(Math.max(curDist() * 0.6, 700), 2200), curPolar());
+  renderEmpCard(e); if (fresh) card.scrollTop = 0;
+  refresh(); scrollToItem();
+}
+function selectRank(n, go) {
+  const r = RANK.find(x => x.n === n); if (!r) return; selected = { kind: "rank", id: n };
+  if (tab !== "rank") setTab("rank");
+  highlight(r.bp); if (go && glOK) flyTo(r.x, r.z, Math.min(Math.max(curDist() * 0.6, 700), 1800), curPolar());
+  const emps = (r.emps || []).map(id => E.find(e => e.id === id)).filter(Boolean);
+  showCard(`<p class="eyebrow">#${r.n} by floor area &middot; ${esc(r.area)}</p><h2 style="padding-right:30px">${esc(r.title)}</h2>
+    <p class="addr">${esc(r.name ? r.addr : "")}${r.city ? (r.name && r.addr ? ", " : "") + esc(r.city) : ""}</p>
+    <div class="facts"><div><b>${sqft(r.sqft)}</b><span>sq ft (est.)</span></div><div><b>${r.floors}</b><span>floors</span></div><div><b>${Math.round(r.h * 3.281)} ft</b><span>height</span></div></div>
+    ${emps.length ? `<p class="sect">Employers on this map here</p>${emps.map(e => `<p class="note"><a class="dir" href="#" data-emp="${esc(e.id)}">${esc(e.name)} &middot; match ${e.score}</a></p>`).join("")}` : `<p class="note">No researched employer on this map is matched to this building yet.</p>`}
+    <div class="actions"><a class="dir" href="https://www.google.com/search?q=${encodeURIComponent((r.name || r.addr) + " " + (r.city || "") + " office tenants")}" target="_blank" rel="noopener">Look up tenants &#8599;</a>
+    <a class="dir" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent((r.name ? r.name + " " : "") + r.addr + " " + (r.city || ""))}" target="_blank" rel="noopener">Directions &#8599;</a></div>`);
+  card.querySelectorAll("[data-emp]").forEach(a => a.onclick = ev => { ev.preventDefault(); selectEmp(a.dataset.emp, true); });
+  card.scrollTop = 0; refresh(); scrollToItem();
+}
+function scrollToItem() { if (window.innerWidth <= 900) return; const it = listEl.querySelector('[aria-current="true"]'); if (it && it.scrollIntoView) it.scrollIntoView({ block: "nearest" }); }
+function closeCard() { selected = null; card.hidden = true; highlight(null); refresh(); }
+// ---------- Keyboard ----------
+const KEYACT = { arrowup: "up", w: "up", arrowdown: "down", s: "down", arrowleft: "left", a: "left", arrowright: "right", d: "right", q: "rotL", e: "rotR", r: "tiltLow", f: "tiltTop", "+": "zin", "=": "zin", "-": "zout", "_": "zout" };
+const typing = t => t && (t.tagName === "INPUT" || t.tagName === "SELECT" || t.tagName === "TEXTAREA" || t.isContentEditable);
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape") { if (!$("help").hidden) toggleHelp(false); else if (setMode) endSetMode(); else if (selected) closeCard(); else if (document.activeElement === $("q")) $("q").blur(); return; }
+  if (e.metaKey || e.ctrlKey || e.altKey || !glOK) return;
+  const t = e.target;
+  if (typing(t)) return;
+  if (t && t.tagName === "BUTTON" && (e.key === "Enter" || e.key === " ")) return;
+  const k = e.key.toLowerCase(), act = KEYACT[k];
+  const mapFocus = t === canvas || overMap || t === document.body;
+  if (act && mapFocus) { e.preventDefault(); if (!e.repeat && !held.has("key:" + e.code)) startHeld("key:" + e.code, act); return; }
+  if (k === "n") northUp(); else if (k === "t") toggleTilt(); else if (k === "h") goHome();
+  else if (k === "?" ) toggleHelp(); else if (k === "[") stepSel(-1); else if (k === "]") stepSel(1);
+  else if (k === "/") { e.preventDefault(); $("q").focus(); } else return;
+  e.preventDefault();
+});
+document.addEventListener("keyup", e => { stopHeld("key:" + e.code); });
+window.addEventListener("blur", () => { held.clear(); });
+$("q").addEventListener("keydown", e => {
+  if (e.key !== "Enter") return; e.preventDefault();
+  const L = curList(); if (!L.length) return; const n = L[0]; n.kind === "emp" ? selectEmp(n.id, true) : selectRank(n.id, true); $("q").blur();
+});
+
+homeChip(); syncWeights(); $("sethome").textContent = home ? "Move my home" : "Set my home";
+init(); refresh();
+if (glOK && !home) { hint.hidden = false; hint.textContent = "Set your home to rank commutes from where you live"; setTimeout(() => { if (!setMode) hint.hidden = true; }, 7000); }
+</script>
