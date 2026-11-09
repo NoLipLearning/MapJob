@@ -7,3 +7,7 @@ Env: added hosts overpass-api.de + router.project-osrm.org to Default env. jsdel
 Waiting on Eric: GitHub repo name; "near-home detail" confirmation; profile JSON from resume prompt. No repo yet => commits are local only; zip to Eric at the end.
 Next: spawn Phase1 agents (briefs in this chat), then merge branches, rebuild, run node tests/smoke.js.
 Size left: large.
+
+UPDATE: Phase1 agents F, R, T launched (Sonnet, worktrees, background). Merge their branches when they report, then rebuild + node tests/smoke.js + each tests/*.js.
+Rosslyn: src/fetch_osm.py bg (bld_00,01,02,10 done; 11 retrying), then run `cd src && python3 add_rosslyn.py` (idempotent, uses prep4.base.json), rebuild, test, commit.
+Phase2 (after T merges): Agent A apply helper (BUILD-PLAN 2.4) + Reminders (section 3) in parallel. Phase3: UI pass agent per docs/UI-DIRECTION.md. Then publish artifact (needs capabilities db,user,downloads; files tiles/*.json), zip to Eric.
