@@ -11,3 +11,6 @@ Size left: large.
 UPDATE: Phase1 agents F, R, T launched (Sonnet, worktrees, background). Merge their branches when they report, then rebuild + node tests/smoke.js + each tests/*.js.
 Rosslyn: src/fetch_osm.py bg (bld_00,01,02,10 done; 11 retrying), then run `cd src && python3 add_rosslyn.py` (idempotent, uses prep4.base.json), rebuild, test, commit.
 Phase2 (after T merges): Agent A apply helper (BUILD-PLAN 2.4) + Reminders (section 3) in parallel. Phase3: UI pass agent per docs/UI-DIRECTION.md. Then publish artifact (needs capabilities db,user,downloads; files tiles/*.json), zip to Eric.
+
+UPDATE 2: F (filters) and T (tracker) MERGED to master + tests pass (smoke 10, filters, tracker). Built html untracked. R (routes) agent a84e7ca2b7dd7a080 still running. Phase2 agents launched: A apply helper (aee0f2921c7c74496), Reminders (a4d0d8594cbc86169). After all merge: run Rosslyn (add_rosslyn.py after fetch DONE), then Phase3 UI-pass agent per docs/UI-DIRECTION.md, then publish+zip.
+Known nits for UI pass: filters 'My status' buckets (star=Interested, applying=Applied, offer=Interviewing); desktop filter bar starts collapsed.
