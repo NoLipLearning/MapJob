@@ -22,6 +22,7 @@ const ARGS = ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swif
     ok(errs.length === 0, `${name}: no console errors ${errs.slice(0, 3).join(' | ')}`);
     const n = await page.locator('#list .item').count(); ok(n > 5, `${name}: list has ${n} items`);
     await page.screenshot({ path: `test-shots/${name}-1-load.png` });
+    if (touch) await page.evaluate(() => app.sheet('half')); // phone: the list lives in a bottom sheet that starts collapsed
     await page.locator('#list .item').first().click(); await page.waitForTimeout(1200);
     ok(await page.locator('#card:not([hidden])').count() === 1, `${name}: card opens on click`);
     await page.screenshot({ path: `test-shots/${name}-2-card.png` });
@@ -30,7 +31,7 @@ const ARGS = ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swif
       await page.locator('#gl').focus(); await page.keyboard.down('ArrowRight'); await page.waitForTimeout(500); await page.keyboard.up('ArrowRight');
       const after = await page.evaluate(() => JSON.stringify(app.camera.position));
       ok(before !== after, `${name}: arrow key moves the camera`);
-      ok(await page.evaluate(() => document.getElementById('card').classList.contains('min')), `${name}: card opens shrunk on desktop`);
+      ok(await page.evaluate(() => { const c = document.getElementById('card').getBoundingClientRect(), m = document.getElementById('mapbox').getBoundingClientRect(); return c.left >= m.right - 1; }), `${name}: card is a docked drawer beside the map, not over it`);
     } else {
       const vw = await page.evaluate(() => window.innerWidth); ok(vw <= 500, `${name}: viewport width ${vw} (not a zoomed-out 980)`);
       ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 2), `${name}: no horizontal page scroll`);

@@ -8,7 +8,7 @@ const url = process.argv[2] || 'http://localhost:8765/reston-hiring-map.html';
   await ctx.route(/cdn\.jsdelivr\.net\/npm\/three@0\.128\.0\/.*(three\.min|OrbitControls)\.js/, r => r.fulfill({ contentType: 'application/javascript', body: vendor(/OrbitControls/.test(r.request().url()) ? 'OrbitControls.js' : 'three.min.js') }));
   const p = await ctx.newPage(); const errs = []; p.on('pageerror', e => errs.push(e.message));
   await p.goto(url); await p.waitForTimeout(2000);
-  await p.click('#places [data-p="rosslyn"]'); await p.waitForTimeout(4000);
+  await p.click('#jumpbtn'); await p.click('#places [data-p="rosslyn"]'); await p.waitForTimeout(4000);
   await p.screenshot({ path: 'test-shots/rosslyn.png' });
   const info = await p.evaluate(() => ({ tiles: app.D.tiles.map(t => t.id), rankZones: [...new Set(app.RANK.map(r => r.area))] }));
   console.log(JSON.stringify(info), errs.length ? 'ERRORS ' + errs : 'no errors');

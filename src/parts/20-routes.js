@@ -82,7 +82,7 @@ PARTS.push(function (app) {
     const e = app.E.find(x => x.id === s.id), r = e && rec(e); if (!r || !r.options.length) return;
     group = new THREE.Group(); group.name = 'route-ribbon';
     if (showAlt) r.options.slice(1).forEach(o => group.add(mesh(o, 0x8a8f98, 14, .55, 7, false)));
-    group.add(mesh(r.options[0], 0xe0368a, 22, .95, 8, false));
+    group.add(mesh(r.options[0], new THREE.Color(cssv("--route")), 22, .95, 8, false));
     app.scene.add(group); app.needsRender();
   }
   app.on('selection-changed', draw);

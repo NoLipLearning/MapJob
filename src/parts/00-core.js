@@ -49,7 +49,7 @@ const app = {
   addTab(t) {
     this.tabs[t.id] = t;
     const b = document.createElement("button"); b.type = "button"; b.setAttribute("role", "tab"); b.id = "tab-" + t.id; b.setAttribute("aria-selected", "false"); b.setAttribute("aria-controls", "list");
-    b.innerHTML = esc(t.label) + '<span class="c" id="cnt-' + t.id + '"></span>'; b.onclick = () => setTab(t.id); $("tabs").appendChild(b);
+    b.innerHTML = '<span class="tl">' + esc(t.label) + '</span><span class="c" id="cnt-' + t.id + '"></span>'; b.onclick = () => setTab(t.id); $("tabs").appendChild(b);
   },
   toast(msg, opt) { toast(msg, opt); }
 };
@@ -78,7 +78,7 @@ function visRank(r) { return (rankArea === "all" || r.area === rankArea) && qmat
 // ---------- 3D ----------
 const box = $("mapbox"), canvas = $("gl"), card = $("card"), listEl = $("list"), tip = $("tip"), hint = $("hint");
 let renderer, scene, camera, controls, glOK = true, needs = true, fly = null, setMode = false, tiltOn = true, W = 800, H = 600;
-const held = new Map(); let lastT = 0, overMap = false, dragMode = "move", cardMin = window.innerWidth > 900;
+const held = new Map(); let lastT = 0, overMap = false, dragMode = "move", cardMin = false; // the card is a docked drawer now, so there is no shrunk state
 const BOUNDS = { x0: -55000, x1: 50000, z0: -30000, z1: 45000 };
 const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
 const layers = {}, bld = { est: [], tag: [], tall: [] }, sprites = []; let homeSprite = null, selMesh = null, hoverKey = null;
@@ -248,7 +248,9 @@ function sizeMarkers() {
 }
 
 // ---------- Loop, picking ----------
-function resize() { const r = box.getBoundingClientRect(); W = Math.max(1, r.width); H = Math.max(1, r.height); renderer.setSize(W, H, false); camera.aspect = W / H; camera.updateProjectionMatrix(); sizeMarkers(); }
+let viewInset = 0; // px at the bottom of the map covered by the phone sheet: the camera centres on what is left
+function resize() { const r = box.getBoundingClientRect(); W = Math.max(1, r.width); H = Math.max(1, r.height); renderer.setSize(W, H, false); camera.aspect = W / H; if (viewInset > 0) camera.setViewOffset(W, H, 0, viewInset / 2, W, H); else camera.clearViewOffset(); camera.updateProjectionMatrix(); sizeMarkers(); }
+function setViewInset(px) { viewInset = Math.max(0, Math.min(px, H * 0.6)); if (glOK && renderer) resize(); }
 let lastTileCheck = 0;
 function loop(t) {
   requestAnimationFrame(loop);
@@ -275,7 +277,7 @@ function flyTo(x, z, dist, polar, az) {
   if (!glOK) return;
   const sp = new THREE.Spherical().setFromVector3(camera.position.clone().sub(controls.target));
   let a2 = sp.theta; if (az !== undefined) { let d = (az - sp.theta) % (2 * Math.PI); if (d > Math.PI) d -= 2 * Math.PI; if (d < -Math.PI) d += 2 * Math.PI; a2 = sp.theta + d; }
-  fly = { t0: performance.now(), ms: 800, t: controls.target.clone(), t2: new THREE.Vector3(clamp(x, BOUNDS.x0, BOUNDS.x1), 0, clamp(z, BOUNDS.z0, BOUNDS.z1)), d: sp.radius, d2: dist, p: sp.phi, p2: polar === undefined ? sp.phi : polar, a: sp.theta, a2 };
+  fly = { t0: performance.now(), ms: matchMedia("(prefers-reduced-motion: reduce)").matches ? 1 : 800, t: controls.target.clone(), t2: new THREE.Vector3(clamp(x, BOUNDS.x0, BOUNDS.x1), 0, clamp(z, BOUNDS.z0, BOUNDS.z1)), d: sp.radius, d2: dist, p: sp.phi, p2: polar === undefined ? sp.phi : polar, a: sp.theta, a2 };
 }
 // Held actions (buttons and keys): move, rotate, tilt and zoom, frame by frame
 function applyHeld(dt) {
@@ -339,10 +341,10 @@ canvas.addEventListener("pointermove", e => {
 canvas.addEventListener("pointerleave", () => { hoverKey = null; placeTip(); });
 function placeTip() {
   if (!glOK) return;
-  const selKey = selected ? selected.kind + ":" + selected.id : null; const s = sprites.find(q => q.key === (hoverKey || selKey));
+  const selKey = selected && window.innerWidth > 900 ? selected.kind + ":" + selected.id : null; const s = sprites.find(q => q.key === (hoverKey || selKey));
   if (!s) { tip.hidden = true; return; } const p = project(s.sp.position); if (!p) { tip.hidden = true; return; }
   tip.hidden = false; tip.textContent = s.kind === "emp" ? `${s.ref.name} · ${s.ref.score}` : `#${s.ref.n} ${s.ref.title} · ${sqft(s.ref.sqft)} sq ft`;
-  tip.style.left = p[0] + 12 + "px"; tip.style.top = p[1] + "px";
+  tip.style.maxWidth = ""; const room = W - p[0] - 28, left = p[0] - 28, flip = tip.offsetWidth > room && left > room; tip.classList.toggle("flip", flip); tip.style.maxWidth = Math.max(90, flip ? left : room) + "px"; tip.style.left = (flip ? p[0] - 12 : p[0] + 12) + "px"; tip.style.top = p[1] + "px";
 }
 
 // ---------- Map controls ----------
@@ -369,7 +371,7 @@ $("dragmode").onclick = () => glOK && setDragMode(dragMode === "move" ? "turn" :
 $("compass").onclick = northUp;
 $("padhome").onclick = goHome;
 $("places").addEventListener("click", e => {
-  const b = e.target.closest("button"); if (!b || !glOK) return;
+  const b = e.target.closest("button"); if (!b || !glOK || !b.dataset.p) return;
   if (b.dataset.p === "home") return goHome();
   if (b.dataset.p === "fit") return fitList();
   const p = PLACES[b.dataset.p]; const [x, z] = toXZ(p[0], p[1]); flyTo(x, z, p[2], curPolar());
@@ -465,7 +467,6 @@ function refresh() {
 listEl.addEventListener("click", e => {
   const i = e.target.closest(".item"); if (!i) return;
   i.dataset.kind === "emp" ? selectEmp(i.dataset.id, true) : selectRank(+i.dataset.id, true);
-  if (window.innerWidth <= 900 && box.scrollIntoView) box.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
 });
 
 // ---------- Cards ----------
@@ -479,11 +480,11 @@ function stepSel(dir) {
 }
 function stepperHTML() {
   const L = curList(), i = selected ? L.findIndex(x => x.kind === selected.kind && x.id === selected.id) : -1;
-  return `<div class="stepper"><button type="button" id="prevb" aria-label="Previous in the list" title="Previous ([)">&lsaquo; Prev</button><span>${i >= 0 ? i + 1 + " of " + L.length : ""}</span><button type="button" id="nextb" aria-label="Next in the list" title="Next (])">Next &rsaquo;</button><button type="button" class="cmin" id="cminb" aria-pressed="${cardMin}" title="Shrink the card to see more map">${cardMin ? "Expand" : "Shrink"}</button></div>`;
+  return `<div class="stepper"><button type="button" id="prevb" aria-label="Previous in the list" title="Previous ([)">&lsaquo; Prev</button><span>${i >= 0 ? i + 1 + " of " + L.length : ""}</span><button type="button" id="nextb" aria-label="Next in the list" title="Next (])">Next &rsaquo;</button><button type="button" class="cmin" id="cminb" aria-pressed="${cardMin}" title="Shrink the card to see more map">${cardMin ? "Expand" : "Shrink"}</button><button type="button" class="close" id="cc" aria-label="Close details">&times;</button></div>`;
 }
 function showCard(html) {
   card.hidden = false; card.classList.toggle("min", cardMin);
-  card.innerHTML = `<button type="button" class="close" id="cc" aria-label="Close details">&times;</button>` + stepperHTML() + html;
+  card.innerHTML = stepperHTML() + html;
   $("cc").onclick = closeCard; $("prevb").onclick = () => stepSel(-1); $("nextb").onclick = () => stepSel(1);
   $("cminb").onclick = () => { cardMin = !cardMin; card.classList.toggle("min", cardMin); $("cminb").textContent = cardMin ? "Expand" : "Shrink"; $("cminb").setAttribute("aria-pressed", String(cardMin)); };
 }
@@ -545,7 +546,7 @@ function toast(msg, opt) {
 const KEYACT = { arrowup: "up", w: "up", arrowdown: "down", s: "down", arrowleft: "left", a: "left", arrowright: "right", d: "right", q: "rotL", e: "rotR", r: "tiltLow", f: "tiltTop", "+": "zin", "=": "zin", "-": "zout", "_": "zout" };
 const typing = t => t && (t.tagName === "INPUT" || t.tagName === "SELECT" || t.tagName === "TEXTAREA" || t.isContentEditable);
 document.addEventListener("keydown", e => {
-  if (e.key === "Escape") { if (!$("help").hidden) toggleHelp(false); else if (setMode) endSetMode(); else if (selected) closeCard(); else if (document.activeElement === $("q")) $("q").blur(); return; }
+  if (e.key === "Escape") { if (shell.escape()) return; if (!$("help").hidden) toggleHelp(false); else if (setMode) endSetMode(); else if (selected) closeCard(); else if (document.activeElement === $("q")) $("q").blur(); else shell.collapse(); return; }
   if (e.metaKey || e.ctrlKey || e.altKey || !glOK) return;
   const t = e.target;
   if (typing(t)) return;
@@ -565,3 +566,108 @@ $("q").addEventListener("keydown", e => {
   const L = curList(); if (!L.length) return; const n = L[0]; n.kind === "emp" ? selectEmp(n.id, true) : selectRank(n.id, true); $("q").blur();
 });
 
+
+// ---------- App shell: settings menu, jump menu, phone bottom sheet, desktop drawer ----------
+const shell = (() => {
+  const root = document.documentElement, rail = $("rail"), stage = $("stage"), railScroll = $("railscroll"), phone = matchMedia("(max-width: 900px)");
+  const UI_KEY = "reston-map-ui", ui = Object.assign({ theme: "auto", size: "m", calm: false, pad: false }, store.get(UI_KEY) || {});
+  const FS = { s: "15px", m: "16px", l: "18px" }, ORDER = ["peek", "half", "full"];
+  let snap = "peek", savedScroll = 0, opener = null, viaKey = false, live = null;
+  // ----- settings -----
+  function applyUI() {
+    if (ui.theme === "light" || ui.theme === "dark") root.dataset.theme = ui.theme; else if (root.dataset.theme) delete root.dataset.theme;
+    root.style.setProperty("--root-fs", FS[ui.size] || FS.m);
+    root.classList.toggle("calm", !!ui.calm); root.classList.toggle("show-pad", !!ui.pad);
+    document.querySelectorAll("#settings .seg").forEach(g => g.querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", String(ui[g.dataset.set] === b.dataset.v))));
+    document.querySelectorAll("#settings .switch").forEach(b => { const on = !!ui[b.dataset.set]; b.setAttribute("aria-checked", String(on)); b.querySelector("em").textContent = on ? "On" : "Off"; });
+  }
+  $("settings").addEventListener("click", e => {
+    const v = e.target.closest(".seg button"), sw = e.target.closest(".switch");
+    if (v) ui[v.parentNode.dataset.set] = v.dataset.v; else if (sw) ui[sw.dataset.set] = !ui[sw.dataset.set]; else if (e.target.closest("#setdone")) return closeMenu(menus[0], true);
+    else return;
+    store.set(UI_KEY, ui); applyUI(); setTimeout(() => { if (glOK && renderer) resize(); }, 0);
+  });
+  // ----- menus -----
+  const menus = [{ btn: $("gear"), el: $("settings") }, { btn: $("jumpbtn"), el: $("jump") }];
+  function closeMenu(m, focus) { if (m.el.hidden) return false; m.el.hidden = true; m.btn.setAttribute("aria-expanded", "false"); if (focus) m.btn.focus(); return true; }
+  function openMenu(m) {
+    menus.forEach(o => o !== m && closeMenu(o, false)); m.el.hidden = false; m.btn.setAttribute("aria-expanded", "true");
+    const f = m.el.querySelector('[aria-pressed="true"], button'); if (f) f.focus();
+  }
+  menus.forEach(m => { m.btn.addEventListener("click", () => m.el.hidden ? openMenu(m) : closeMenu(m, false)); });
+  document.addEventListener("pointerdown", e => { menus.forEach(m => { if (!m.el.hidden && !m.el.contains(e.target) && !m.btn.contains(e.target)) closeMenu(m, false); }); }, true);
+  $("jump").addEventListener("click", e => { if (e.target.closest("button[data-p]")) closeMenu(menus[1], e.detail === 0); });
+  $("sethome").addEventListener("click", () => { closeMenu(menus[1], false); if (phone.matches) setSnap("peek"); });
+  $("settings").addEventListener("keydown", e => {
+    if (e.key !== "Tab") return; const f = [...$("settings").querySelectorAll("button, summary")].filter(n => n.offsetParent !== null); if (!f.length) return;
+    const first = f[0], last = f[f.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); } else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  });
+  function escape() { let any = false; menus.forEach(m => { if (closeMenu(m, true)) any = true; }); return any; }
+  // ----- bottom sheet (phone) -----
+  const heights = () => { const sb = parseFloat(getComputedStyle(rail).paddingBottom) || 0; return { peek: 112 + sb, half: Math.round(window.innerHeight * 0.52), full: window.innerHeight - 76 }; };
+  function setSnap(s) {
+    const g = $("sheetgrab");
+    if (!phone.matches) { rail.style.height = ""; root.style.setProperty("--inset-b", "0px"); setViewInset(0); return; }
+    snap = s; rail.dataset.snap = s; const h = heights()[s]; rail.style.height = h + "px";
+    root.style.setProperty("--inset-b", Math.min(h, window.innerHeight * 0.6) + "px"); setViewInset(h);
+    g.setAttribute("aria-expanded", String(s !== "peek")); g.setAttribute("aria-label", "List panel is " + (s === "peek" ? "collapsed" : s === "half" ? "half open" : "fully open") + ". Arrow up or down to resize.");
+  }
+  const stepSnap = d => setSnap(ORDER[Math.max(0, Math.min(2, ORDER.indexOf(snap) + d))]);
+  $("sheetup").onclick = () => stepSnap(1); $("sheetdn").onclick = () => stepSnap(-1);
+  let drag = null, moved = false;
+  const head = $("sheethead");
+  head.addEventListener("pointerdown", e => {
+    if (!phone.matches || e.target.closest(".iconbtn") || e.button) return;
+    drag = { y: e.clientY, h: rail.getBoundingClientRect().height, t: performance.now(), cur: 0 }; moved = false; try { head.setPointerCapture(e.pointerId); } catch (_) {}
+  });
+  head.addEventListener("pointermove", e => {
+    if (!drag) return; const dy = e.clientY - drag.y; if (Math.abs(dy) > 5) { moved = true; rail.classList.add("dragging"); }
+    if (!moved) return; const H = heights(); drag.cur = Math.max(H.peek, Math.min(H.full, drag.h - dy)); rail.style.height = drag.cur + "px";
+  });
+  const endDrag = () => {
+    if (!drag) return; rail.classList.remove("dragging");
+    if (moved) {
+      const H = heights(), v = (drag.cur - drag.h) / Math.max(1, performance.now() - drag.t), proj = drag.cur + v * 140; // px/ms: a flick carries on a little
+      setSnap(ORDER.reduce((a, b) => Math.abs(H[b] - proj) < Math.abs(H[a] - proj) ? b : a)); setTimeout(() => { moved = false; }, 50);
+    }
+    drag = null;
+  };
+  head.addEventListener("pointerup", endDrag); head.addEventListener("pointercancel", endDrag);
+  $("sheetgrab").addEventListener("click", () => { if (moved) return; setSnap(snap === "peek" ? "half" : snap === "half" ? "full" : "peek"); });
+  $("sheetgrab").addEventListener("keydown", e => {
+    const k = e.key; if (k === "ArrowUp") stepSnap(1); else if (k === "ArrowDown") stepSnap(-1); else if (k === "Home") setSnap("peek"); else if (k === "End") setSnap("full"); else return; e.preventDefault();
+  });
+  function collapse() { if (phone.matches && snap !== "peek") { setSnap("peek"); $("sheetgrab").focus(); } }
+  // ----- drawer / card placement -----
+  function placeCard() {
+    if (phone.matches) { if (card.parentNode !== rail) rail.insertBefore(card, railScroll); } else if (card.parentNode !== stage) stage.appendChild(card);
+    rail.classList.toggle("card-open", phone.matches && !card.hidden);
+  }
+  const selFor = el => {
+    if (!el) return null; if (el.classList.contains("item")) return `.item[data-kind="${el.dataset.kind}"][data-id="${el.dataset.id}"]`; if (el.id) return "#" + el.id;
+    const a = [...el.attributes].find(x => /^data-(open|emp|id)$/.test(x.name)); return a ? `${el.tagName.toLowerCase()}[${a.name}="${a.value}"]` : null;
+  };
+  document.addEventListener("click", e => { const b = e.target.closest("button, a"); viaKey = e.detail === 0; if (b && !card.contains(b)) opener = selFor(b); }, true);
+  app.on("selection-changed", s => {
+    if (s) {
+      if (phone.matches) { if (!rail.classList.contains("card-open")) savedScroll = railScroll.scrollTop; placeCard(); if (snap === "peek") setSnap("half"); }
+      if (viaKey) { card.focus({ preventScroll: true }); viaKey = false; }
+    } else {
+      rail.classList.remove("card-open"); railScroll.scrollTop = savedScroll;
+      const a = document.activeElement;
+      if (!a || a === document.body || card.contains(a)) {
+        const t = (opener && document.querySelector(opener)) || (canvas.offsetParent ? canvas : null); if (t) t.focus({ preventScroll: true });
+      }
+    }
+  });
+  $("tabs").addEventListener("click", e => { if (phone.matches && e.target.closest("[role=tab]") && snap === "peek") setSnap("half"); });
+  $("q").addEventListener("input", () => { if (phone.matches) { if (snap === "peek") setSnap("half"); if (selected) closeCard(); } });
+  phone.addEventListener("change", () => { placeCard(); setSnap(snap); });
+  window.addEventListener("resize", () => { if (phone.matches) setSnap(snap); });
+  app.on("refreshed", () => {
+    clearTimeout(live); live = setTimeout(() => { const c = $("cnt-" + tab); $("livecount").textContent = c && c.textContent ? c.textContent + " shown" : ""; }, 500);
+  });
+  function init() { applyUI(); placeCard(); setSnap("peek"); app.sheet = setSnap; Object.defineProperty(app, "snap", { get: () => snap }); app.ui = ui; }
+  return { init, escape, collapse, setSnap };
+})();
