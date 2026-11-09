@@ -5,6 +5,9 @@ os.chdir(os.path.dirname(os.path.abspath(__file__)))
 shell = open('shell.html').read()
 css = '\n'.join(open(f).read() for f in sorted(glob.glob('parts/*.css')))
 js = '\n'.join(open(f).read() for f in sorted(glob.glob('parts/*.js')))
+try: ap = open('apply_prompt.md').read().strip()
+except OSError: ap = ''
+if ap: js = js.replace('"__APPLY_PROMPT__"', json.dumps(ap))
 data = json.dumps(json.load(open('prep4.json')), separators=(',', ':'))
 routes = open('routes.json').read().strip() if os.path.exists('routes.json') else 'null'  # precomputed by routes.py; null = fall back to miles
 out = shell.replace('/*__CSS__*/', css).replace('/*__JS__*/', js.replace('__ROUTES__', routes).replace('__DATA__', data))

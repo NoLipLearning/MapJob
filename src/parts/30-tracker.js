@@ -28,7 +28,7 @@ PARTS.push(function (app) {
       status: st, closedReason: st === "closed" && REASON[r.closedReason] ? r.closedReason : null,
       dates: { interested: d.interested || "", applied: d.applied || "", lastContact: d.lastContact || "", interview: Array.isArray(d.interview) ? d.interview.slice() : [] },
       nextAction: { text: String(n.text || ""), due: n.due || "", doneAt: n.doneAt || null },
-      materials: { resume: m.resume || "", coverLetter: !!m.coverLetter, writingSample: !!m.writingSample },
+      materials: { resume: m.resume || "", coverLetter: !!m.coverLetter, writingSample: !!m.writingSample, references: !!m.references, transcript: !!m.transcript }, postingText: String(r.postingText || ""),
       contacts: Array.isArray(r.contacts) ? r.contacts.map(c => ({ name: c.name || "", role: c.role || "", how: c.how || "", note: c.note || "" })) : [],
       clearanceSponsor: !!r.clearanceSponsor, notes: String(r.notes || ""),
       createdAt: r.createdAt || nowISO(), updatedAt: r.updatedAt || nowISO()
