@@ -21,7 +21,7 @@ const W_DEFAULT = [35, 30, 20, 15];
 // ---------- State ----------
 let home = store.get("reston-map-home") || { lat: DEFAULT_HOME[0], lon: DEFAULT_HOME[1], isDefault: true };
 let weights = (store.get("reston-map-weights") || W_DEFAULT).slice(0, 4);
-let tab = "emp", query = "", area = "all", kind = "all", hideCleared = store.get("reston-map-hideclear") !== false, rankArea = "all", showCount = 200;
+let tab = "emp", query = "", rankArea = "all", showCount = 200;
 let selected = null; // {kind:'emp'|'rank', id}
 const E = D.emps; const RANK = D.rank;
 E.forEach(e => { [e.x, e.z] = toXZ(e.lat, e.lon); e.roof = e.bp ? e.bp[0] / 10 : 0; });
@@ -70,7 +70,7 @@ function computeRanking() {
 }
 function qmatch(s) { const q = query.trim().toLowerCase(); return !q || s.toLowerCase().includes(q); }
 function visEmp(e) {
-  return app.hooks.filter.every(fn => fn(e)) && (area === "all" || e.reg === area) && (kind === "all" || KINDS[kind][1].includes(e.type)) && !(hideCleared && e.cl === "most") &&
+  return app.hooks.filter.every(fn => fn(e)) &&
     qmatch([e.name, e.addr, e.reg, TYPE_LABEL[e.type], e.roles.join(" "), e.why].join(" "));
 }
 function visRank(r) { return (rankArea === "all" || r.area === rankArea) && qmatch(r.title + " " + r.addr + " " + r.area + " " + (r.emps || []).map(id => (E.find(e => e.id === id) || {}).name).join(" ")); }
@@ -398,13 +398,7 @@ $("sethome").onclick = () => setMode ? endSetMode() : beginSetMode();
 function homeChip() { $("homechip").textContent = home ? "Commute measured from your home" : "Commute measured from Reston until you set your home"; }
 
 // ---------- Filters and tuning ----------
-$("area").innerHTML = `<option value="all">All areas</option>` + AREAS.map(a => `<option>${esc(a)}</option>`).join("");
-$("kind").innerHTML = `<option value="all">All employer types</option>` + Object.entries(KINDS).map(([k, v]) => `<option value="${k}">${esc(v[0])}</option>`).join("");
-$("hideclear").checked = hideCleared;
 $("q").addEventListener("input", e => { query = e.target.value; refresh(); });
-$("area").addEventListener("change", e => { area = e.target.value; refresh(); });
-$("kind").addEventListener("change", e => { kind = e.target.value; refresh(); });
-$("hideclear").addEventListener("change", e => { hideCleared = e.target.checked; store.set("reston-map-hideclear", hideCleared); refresh(); });
 function syncWeights() {
   weights.forEach((w, i) => { $("w" + i).value = w; });
   const tot = weights.reduce((a, b) => a + b, 0) || 1;
@@ -450,8 +444,7 @@ function refresh() {
   let html = "";
   if (tab === "emp") {
     const shown = ranked.slice(0, listLimit);
-    const hidden = hideCleared ? E.filter(e => e.cl === "most").length : 0;
-    html = `<p class="intro">Ranked for you by the weights above.${hidden ? ` ${hidden} employers where most entry jobs need a clearance are hidden.` : ""} Numbers on the map match this list.</p>`;
+    html = `<p class="intro">Ranked for you by the weights above. Numbers on the map match this list.</p>`;
     html += shown.length ? `<div class="items">${shown.map(empRow).join("")}</div>` : `<p class="empty">No employers match. Clear the search or widen the filters.</p>`;
     if (ranked.length > listLimit) html += `<button type="button" class="more" id="more">Show all ${ranked.length}</button>`;
   } else if (app.tabs[tab]) {
