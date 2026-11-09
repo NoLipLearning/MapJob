@@ -1,1 +1,9 @@
 /* 20-routes: styles for this part only. Reuse classes from 05-kit.css first. */
+.rt-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.rt-opt { display: flex; align-items: center; gap: 10px; font-size: 14px; line-height: 1.35; margin: 0; }
+.rt-opt b { font-weight: 700; }
+.rt-sw { flex: none; width: 26px; height: 0; border-top: 4px dashed #e0368a; }
+.rt-sw.alt { border-top: 3px dashed #8a8f98; opacity: .7; }
+.rt-toll { font-weight: 600; color: var(--warm); }
+.rt-metro { margin: 8px 0 0; font-size: 14px; line-height: 1.4; }
+.rt-sec .btn-row { margin-top: 8px; }
