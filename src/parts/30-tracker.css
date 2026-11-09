@@ -1,1 +1,21 @@
 /* 30-tracker: styles for this part only. Reuse classes from 05-kit.css first. */
+.tabs { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 1fr; }
+.tabs button { padding-left: 6px; padding-right: 6px; line-height: 1.2; }
+.sheet-back[hidden] { display: none; }
+.trk-sec .btn-row .btn[aria-pressed="true"] { border-color: var(--st-star); color: var(--st-star); }
+.trk-mini { grid-template-columns: auto 1fr auto; }
+.trk-row { grid-template-columns: 1fr auto; gap: 6px 10px; }
+.trk-row .s { grid-column: 1 / -1; }
+.trk-who { display: grid; min-width: 0; }
+.trk-name { font: inherit; font-weight: 600; font-size: 14px; text-align: left; background: none; border: 0; padding: 0; color: var(--ink); cursor: pointer; min-height: var(--tap); text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 3px; }
+.trk-role { color: var(--muted); font-size: 13px; overflow-wrap: anywhere; }
+.trk-next { color: var(--ink); }
+.trk-acts { display: flex; gap: 6px; justify-content: flex-end; flex-wrap: wrap; grid-column: 1 / -1; }
+.trk-group { margin-top: 14px; }
+.trk-gh { margin: 0 0 8px; font-size: 13px; }
+.trk-closed > summary { cursor: pointer; min-height: var(--tap); display: flex; align-items: center; }
+.trk-closed .kit-row { margin-top: 8px; }
+.trk-rowpill { display: block; margin-top: 2px; }
+.trk-more summary { cursor: pointer; font-size: 13px; font-weight: 600; color: var(--accent); min-height: var(--tap); display: flex; align-items: center; }
+.trk-check span { display: flex; align-items: center; gap: 8px; font-weight: 400; color: var(--ink); min-height: var(--tap); }
+.trk-check input { width: 20px; height: 20px; }
