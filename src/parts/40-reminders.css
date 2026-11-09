@@ -1,1 +1,31 @@
-/* 40-reminders: styles for this part only. Reuse classes from 05-kit.css first. */
+/* 40-reminders: styles for this part only. Reuse classes from 05-kit.css first. Calm colors, no red. */
+#today:empty { display: none; }
+.rem { border: 1px solid var(--line); border-radius: var(--r-m); background: var(--panel); }
+.rem > summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 0 12px; min-height: var(--tap); border-radius: var(--r-m); }
+.rem > summary::-webkit-details-marker { display: none; }
+.rem > summary::before { content: "▸"; color: var(--muted); margin-right: 8px; transition: transform .15s; }
+.rem[open] > summary::before { transform: rotate(90deg); }
+.rem > summary:focus-visible, .rem button:focus-visible, .rem-set summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.rem-title { font-weight: 700; font-size: 14px; margin-right: auto; }
+.rem-state { font-size: 12.5px; color: var(--muted); }
+.rem-body { padding: 2px 12px 12px; }
+.rem-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.rem-item { border: 1px solid var(--line); border-left: 4px solid var(--calm); border-radius: var(--r-m); padding: 10px 12px; display: grid; gap: 8px; background: var(--bg, var(--panel)); }
+.rem-what { display: grid; gap: 1px; min-width: 0; }
+.rem-what b { font-size: 14px; }
+.rem-what span { font-size: 12.5px; color: var(--muted); overflow-wrap: anywhere; }
+.rem-what .rem-when { color: var(--warm); font-weight: 600; }
+.rem-acts, .rem-snz, .rem-foot { display: flex; flex-wrap: wrap; gap: 8px; }
+.rem-acts .btn { min-height: var(--tap); flex: 1 1 auto; }
+.rem-snz { padding-top: 2px; }
+.rem-snz .btn { min-height: var(--tap); }
+.rem-lite { grid-template-columns: 1fr auto; align-items: center; border-left-color: var(--line); }
+.rem-day h4 { margin: 10px 0 6px; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.rem-clear { margin: 8px 0 4px; font-size: 14px; font-weight: 600; color: var(--ok); }
+.rem-foot { margin-top: 12px; }
+.rem-foot .btn { min-height: var(--tap); }
+.rem-foot .btn[aria-pressed="true"] { background: var(--soft); border-color: var(--calm); }
+.rem-set { margin-top: 8px; }
+.rem-set summary { cursor: pointer; font-size: 12.5px; color: var(--muted); min-height: var(--tap); display: flex; align-items: center; }
+.rem-chk input { margin-right: 6px; }
+.rem-cardrow { display: grid; gap: 4px; margin-bottom: 10px; }
