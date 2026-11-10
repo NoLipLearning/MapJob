@@ -8,7 +8,9 @@ js = '\n'.join(open(f).read() for f in sorted(glob.glob('parts/*.js')))
 try: ap = open('apply_prompt.md').read().strip()
 except OSError: ap = ''
 if ap: js = js.replace('"__APPLY_PROMPT__"', json.dumps(ap))
-data = json.dumps(json.load(open('prep4.json')), separators=(',', ':'))
+D = json.load(open('prep4.json'))
+D['offices'] = json.load(open('offices.json')) if os.path.exists('offices.json') else []  # office buildings, see docs/DATA-CONTRACT-v4.md
+data = json.dumps(D, separators=(',', ':'))
 out = shell.replace('/*__CSS__*/', css).replace('/*__JS__*/', js.replace('__DATA__', data))
 open('../reston-hiring-map.html', 'w').write(out)
 print('html bytes', len(out), '| parts:', ', '.join(os.path.basename(f) for f in sorted(glob.glob('parts/*.*'))))
