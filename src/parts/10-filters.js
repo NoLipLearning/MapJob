@@ -6,7 +6,8 @@ PARTS.push(function (app) {
   const STATUS = [["new", "Not started"], ["interested", "Interested"], ["applied", "Applied"], ["interviewing", "Interviewing"], ["closed", "Closed"]];
   // tracker statuses folded into the five filter buckets
   const BUCKET = { star: "interested", interested: "interested", applying: "applied", applied: "applied", interviewing: "interviewing", offer: "interviewing", closed: "closed" };
-  const defaults = () => ({ area: AREAS.slice(), type: TYPES.slice(), cl: ["none", "some"], max: 90, metro: false, toll: false, prog: false, entry: false, status: STATUS.map(s => s[0]) });
+  const defaults = () => ({ area: AREAS.slice(), type: TYPES.slice(), cl: ["none", "some"], max: 90, metro: false, toll: false, prog: false, entry: false, status: STATUS.map(s => s[0]), extra: {} });
+  const EXTRA = []; // toggles added by other parts through app.filters.addToggle
   let F = defaults();
   (function load() {
     const s = app.store.get(KEY); if (!s || typeof s !== "object") return;
@@ -14,6 +15,7 @@ PARTS.push(function (app) {
     sub("area", AREAS); sub("type", TYPES); sub("cl", CLS.map(c => c[0])); sub("status", STATUS.map(c => c[0]));
     if (typeof s.max === "number" && s.max >= 15 && s.max <= 90) F.max = Math.round(s.max / 5) * 5;
     ["metro", "toll", "prog", "entry"].forEach(k => { if (typeof s[k] === "boolean") F[k] = s[k]; });
+    if (s.extra && typeof s.extra === "object") Object.keys(s.extra).forEach(k => { if (s.extra[k] === true) F.extra[k] = true; });
   })();
 
   const hasRoutes = () => !!(app.routes && app.routes.bestMinutes);
@@ -29,6 +31,7 @@ PARTS.push(function (app) {
     if (F.toll && hasToll() && app.routes.hasTollFree(e) === false) return false;
     if (F.prog || F.entry) { if (!((F.prog && e.progs && e.progs.length) || (F.entry && e.s[2] >= 4))) return false; }
     if (hasTracker() && !F.status.includes(bucket(e))) return false;
+    for (const t of EXTRA) if (F.extra[t.id] && !t.test(e)) return false;
     return true;
   }
   app.hooks.filter.push(match);
@@ -43,6 +46,7 @@ PARTS.push(function (app) {
     { id: "cl", label: "Clearance", on: () => !same(F.cl, D0.cl), off: () => { F.cl = D0.cl.slice(); } },
     { id: "commute", label: "Commute", on: () => F.max < 90 || F.metro || F.toll, off: () => { F.max = 90; F.metro = false; F.toll = false; } },
     { id: "entry", label: "Entry path", on: () => F.prog || F.entry, off: () => { F.prog = false; F.entry = false; } },
+    { id: "more", label: "More", on: () => EXTRA.some(t => F.extra[t.id]), off: () => { F.extra = {}; } },
     { id: "status", label: "My status", on: () => hasTracker() && !same(F.status, D0.status), off: () => { F.status = D0.status.slice(); } }
   ];
   const activeGroups = () => GROUPS.filter(g => g.on());
@@ -65,7 +69,7 @@ PARTS.push(function (app) {
 
   const chip = (g, v, label, on) => `<button type="button" class="chip" data-g="${g}" data-v="${esc(v)}" aria-pressed="${on}">${esc(label)}</button>`;
   function build() {
-    const s = [hasRoutes(), hasToll(), hasTracker()].join();
+    const s = [hasRoutes(), hasToll(), hasTracker(), EXTRA.map(t => t.id)].join();
     if (s === sig) return; sig = s;
     const est = hasRoutes() ? "" : " (est.)";
     let h = "";
@@ -77,6 +81,7 @@ PARTS.push(function (app) {
       <button type="button" class="chip" data-t="toll" aria-pressed="false" ${hasToll() ? "" : "disabled"}>Toll-free route</button></div>
       ${hasToll() ? "" : '<p class="kit-note">Toll-free needs route data.</p>'}</fieldset>`;
     h += `<fieldset class="fgrp"><legend>Entry path</legend><div class="chips"><button type="button" class="chip" data-t="prog" aria-pressed="false">Has an internship or fellowship</button><button type="button" class="chip" data-t="entry" aria-pressed="false">Easy entry access</button></div></fieldset>`;
+    if (EXTRA.length) h += `<fieldset class="fgrp"><legend>More</legend><div class="chips">${EXTRA.map(t => `<button type="button" class="chip" data-x="${esc(t.id)}" aria-pressed="false">${esc(t.label)}</button>`).join("")}</div></fieldset>`;
     if (hasTracker()) h += `<fieldset class="fgrp"><legend>My status</legend><div class="chips">${STATUS.map(c => chip("status", c[0], c[1], F.status.includes(c[0]))).join("")}</div></fieldset>`;
     h += `<fieldset class="fgrp wide"><legend>Employer type</legend><div class="chips">${TYPES.map(t => chip("type", t, TYPE_LABEL[t], F.type.includes(t))).join("")}</div></fieldset>`;
     body.innerHTML = h;
@@ -91,6 +96,7 @@ PARTS.push(function (app) {
     build();
     body.querySelectorAll(".chip[data-g]").forEach(b => b.setAttribute("aria-pressed", String(F[b.dataset.g].includes(b.dataset.v))));
     body.querySelectorAll(".chip[data-t]").forEach(b => b.setAttribute("aria-pressed", String(!!F[b.dataset.t] && !b.disabled)));
+    body.querySelectorAll(".chip[data-x]").forEach(b => b.setAttribute("aria-pressed", String(!!F.extra[b.dataset.x])));
     const r = body.querySelector("#f-max");
     if (r) { r.value = F.max; body.querySelector("#f-maxo").textContent = F.max >= 90 ? "any" : "up to " + F.max + " min"; r.setAttribute("aria-valuetext", F.max >= 90 ? "any" : F.max + " minutes"); }
     const n = activeCount(), c = `Showing ${app.ranked.length} of ${E.length}`;
@@ -108,6 +114,7 @@ PARTS.push(function (app) {
     const b = ev.target.closest(".chip"); if (!b || b.disabled) return;
     if (b.dataset.g) { const a = F[b.dataset.g], v = b.dataset.v, i = a.indexOf(v); i < 0 ? a.push(v) : a.splice(i, 1); }
     else if (b.dataset.t) F[b.dataset.t] = !F[b.dataset.t];
+    else if (b.dataset.x) { if (F.extra[b.dataset.x]) delete F.extra[b.dataset.x]; else F.extra[b.dataset.x] = true; }
     changed();
   });
   body.addEventListener("input", ev => { if (ev.target.id === "f-max") { F.max = +ev.target.value; changed(); } });
@@ -151,8 +158,9 @@ PARTS.push(function (app) {
   });
   app.on("tracker-changed", () => app.refresh());
 
-  app.filters = { count, reset, activeCount, match };
+  function addToggle(t) { if (!t || !t.id || typeof t.test !== "function" || EXTRA.some(x => x.id === t.id)) return; EXTRA.push(t); sig = null; app.refresh(); }
+  app.filters = { count, reset, activeCount, match, addToggle };
   place();
   // routes/tracker parts register after this one, so re-check for them once every part has run
-  setTimeout(() => { if (sig !== [hasRoutes(), hasToll(), hasTracker()].join()) app.refresh(); }, 0);
+  setTimeout(() => { if (sig !== [hasRoutes(), hasToll(), hasTracker(), EXTRA.map(t => t.id)].join()) app.refresh(); }, 0);
 });

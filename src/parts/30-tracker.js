@@ -197,7 +197,7 @@ PARTS.push(function (app) {
 
   // ---------- markers + rows ----------
   const cssColor = st => (getComputedStyle(document.documentElement).getPropertyValue("--st-" + st) || "").trim() || "#2c6bb5";
-  app.hooks.marker = e => { const s = tracker.statusOf(e.id); return s ? { color: cssColor(s), glyph: GLYPH[s] } : null; };
+  app.hooks.markers.push(e => { const s = tracker.statusOf(e.id); return s ? { color: cssColor(s), glyph: GLYPH[s], pos: "tr" } : null; });
   const pill = s => `<span class="pill st-${s}"><span aria-hidden="true">${GLYPH[s]}</span>${WORD[s]}</span>`;
   app.hooks.row.push(e => { const s = tracker.statusOf(e.id); return s ? `<span class="s trk-rowpill">${pill(s)}</span>` : ""; });
 

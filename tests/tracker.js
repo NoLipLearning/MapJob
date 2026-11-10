@@ -92,9 +92,9 @@ const FAKE = `(() => {
   // markers
   const third = await page.evaluate(() => app.E[2].id);
   const mk = await page.evaluate(([a, b]) => { app.tracker.star(b, true); const s = ['star', 'interested', 'applying', 'applied', 'interviewing', 'offer', 'closed'], out = {};
-    const t = app.tracker.upsert({ empId: a, role: 'x' }); s.slice(1).forEach(st => { app.tracker.update(t.appId, { status: st }); out[st] = app.hooks.marker(app.E.find(e => e.id === a)); }); out.star = app.hooks.marker(app.E.find(e => e.id === b)); app.tracker.remove(t.appId); return out; }, [third, second]);
+    const t = app.tracker.upsert({ empId: a, role: 'x' }); s.slice(1).forEach(st => { app.tracker.update(t.appId, { status: st }); out[st] = app.hooks.markers[0](app.E.find(e => e.id === a)); }); out.star = app.hooks.markers[0](app.E.find(e => e.id === b)); app.tracker.remove(t.appId); return out; }, [third, second]);
   const gl = Object.values(mk).map(m => m && m.glyph); ok(gl.every(Boolean) && new Set(gl).size === 7 && Object.values(mk).every(m => /\S/.test(m.color)), 'marker hook: 7 distinct glyphs + colors ' + gl.join(' '));
-  ok(await page.evaluate(() => app.hooks.marker({ id: 'zzz-none' })) === null, 'marker hook: null when untracked');
+  ok(await page.evaluate(() => app.hooks.markers[0]({ id: 'zzz-none' })) === null, 'marker hook: null when untracked');
   // reload persistence
   await page.evaluate(() => app.tracker.update(app.tracker.all()[0].appId, { notes: 'persist me' }));
   const before = await page.evaluate(() => JSON.stringify(app.tracker.all().map(r => r.appId).sort()));

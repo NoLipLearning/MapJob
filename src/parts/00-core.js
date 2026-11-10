@@ -34,12 +34,13 @@ const RANK_AREAS = [...new Set(RANK.map(r => r.area))];
 //   app.hooks.filter     [fn(e) -> bool]       extra list/marker filters (all must pass)
 //   app.hooks.commute    fn(e) -> 0..1 | null  replace the commute score when it returns a number
 //   app.hooks.card       [fn(e) -> {slot:'top'|'main'|'bottom', html, bind(cardEl)} | null]  sections of the employer card
-//   app.hooks.marker     fn(e) -> {color, glyph} | null   small status dot drawn on an employer's map badge
+//   app.hooks.markers    [fn(e) -> {color, glyph, pos:"tr"|"tl"} | null]  status dots on an employer's map badge (first per corner wins)
+//   app.employers.add(list) -> number   add employers after load (new ids only), then refresh
 //   app.hooks.row        [fn(e) -> html]       extra line(s) inside a list row
 //   app.addTab({id, label, render(listEl), count(), items(), markers()})  extra list tab
 const app = {
   D, E, RANK, store, esc, miles, toXZ, toLL, $,
-  hooks: { filter: [], commute: null, card: [], marker: null, row: [], rankCard: [] }, tabs: {}, _h: {},
+  hooks: { filter: [], commute: null, card: [], markers: [], row: [], rankCard: [] }, tabs: {}, _h: {},
   on(ev, fn) { (this._h[ev] = this._h[ev] || []).push(fn); },
   emit(ev, d) { (this._h[ev] || []).forEach(fn => { try { fn(d); } catch (x) { console.error("[" + ev + "]", x); } }); },
   get home() { return home; }, get selected() { return selected; }, get tab() { return tab; }, get ranked() { return ranked; },
@@ -51,7 +52,19 @@ const app = {
     const b = document.createElement("button"); b.type = "button"; b.setAttribute("role", "tab"); b.id = "tab-" + t.id; b.setAttribute("aria-selected", "false"); b.setAttribute("aria-controls", "list");
     b.innerHTML = '<span class="tl">' + esc(t.label) + '</span><span class="c" id="cnt-' + t.id + '"></span>'; b.onclick = () => setTab(t.id); $("tabs").appendChild(b);
   },
-  toast(msg, opt) { toast(msg, opt); }
+  toast(msg, opt) { toast(msg, opt); },
+  employers: {
+    add(list) {
+      let n = 0;
+      (list || []).forEach(e => {
+        if (!e || !e.id || E.some(x => x.id === e.id) || typeof e.lat !== "number" || typeof e.lon !== "number") return;
+        const r = Object.assign({ type: "corporate", addr: "", reg: "", url: "", roles: [], progs: [], cl: "none", s: [3, 3, 3], why: "", src: [], notes: "", metro: false }, e);
+        [r.x, r.z] = toXZ(r.lat, r.lon); r.roof = r.bp ? r.bp[0] / 10 : 0; E.push(r); n++;
+      });
+      if (n) refresh();
+      return n;
+    }
+  }
 };
 
 // ---------- Scoring ----------
@@ -205,13 +218,18 @@ function applyTheme() {
 }
 
 // ---------- Markers ----------
-function badge(label, fill, ring, txt, round, status) {
+function badge(label, fill, ring, txt, round, dots) {
   const s = 96, cv = document.createElement("canvas"); cv.width = cv.height = s; const x = cv.getContext("2d");
   const shape = inset => { x.beginPath(); if (round) x.arc(s / 2, s / 2, s / 2 - inset, 0, 7); else if (x.roundRect) x.roundRect(inset, inset, s - 2 * inset, s - 2 * inset, 14); else x.rect(inset, inset, s - 2 * inset, s - 2 * inset); };
   x.fillStyle = ring; shape(4); x.fill(); x.fillStyle = fill; shape(12); x.fill();
   x.fillStyle = txt; x.font = `600 ${label.length > 2 ? 30 : 40}px 'IBM Plex Mono', monospace`; x.textAlign = "center"; x.textBaseline = "middle"; x.fillText(label, s / 2, s / 2 + 2);
-  if (status) { x.fillStyle = ring; x.beginPath(); x.arc(s - 22, 22, 20, 0, 7); x.fill(); x.fillStyle = status.color; x.beginPath(); x.arc(s - 22, 22, 15, 0, 7); x.fill(); x.fillStyle = '#fff'; x.font = "700 20px 'IBM Plex Mono', monospace"; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText(status.glyph || '', s - 22, 23); }
+  (dots || []).forEach(d => { const cx = d.pos === 'tl' ? 22 : s - 22; x.fillStyle = ring; x.beginPath(); x.arc(cx, 22, 20, 0, 7); x.fill(); x.fillStyle = d.color; x.beginPath(); x.arc(cx, 22, 15, 0, 7); x.fill(); x.fillStyle = '#fff'; x.font = "700 20px 'IBM Plex Mono', monospace"; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText(d.glyph || '', cx, 23); });
   return new THREE.CanvasTexture(cv);
+}
+function markerDots(e) {
+  const out = {};
+  app.hooks.markers.forEach(fn => { let d = null; try { d = fn(e); } catch (x) { console.error(x); } if (d) { const p = d.pos === "tl" ? "tl" : "tr"; if (!out[p]) out[p] = Object.assign({}, d, { pos: p }); } });
+  return Object.values(out);
 }
 function makeSprite(tex, order) { const sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, sizeAttenuation: false, depthTest: false, transparent: true })); sp.renderOrder = order; scene.add(sp); return sp; }
 function clearSprites() { sprites.forEach(s => { scene.remove(s.sp); s.sp.material.map.dispose(); s.sp.material.dispose(); }); sprites.length = 0; }
@@ -220,7 +238,7 @@ function rebuildMarkers() {
   clearSprites();
   const ring = cssv("--panel"), dark = ring !== "#fafaf7";
   if (tab === "emp") ranked.slice(0, showCount).forEach(e => {
-    const sp = makeSprite(badge(String(e.rank), cssv("--" + band(e.score)), ring, dark ? "#0e1517" : "#ffffff", true, app.hooks.marker && app.hooks.marker(e)), 100);
+    const sp = makeSprite(badge(String(e.rank), cssv("--" + band(e.score)), ring, dark ? "#0e1517" : "#ffffff", true, markerDots(e)), 100);
     sp.position.set(e.x, Math.max(e.roof, 14) + 10, e.z); sprites.push({ key: "emp:" + e.id, kind: "emp", ref: e, sp });
   });
   if (tab === "emp" && selected && selected.kind === "emp") {
@@ -228,7 +246,7 @@ function rebuildMarkers() {
     if (e && !sprites.some(s => s.ref === e)) { const sp = makeSprite(badge(e.rank ? String(e.rank) : "•", cssv("--" + band(e.score)), ring, dark ? "#0e1517" : "#ffffff", true), 100); sp.position.set(e.x, Math.max(e.roof, 14) + 10, e.z); sprites.push({ key: "emp:" + e.id, kind: "emp", ref: e, sp }); }
   }
   if (app.tabs[tab] && app.tabs[tab].markers) app.tabs[tab].markers().forEach(m => {
-    const sp = makeSprite(badge(String(m.label), cssv("--" + band(m.e.score)), ring, dark ? "#0e1517" : "#ffffff", true, app.hooks.marker && app.hooks.marker(m.e)), 100);
+    const sp = makeSprite(badge(String(m.label), cssv("--" + band(m.e.score)), ring, dark ? "#0e1517" : "#ffffff", true, markerDots(m.e)), 100);
     sp.position.set(m.e.x, Math.max(m.e.roof, 14) + 10, m.e.z); sprites.push({ key: "emp:" + m.e.id, kind: "emp", ref: m.e, sp });
   });
   if (tab === "rank") RANK.filter(visRank).forEach(r => {
