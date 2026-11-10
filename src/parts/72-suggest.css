@@ -1,0 +1,3 @@
+/* 72-suggest */
+.sugg .kit-row { grid-template-columns: 1fr auto; }
+.sugg-act { grid-column: 1 / 3; }

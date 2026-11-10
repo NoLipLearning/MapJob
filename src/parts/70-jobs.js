@@ -64,6 +64,10 @@ PARTS.push(function (app) {
     const prev = j.status; j.status = status; changed(); write("set", id);
     if (status === "dismissed" && !(opt && opt.quiet)) app.toast("Removed from your openings.", { undo: () => setStatus(id, prev, { quiet: true }) });
   }
+  function assign(ids, empId) {
+    let n = 0; (ids || []).forEach(id => { const j = jobs.get(id); if (j && j.empId !== empId) { j.empId = empId; n++; write("set", id); } });
+    if (n) changed(); return n;
+  }
   function save(raw) {
     const url = safeUrl(raw && raw.url); if (!url) throw new Error("Use a full https:// link");
     const src = ["saved-linkedin", "saved-handshake", "saved-other"].includes(raw.source) ? raw.source : "saved-other";
@@ -175,6 +179,6 @@ PARTS.push(function (app) {
   app.on("refreshed", () => { const on = app.tab === "jobs"; if (wasOn && !on) { [...jobs.values()].forEach(j => seen.add(j.id)); saveSeen(); empFilter = null; } wasOn = on; });
 
   loadLocal();
-  app.jobs = { ready: connect(false).then(() => {}), all, byEmp, get: id => jobs.has(id) ? Object.assign({}, jobs.get(id)) : null, setStatus, save, open: openJob,
+  app.jobs = { ready: connect(false).then(() => {}), all, byEmp, assign, get: id => jobs.has(id) ? Object.assign({}, jobs.get(id)) : null, setStatus, save, open: openJob,
     lastRefresh: () => meta && meta.lastRun || null, syncState: () => state };
 });

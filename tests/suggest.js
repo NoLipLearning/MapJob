@@ -1,0 +1,41 @@
+// Suggested employers (72-suggest): node tests/suggest.js [url]
+const { chromium } = require('playwright'); const fs = require('fs'), path = require('path');
+const { FAKE } = require('./fake-claude.js');
+const vendor = f => fs.readFileSync(path.join(__dirname, 'vendor', f));
+const url = process.argv[2] || 'http://localhost:8765/reston-hiring-map.html';
+const res = []; const ok = (c, m) => res.push((c ? 'PASS ' : 'FAIL ') + m);
+const J = (id, title, emp, ll, cl) => ({ id, title, employer: emp, empId: null, loc: Object.assign({ text: 'Herndon, VA' }, ll), url: 'https://example.org/' + id, source: 'indeed', clearance: cl || 'none', entry: 'yes', fit: 70, fitWhy: [], summary: 'x', status: 'new', firstSeen: '2026-11-10', lastSeen: '2026-11-10', verified: true });
+const JOBS = [J('j1', 'Policy Associate', 'Acme Policy Group, LLC', { lat: 38.969, lon: -77.386 }), J('j2', 'Program Assistant', 'Acme Policy Group', { lat: 38.969, lon: -77.386 }), J('j3', 'Research Assistant', 'The Acme Policy Group', { lat: 38.969, lon: -77.386 }, 'sponsor'),
+  Object.assign(J('j4', 'Analyst', 'Nowhere Org', {}), { loc: { text: 'Somewhere' } }), J('j5', 'Clerk', 'Second Org', { lat: 38.95, lon: -77.34 })];
+const seed = `window.__FAKE_OPTS = {}; window.__FAKE_STORE = window.__FAKE_STORE || { docs: ${JSON.stringify(Object.fromEntries(JOBS.map(j => ['jobs/' + j.id, j])))}, subs: [], writes: [] };`;
+(async () => {
+  const b = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist', '--no-sandbox'] });
+  const ctx = await b.newContext({ viewport: { width: 1280, height: 800 } });
+  await ctx.route(/cdn\.jsdelivr\.net\/npm\/three@0\.128\.0\/.*(three\.min|OrbitControls)\.js/, r => r.fulfill({ contentType: 'application/javascript', body: vendor(/OrbitControls/.test(r.request().url()) ? 'OrbitControls.js' : 'three.min.js') }));
+  await ctx.addInitScript(seed); await ctx.addInitScript(FAKE);
+  const p = await ctx.newPage(); const errs = []; p.on('pageerror', e => errs.push(e.message)); p.on('console', m => { if (m.type() === 'error' && !/fonts\.g|net::ERR|favicon/.test(m.text())) errs.push(m.text()); });
+  await p.goto(url); await p.waitForTimeout(2500);
+  const G = await p.evaluate(() => app.suggest.groups().map(g => [g.name, g.jobs.length]));
+  ok(G.length === 2 && G[0][1] === 3, 'name variants grouped (LLC, The); no-coordinates job left out: ' + JSON.stringify(G));
+  await p.evaluate(() => document.getElementById('tab-jobs').click()); await p.waitForTimeout(400);
+  ok(await p.evaluate(() => document.querySelectorAll('#list .sugg [data-key]').length === 2), 'two suggestions shown in Openings');
+  ok(await p.evaluate(() => [...document.querySelectorAll('#list .sugg [data-key]')].every(r => r.querySelectorAll('button').length === 2)), 'two actions per suggestion');
+  const n0 = await p.evaluate(() => app.E.length);
+  await p.click('#list .sugg [data-key] [data-s="add"]'); await p.waitForTimeout(600);
+  const added = await p.evaluate(() => app.E.find(e => e.added));
+  ok(await p.evaluate(() => app.E.length) === n0 + 1 && added && /acme/i.test(added.name), 'Add puts the employer on the map');
+  ok(added && added.cl === 'none' && await p.evaluate(r => AREAS.includes(r), added.reg), 'added employer gets a clearance level and a real area');
+  ok(await p.evaluate(id => app.jobs.byEmp(id).length === 3, added.id), "its jobs now belong to it");
+  ok(await p.evaluate(id => app.ranked.some(e => e.id === id), added.id), 'it is ranked with default filters');
+  await p.evaluate(id => { document.getElementById('tab-emp').click(); app.select(id, true); }, added.id); await p.waitForTimeout(600);
+  ok(await p.evaluate(() => document.getElementById('card').textContent.includes('Ratings are estimates') && document.getElementById('card').textContent.includes('Open jobs here')), 'card says ratings are estimates and lists its jobs');
+  await p.evaluate(() => document.getElementById('tab-jobs').click()); await p.waitForTimeout(300);
+  await p.click('#list .sugg [data-key] [data-s="ignore"]'); await p.waitForTimeout(400);
+  ok(await p.evaluate(() => app.suggest.groups().length === 0 && !document.querySelector('#list .sugg')), 'Ignore removes the last suggestion');
+  ok(await p.evaluate(() => Object.keys(window.__FAKE_STORE.docs).some(k => k.startsWith('myEmployers/')) && Object.keys(window.__FAKE_STORE.docs).some(k => k.startsWith('ignoredEmployers/'))), 'both written to the cloud');
+  await p.reload(); await p.waitForTimeout(2800);
+  ok(await p.evaluate(() => app.E.some(e => e.added && /acme/i.test(e.name))), 'added employer still there after reload');
+  ok(await p.evaluate(() => app.suggest.groups().length === 0), 'ignored employer stays hidden after reload');
+  ok(errs.length === 0, 'no console errors ' + errs.slice(0, 2));
+  await b.close(); console.log(res.join('\n')); process.exit(res.some(r => r.startsWith('FAIL')) ? 1 : 0);
+})();
