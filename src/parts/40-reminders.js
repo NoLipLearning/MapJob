@@ -15,7 +15,7 @@ PARTS.push(function (app) {
   // ---------- local state ----------
   const load = () => { try { return JSON.parse(localStorage.getItem(KEY) || "null") || {}; } catch (e) { return {}; } };
   const saved = load();
-  const S = { settings: Object.assign({}, DEFAULTS, saved.settings), notNow: saved.notNow || {}, iv: saved.iv || {}, fu: saved.fu || {}, open: typeof saved.open === "boolean" ? saved.open : null };
+  const S = { settings: Object.assign({}, DEFAULTS, saved.settings), notNow: saved.notNow || {}, iv: saved.iv || {}, fu: saved.fu || {}, hide: saved.hide || {}, open: typeof saved.open === "boolean" ? saved.open : null };
   const persist = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) { /* blocked: settings last until reload */ } };
 
   // ---------- dates (ISO strings, UTC arithmetic so time zones never shift a day) ----------
@@ -82,6 +82,22 @@ PARTS.push(function (app) {
   }
   const dueItems = today => openItems().filter(x => x.due <= today);
   const dueWords = (due, today) => due < today ? "Ready when you are" : "Due today";
+  // Today (spec 7): due follow-ups first, then one application in progress, then the best new opening (fit 60+). Never more than 3.
+  const hidden = (key, today) => S.hide[key] && S.hide[key] > today;
+  function todayItems(today) {
+    const out = dueItems(today).slice(0, 3).map(x => ({ kind: "followup", x, appId: x.r.appId }));
+    if (out.length < 3) {
+      const taken = new Set(out.map(o => o.appId));
+      const ip = tracker.all().filter(r => r.status === "applying" && !taken.has(r.appId) && !hidden("ip:" + r.appId, today))
+        .sort((a, b) => String(a.createdAt).localeCompare(String(b.createdAt)))[0];
+      if (ip) out.push({ kind: "inprogress", r: ip, appId: ip.appId, text: "Finish applying to " + empName(ip), sub: ip.role || "" });
+    }
+    if (out.length < 3 && app.jobs) {
+      const j = app.jobs.all().filter(j => j.status === "new" && j.fit != null && j.fit >= 60 && !hidden("job:" + j.id, today)).sort((a, b) => b.fit - a.fit)[0];
+      if (j) out.push({ kind: "newjob", j, text: "Look at: " + j.title + (j.employer ? " at " + j.employer : ""), sub: "Fit " + j.fit + (j.fitWhy && j.fitWhy[0] ? " · " + j.fitWhy[0] : "") });
+    }
+    return out;
+  }
 
   // ---------- actions ----------
   const snap = r => ({ nextAction: Object.assign({}, r.nextAction), dates: { lastContact: r.dates.lastContact }, status: r.status, closedReason: r.closedReason });
@@ -155,6 +171,14 @@ PARTS.push(function (app) {
       <button type="button" class="btn sm" data-open="${esc(r.empId)}">Open</button></div>
       ${snoozeFor === r.appId ? `<div class="rem-snz" role="group" aria-label="Snooze for"><button type="button" class="btn sm" data-act="snooze2" data-id="${id}">2 days</button><button type="button" class="btn sm" data-act="snooze7" data-id="${id}">1 week</button>${second ? `<button type="button" class="btn sm" data-act="${second[0]}" data-id="${id}">${second[1]}</button>` : ""}</div>` : ""}</li>`;
   }
+  function extraHTML(it) {
+    const key = it.kind === "inprogress" ? "ip:" + it.appId : "job:" + it.j.id, k = esc(key);
+    const acts = it.kind === "inprogress"
+      ? `<button type="button" class="btn sm primary" data-ipopen="${esc(it.appId)}" data-emp="${esc(it.r.empId)}">Open</button><button type="button" class="btn sm" data-snz="${k}" aria-expanded="${snoozeFor === key}">Snooze</button>`
+      : `<button type="button" class="btn sm primary" data-jopen="${esc(it.j.id)}">Open</button><button type="button" class="btn sm" data-jsave="${esc(it.j.id)}">Save</button><button type="button" class="btn sm" data-jdis="${esc(it.j.id)}">Not for me</button>`;
+    return `<li class="rem-item" data-key="${k}"><div class="rem-what"><b>${esc(it.text)}</b><span>${esc(it.sub)}</span></div><div class="rem-acts">${acts}</div>
+      ${snoozeFor === key ? `<div class="rem-snz" role="group" aria-label="Snooze for"><button type="button" class="btn sm" data-hide="${k}" data-days="2">2 days</button><button type="button" class="btn sm" data-hide="${k}" data-days="7">1 week</button></div>` : ""}</li>`;
+  }
   function weekHTML(today) {
     const end = addDays(today, 7), groups = {};
     openItems().filter(x => x.due <= end).forEach(x => { const k = x.due <= today ? "ready" : x.due; (groups[k] = groups[k] || []).push(x); });
@@ -172,12 +196,12 @@ PARTS.push(function (app) {
       <div class="btn-row"><button type="button" class="btn sm primary" id="rs-save">Save settings</button><button type="button" class="btn sm quiet" id="rs-reset">Use defaults</button></div></details>`;
   }
   function render() {
-    const today = todayISO(), due = dueItems(today), shown = due.slice(0, 3), hasDue = due.length > 0;
+    const today = todayISO(), due = dueItems(today), items = todayItems(today), hasDue = items.length > 0;
     const isOpenPanel = S.open === null ? hasDue : S.open;
     const settingsOpen = !!root.querySelector(".rem-set[open]");
     let body = "";
     if (weekView) body += weekHTML(today);
-    else if (hasDue) body += `<ul class="rem-list">${shown.map(x => itemHTML(x, today)).join("")}</ul>` + (due.length > 3 ? `<p class="kit-note">Take these first. The rest will wait for you.</p>` : "");
+    else if (hasDue) body += `<ul class="rem-list">${items.map(it => it.kind === "followup" ? itemHTML(it.x, today) : extraHTML(it)).join("")}</ul>` + (due.length > 3 ? `<p class="kit-note">Take these first. The rest will wait for you.</p>` : "");
     else body += `<p class="rem-clear"><span aria-hidden="true">✓</span> All caught up for today</p>`;
     body += `<div class="rem-foot"><button type="button" class="btn sm" id="rem-week" aria-pressed="${weekView}">This week</button><button type="button" class="btn sm" id="rem-ics">Add to my calendar</button></div>
       <p class="kit-note" id="rem-msg" role="status">${esc(msgText)}</p>${settingsHTML()}`;
@@ -190,6 +214,11 @@ PARTS.push(function (app) {
     const q = s => root.querySelector(s), qa = s => root.querySelectorAll(s);
     q("#rem-sum").onclick = ev => { ev.preventDefault(); const cur = q("details.rem").hasAttribute("open"); S.open = !cur; persist(); focusKey = "#rem-sum"; render(); };
     qa("[data-open]").forEach(b => b.onclick = () => app.select(b.dataset.open, true));
+    qa("[data-ipopen]").forEach(b => b.onclick = () => { if (app.apply && app.apply.open) app.apply.open(b.dataset.emp, b.dataset.ipopen); else app.select(b.dataset.emp, true); });
+    qa("[data-jopen]").forEach(b => b.onclick = () => app.jobs && app.jobs.open(b.dataset.jopen));
+    qa("[data-jsave]").forEach(b => b.onclick = () => { focusKey = "#rem-sum"; app.jobs.setStatus(b.dataset.jsave, "saved"); });
+    qa("[data-jdis]").forEach(b => b.onclick = () => { focusKey = "#rem-sum"; app.jobs.setStatus(b.dataset.jdis, "dismissed"); });
+    qa("[data-hide]").forEach(b => b.onclick = () => { S.hide[b.dataset.hide] = addDays(todayISO(), +b.dataset.days); persist(); snoozeFor = null; focusKey = "#rem-sum"; msgText = "Snoozed. It will be back in " + (b.dataset.days === "2" ? "2 days." : "a week."); render(); });
     qa("[data-snz]").forEach(b => b.onclick = () => { snoozeFor = snoozeFor === b.dataset.snz ? null : b.dataset.snz; focusKey = '[data-snz="' + b.dataset.snz + '"]'; render(); });
     qa("[data-act]").forEach(b => b.onclick = () => {
       const w = b.dataset.act; snoozeFor = null; focusKey = "#rem-sum";
@@ -221,9 +250,10 @@ PARTS.push(function (app) {
 
   // ---------- wiring ----------
   app.on("tracker-changed", () => { if (writing) return; sync(); render(); });
+  app.on("jobs-changed", () => render());
   render();
   Promise.resolve(tracker.ready).then(() => { sync(); render(); });
   setInterval(() => { sync(); render(); }, TIMING.recheckMs);
   document.addEventListener("visibilitychange", () => { if (!document.hidden) { sync(); render(); } });
-  app.reminders = { sync, render, addBD, nextBD, buildICS, items: () => openItems().map(x => ({ appId: x.r.appId, text: x.r.nextAction.text, due: x.due })), settings: () => Object.assign({}, S.settings), TEXT: T };
+  app.reminders = { sync, render, addBD, nextBD, buildICS, todayItems, items: () => openItems().map(x => ({ appId: x.r.appId, text: x.r.nextAction.text, due: x.due })), settings: () => Object.assign({}, S.settings), TEXT: T };
 });

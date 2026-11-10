@@ -24,3 +24,6 @@ cd src && python3 build4.py && mv reston-hiring-map.html ..
 
 ## Caveats
 Ratings are judgments from public postings as of November 2026. Building heights are estimated when untagged. Rosslyn-Ballston buildings are not loaded yet.
+
+## Refresh openings
+Tell Claude "refresh my map". It follows `docs/REFRESH.md`: searches Indeed, reads your LinkedIn/Handshake/Indeed job-alert emails, checks USAJOBS and employers' careers pages, scores each job against your profile, and writes them to the map's Openings tab. Jobs you save, dismiss or apply to keep that status.

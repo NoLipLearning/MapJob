@@ -25,3 +25,5 @@ UPDATE 5: UI agent merged (fcdda39). Agents' leftover http servers made earlier 
 UPDATE 6: added 3 local/federal employers (SSA Reston, SSA Manassas, VA DVS Ashburn) via src/add_employers.py (run after add_rosslyn.py, then routes.py). Ratings are estimates; ssa.gov blocks automated downloads (do NOT spoof UA). Republished. Open: Eric to say which SSA building he passes; more office types if wanted.
 UPDATE 7: added src/parts/60-links.js (Find openings: LinkedIn/Indeed/Handshake/USAJOBS search links on employer cards; Indeed+LinkedIn near-here on building cards; My pages sheet saved in localStorage reston-map-mylinks; core hook app.hooks.rankCard) + tests/links.js.
 UPDATE 8: v3 spec + plan written (docs/superpowers/specs/2026-11-10-openings-design.md, docs/superpowers/plans/2026-11-10-openings.md). NOT built. Waiting for Eric to review and pick execution method.
+
+UPDATE 9: v3 BUILT (Tasks 1-9) and pushed; 15 browser suites + 28 unit tests pass. Reviewer agent checking refresh logic. Remaining: fix review findings, republish artifact, first real refresh when Eric asks.
