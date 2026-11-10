@@ -68,7 +68,7 @@ class B(unittest.TestCase):
 
     def test_board_kept_for_authoritative_delete(self):
         ex = [{"id": "greenhouse-9", "status": "new", "board": "greenhouse:acme", "firstSeen": "2026-11-08", "lastSeen": "2026-11-08"}]
-        out = build([{"source": "greenhouse", "job_id": "1", "title": "A", "employer": "Acme", "desc": "d", "board": "greenhouse:acme"}], ex, P, EMPS, ROUTES, HOME, T, authoritative={"greenhouse:acme"})
+        out = build([{"source": "greenhouse", "job_id": "1", "title": "Policy Associate", "employer": "Acme", "desc": "d", "board": "greenhouse:acme"}], ex, P, EMPS, ROUTES, HOME, T, authoritative={"greenhouse:acme"})
         self.assertEqual(out["delete"], ["greenhouse-9"]); self.assertEqual(out["set"][0]["board"], "greenhouse:acme")
 
 
