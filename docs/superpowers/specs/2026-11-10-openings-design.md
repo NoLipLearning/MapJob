@@ -29,7 +29,7 @@ Each piece is usable by itself and feeds the next.
 |---|---|---|---|
 | 1 | Openings | `src/parts/70-jobs.js`, `.css`; `docs/REFRESH.md`; `src/refresh/*.py` | existing core, filters |
 | 2 | Suggested employers | `src/parts/72-suggest.js`, `.css` | piece 1 |
-| 3 | Faster applying | edits to `50-apply.js`; `src/parts/74-resume.js`, `.css` | piece 1, tracker |
+| 3 | Faster applying | edits to `50-apply.js` | piece 1, tracker |
 | 4 | Daily plan | edits to `40-reminders.js` | pieces 1 and 3 |
 
 ## 4. Piece 1: Openings
@@ -121,9 +121,8 @@ In order: exact normalized-name match; alias match from a new `aliases` list on 
 
 ## 6. Piece 3: Faster applying
 
-- **Resume once** (`74-resume.js`): the "My profile" panel gains "Load from Indeed", which is done by the refresh session calling `mcp__Indeed__get_resume` and writing the structured profile to the profile document (same shape as `docs/resume-extraction-prompt.md` produces). Pasting the JSON by hand stays as the fallback. The page shows when the profile was last updated and what fields are missing.
+- **Resume once** (in `50-apply.js`): the "My profile" panel gains "Load from Indeed", which is done by the refresh session calling `mcp__Indeed__get_resume` and writing the structured profile to the profile document (same shape as `docs/resume-extraction-prompt.md` produces). Pasting the JSON by hand stays as the fallback. The page shows when the profile was last updated and what fields are missing.
 - **Apply from a job:** "Open" on a job shows its detail with one primary button, **Start applying**. It creates the tracker record (`role` = job title, `postingUrl`, `postingText` = summary plus description when available, `jobId`) and opens the existing apply helper already filled in. "Mark as applied" also sets the job's `status` to `applied`.
-- **Answer bank:** a small list in the profile panel for answers he retypes on every form (work authorization, availability date, salary expectation, references). Each has a Copy button. Stored with the profile.
 
 ## 7. Piece 4: Daily plan
 
@@ -133,7 +132,7 @@ The Today panel (already limited to 3 items with Done, Snooze, Open) changes its
 2. One application in progress (status `applying`), if any: "Finish applying to X".
 3. The best new job with `fit >= 60` he has not acted on: "Look at: Title at Employer".
 
-Still never more than 3, earliest due first within group 1. "All caught up for today" appears when the list is empty. A settings switch "Suggest a new job each day" (default on) controls item 3.
+Still never more than 3, earliest due first within group 1. "All caught up for today" appears when the list is empty.
 
 ## 8. Core changes (small, done first)
 
@@ -157,10 +156,10 @@ Still never more than 3, earliest due first within group 1. "All caught up for t
 
 ## 11. Out of scope
 
-Scheduled or automatic refreshes; logging into or scraping LinkedIn or Handshake; auto-submitting applications; AI calls from inside the page; sharing the map with other people; near-home building detail (still unconfirmed by Eric).
+An answer bank for form questions and a switch to turn off the daily job suggestion (both cut by Eric: build only what was asked for); Scheduled or automatic refreshes; logging into or scraping LinkedIn or Handshake; auto-submitting applications; AI calls from inside the page; sharing the map with other people; near-home building detail (still unconfirmed by Eric).
 
 ## 12. Model assignment for the build
 
 - **Opus:** `src/refresh/normalize.py`, `score.py`, employer matching, `docs/REFRESH.md`, and the three core changes in section 8. These are where a subtle mistake corrupts data or breaks other parts.
-- **Sonnet:** the page parts (70, 72, 74), the apply and Today edits, and Playwright tests.
+- **Sonnet:** the page parts (70, 72), the apply and Today edits, and Playwright tests.
 - **Haiku:** unit-test cases from the spec's tables, and running suites.
