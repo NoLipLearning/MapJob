@@ -17,11 +17,27 @@ PARTS.push(function (app) {
   let seen = new Set(); try { seen = new Set(JSON.parse(localStorage.getItem(SEEN) || "[]")); } catch (_) {}
   const saveSeen = () => { try { localStorage.setItem(SEEN, JSON.stringify([...seen].slice(-2000))); } catch (_) {} };
   const changed = () => { saveLocal(); app.emit("jobs-changed"); app.refresh(); };
-  const queue = []; let writing = false;
-  async function write(op, id) {
-    if (!cloud) return; queue.push([op, id]); if (writing) return; writing = true;
-    try { while (queue.length) { const [o, i] = queue.shift(), ref = cloud.db.collection("jobs").doc(i); if (o === "del") await ref.delete(); else if (jobs.has(i)) await ref.set(jobs.get(i)); } }
-    catch (e) { console.error("[jobs] write failed", e); app.toast("Could not save that change to the cloud. It is kept on this device."); }
+  // Writes: a new job is `set` whole; a change to an existing one is an `update` of just the changed fields, so it cannot
+  // overwrite fields a refresh wrote meanwhile. Until a change is confirmed, `pend` keeps it on top of incoming snapshots.
+  const queue = [], pend = new Map(); let writing = false, retried = false;
+  function write(op, id, patch) {
+    if (op === "update") pend.set(id, Object.assign(pend.get(id) || {}, patch));
+    if (!cloud) return; queue.push([op, id, patch]); drain();
+  }
+  async function drain() {
+    if (writing || !cloud) return; writing = true;
+    while (queue.length) {
+      const [o, i, patch] = queue[0], ref = cloud.db.collection("jobs").doc(i);
+      try {
+        if (o === "set") await ref.set(jobs.get(i)); else await ref.update(patch);
+        queue.shift(); retried = false;
+        if (o === "update" && !queue.some(q => q[1] === i)) pend.delete(i);
+      } catch (e) {
+        console.error("[jobs] write failed", e);
+        if (!retried) { retried = true; writing = false; setTimeout(drain, TIMING.retry); return; }
+        queue.shift(); retried = false; app.toast("Could not save that change to the cloud. It is kept on this device.");
+      }
+    }
     writing = false;
   }
   function connect(isRetry) {
@@ -32,7 +48,7 @@ PARTS.push(function (app) {
       await new Promise((res, rej) => {
         db.collection("jobs").onSnapshot(snap => {
           let did = false;
-          snap.docChanges().forEach(ch => { const id = ch.doc.id; if (ch.type === "removed") { if (jobs.delete(id)) did = true; } else { jobs.set(id, Object.assign({ id }, ch.doc.data())); did = true; } });
+          snap.docChanges().forEach(ch => { const id = ch.doc.id; if (ch.type === "removed") { if (jobs.delete(id)) did = true; } else { jobs.set(id, Object.assign({ id }, ch.doc.data(), pend.get(id) || {})); did = true; } });
           if (did && state === "cloud") changed(); res();
         }, rej);
       });
@@ -61,11 +77,11 @@ PARTS.push(function (app) {
   }
   function setStatus(id, status, opt) {
     const j = jobs.get(id); if (!j || j.status === status) return;
-    const prev = j.status; j.status = status; changed(); write("set", id);
+    const prev = j.status; j.status = status; changed(); write("update", id, { status });
     if (status === "dismissed" && !(opt && opt.quiet)) app.toast("Removed from your openings.", { undo: () => setStatus(id, prev, { quiet: true }) });
   }
   function assign(ids, empId) {
-    let n = 0; (ids || []).forEach(id => { const j = jobs.get(id); if (j && j.empId !== empId) { j.empId = empId; n++; write("set", id); } });
+    let n = 0; (ids || []).forEach(id => { const j = jobs.get(id); if (j && j.empId !== empId) { j.empId = empId; n++; write("update", id, { empId }); } });
     if (n) changed(); return n;
   }
   function save(raw) {
@@ -181,7 +197,7 @@ PARTS.push(function (app) {
   // a tracker record started from a job, once applied, marks that job applied too
   app.on("tracker-changed", () => {
     if (!app.tracker) return;
-    app.tracker.all().forEach(r => { if (r.jobId && ["applied", "interviewing", "offer"].includes(r.status)) { const j = jobs.get(r.jobId); if (j && j.status !== "applied") { j.status = "applied"; saveLocal(); write("set", r.jobId); app.emit("jobs-changed"); } } });
+    app.tracker.all().forEach(r => { if (r.jobId && ["applied", "interviewing", "offer"].includes(r.status)) { const j = jobs.get(r.jobId); if (j && j.status !== "applied") { j.status = "applied"; saveLocal(); write("update", r.jobId, { status: "applied" }); app.emit("jobs-changed"); } } });
   });
   loadLocal();
   app.jobs = { ready: connect(false).then(() => {}), all, byEmp, assign, get: id => jobs.has(id) ? Object.assign({}, jobs.get(id)) : null, setStatus, save, open: openJob,

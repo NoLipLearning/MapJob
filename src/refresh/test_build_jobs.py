@@ -12,7 +12,7 @@ class B(unittest.TestCase):
     def test_alert_job_matches_and_scores(self):
         raw = [{"source": "linkedin", "url": "https://www.linkedin.com/comm/jobs/view/111/?trk=x", "title": "Claims Specialist", "employer": "Social Security Administration", "desc": "Entry-level. Public trust background check.", "posted": "Posted 2 days ago"}]
         j = build(raw, [], P, EMPS, ROUTES, HOME, T)["set"][0]
-        self.assertEqual((j["id"], j["empId"], j["minutes"], j["entry"], j["clearance"], j["posted"]), ("linkedin-111", "ssa-reston-field-office", 5, "yes", "none", "2026-11-08"))
+        self.assertEqual((j["id"], j["empId"], j["minutes"], j["entry"], j["clearance"], j["posted"]), ("linkedin-111", "ssa-reston-field-office", 5, "yes", "sponsor", "2026-11-08"))
         self.assertGreaterEqual(j["fit"], 80)
 
     def test_same_job_from_two_alerts_is_one(self):
@@ -25,8 +25,15 @@ class B(unittest.TestCase):
         self.assertEqual(j["clearance"], "required")
 
     def test_saved_without_text(self):
-        j = build([{"source": "saved-handshake", "id": "saved-1", "url": "https://app.joinhandshake.com/jobs/1"}], [{"id": "saved-1", "status": "saved", "firstSeen": "2026-11-09", "lastSeen": "2026-11-09"}], P, EMPS, ROUTES, HOME, T)["set"][0]
-        self.assertEqual((j["status"], j["fit"], j["clearance"], j["verified"]), ("saved", None, "unknown", False))
+        out = build([{"source": "saved-handshake", "id": "saved-1", "url": "https://app.joinhandshake.com/jobs/1"}], [{"id": "saved-1", "status": "saved", "fit": None, "clearance": "unknown", "firstSeen": "2026-11-09", "lastSeen": "2026-11-09"}], P, EMPS, ROUTES, HOME, T)
+        p = out["update"][0]["patch"]
+        self.assertNotIn("status", p); self.assertNotIn("fit", p); self.assertNotIn("clearance", p)
+
+    def test_reseen_without_text_keeps_good_data(self):
+        ex = [{"id": "indeed-z", "status": "new", "clearance": "required", "fit": 20, "summary": "Active TS/SCI required", "firstSeen": "2026-11-01", "lastSeen": "2026-11-01"}]
+        out = build([{"source": "indeed", "job_id": "z", "title": "Intelligence Analyst", "employer": "X"}], ex, P, EMPS, ROUTES, HOME, T)
+        p = out["update"][0]["patch"]
+        self.assertNotIn("clearance", p); self.assertNotIn("fit", p); self.assertNotIn("summary", p)
 
     def test_non_https_url_dropped(self):
         j = build([{"source": "web", "url": "http://x.org/j", "title": "Analyst", "employer": "X"}], [], P, EMPS, ROUTES, HOME, T)["set"][0]

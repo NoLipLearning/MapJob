@@ -8,6 +8,7 @@ const FAKE = `(() => {
   const notify = (changes) => store.subs.forEach(s => { const ch = changes.filter(c => parent(c.path) === s.path); if (ch.length) s.next({ docs: [], size: 0, empty: false, metadata: {}, docChanges: () => ch.map(c => ({ type: c.type, doc: snapDoc(c.path, c.data || {}), oldIndex: -1, newIndex: -1 })) }); });
   const col = path => ({ path, doc: id => ({ id, path: path + '/' + id,
       set: async d => { const p = path + '/' + id; const had = p in store.docs; store.docs[p] = JSON.parse(JSON.stringify(d)); store.writes.push(['set', p]); setTimeout(() => notify([{ type: had ? 'modified' : 'added', path: p, data: d }]), 0); },
+      update: async d => { const p = path + '/' + id; if (!(p in store.docs)) throw new Error('not-found'); store.docs[p] = Object.assign({}, store.docs[p], JSON.parse(JSON.stringify(d))); store.writes.push(['update', p]); setTimeout(() => notify([{ type: 'modified', path: p, data: store.docs[p] }]), 0); },
       delete: async () => { const p = path + '/' + id; if (p in store.docs) { const d = store.docs[p]; delete store.docs[p]; store.writes.push(['delete', p]); setTimeout(() => notify([{ type: 'removed', path: p, data: d }]), 0); } },
       get: async () => ({ id, exists: path + '/' + id in store.docs, data: () => store.docs[path + '/' + id] }) }),
     onSnapshot(next) { const s = { path, next }; store.subs.push(s); const ch = Object.keys(store.docs).filter(k => parent(k) === path).map(k => ({ type: 'added', path: k, data: store.docs[k] }));

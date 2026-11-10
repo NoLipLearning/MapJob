@@ -19,7 +19,7 @@ Follow this when Eric says "refresh my map" (or similar). It fills the map's **O
 ### 1. Read state
 
 1. `Artifact read` on the URL. Check the header says Eric is the owner and that the page is not shared with anyone else. **If it is shared, stop and ask Eric** before writing jobs to a collection other people can read.
-2. `ArtifactData list` collection `jobs` (all pages) and save to `$S/existing.json` as a JSON list. Note the `lastRun` date from `ArtifactData get` `meta/refresh` (absent on the first run).
+2. `ArtifactData list` collection `jobs`, **following every page until there is no next page**, and save all documents to `$S/existing.json` as one JSON list. Write down the total. `build_jobs.py` prints how many it read; if the numbers differ, stop. A missing file stops the build on purpose. Note the `lastRun` date from `ArtifactData get` `meta/refresh` (absent on the first run).
 3. `ArtifactData list` collection `myEmployers` and save to `$S/my.json` (a list; empty if none).
 4. Profile: the page keeps it privately at collection `data/users/<Eric's user id>/profile/mine`, document `main`. Try `ArtifactData get` on it; its `json` field holds the profile as a JSON string. If it cannot be read, ask Eric once: "Paste your profile JSON, or say 'use Indeed' to load it from your Indeed resume." Only call `mcp__Indeed__get_resume` if he says so. Save the parts the score uses to `$S/profile.json`: `{"keywords_for_job_matching": [...], "target_roles_implied": [...]}`. Do not save the profile anywhere in the repo.
 
@@ -66,8 +66,9 @@ It prints the counts and the top five. `--geocode` looks up at most 20 new place
 
 One `ArtifactData batch` call to the artifact:
 
-- `set` each document in `writes.json` → `set` in collection `jobs`, document id = its `id`.
-- `delete` each id in `writes.json` → `delete`.
+- each document in `writes.json` → `set` → `set` in collection `jobs`, document id = its `id` (new jobs only).
+- each entry in `writes.json` → `update` → `update` collection `jobs`, document `id`, with its `patch`. Patches never contain `status` or `firstSeen`, so a job Eric dismissed or saved during the refresh keeps his choice. Never turn an update into a `set`.
+- each id in `writes.json` → `delete` → `delete`.
 - `set` `meta/refresh` = `writes.json` → `meta`.
 
 If the batch fails, nothing was written; report it and stop. Do not retry more than once.

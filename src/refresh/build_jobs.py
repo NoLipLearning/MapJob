@@ -27,6 +27,7 @@ def best_minutes(routes, emp_id):
 
 def build(raw, existing, profile, employers, routes, home, today, geocode=None):
     by_id = {e["id"]: e for e in employers}
+    known = {j["id"] for j in existing}
     jobs = []
     for r in raw:
         src = r.get("source") or "web"
@@ -54,7 +55,9 @@ def build(raw, existing, profile, employers, routes, home, today, geocode=None):
             clearance=classify_clearance(text) if desc or title != "Saved job" else "unknown",
             entry=classify_entry(title, desc) if desc or title != "Saved job" else "unknown",
             summary=desc[:280] or None, verified=not src.startswith("saved-"), minutes=mins)
-        if title == "Saved job" and not desc:
+        if not desc and (jid in known or title == "Saved job"):
+            # nothing new to read: leave what the db already knows (plan_writes skips empty values)
+            job.update(clearance=None, entry=None, summary=None)
             job["fit"], job["fitWhy"] = None, []
         else:
             job["fit"], job["fitWhy"] = score(dict(job, desc=desc), profile, mins)
@@ -93,12 +96,22 @@ def main():
     a.add_argument("--geocode", action="store_true")
     o = a.parse_args()
     load = lambda p, d: json.load(open(p)) if p and os.path.exists(p) else d
+
+    def must_list(p, what):
+        # a missing or unreadable file must stop the refresh: treating it as empty would reset every job's status
+        if not os.path.exists(p): raise SystemExit("Stopped: %s file not found: %s" % (what, p))
+        try: v = json.load(open(p))
+        except Exception as e: raise SystemExit("Stopped: %s file is not valid JSON (%s)" % (what, e))
+        if not isinstance(v, list): raise SystemExit("Stopped: %s file must be a JSON list" % what)
+        return v
+    raw, existing = must_list(o.raw, "raw jobs"), must_list(o.existing, "existing jobs")
     D = json.load(open(os.path.join(SRC, "prep4.json"))); routes = load(os.path.join(SRC, "routes.json"), {})
     emps = D["emps"] + load(o.extra_employers, [])
     h = (routes.get("meta") or {}).get("home") or {}
     home = (h["lat"], h["lon"]) if "lat" in h else None
     today = date.fromisoformat(o.today) if o.today else date.today()
-    plan = build(load(o.raw, []), load(o.existing, []), load(o.profile, {}), emps, routes, home, today, make_geocoder() if o.geocode else None)
+    plan = build(raw, existing, load(o.profile, {}), emps, routes, home, today, make_geocoder() if o.geocode else None)
+    print("existing jobs read: %d (must equal the number of documents listed in step 1)" % len(existing))
     plan["meta"] = {"lastRun": today.isoformat(), "counts": plan["counts"], "sourcesTried": [s for s in o.tried.split(",") if s], "sourcesFailed": [s for s in o.failed.split(",") if s]}
     json.dump(plan, open(o.out, "w"), indent=1)
     print("new %(new)d  updated %(updated)d  removed %(removed)d" % plan["counts"])

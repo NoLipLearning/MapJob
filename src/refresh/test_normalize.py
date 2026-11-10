@@ -43,12 +43,36 @@ class T(unittest.TestCase):
         emps = [{"id": "ssa-reston-field-office", "name": "Social Security Administration, Reston Field Office", "aliases": ["SSA", "Social Security Administration"], "lat": 38.9441, "lon": -77.3181},
                 {"id": "ssa-manassas-field-office", "name": "Social Security Administration, Manassas Field Office", "aliases": ["SSA", "Social Security Administration"], "lat": 38.7521, "lon": -77.4817},
                 {"id": "brookings", "name": "Brookings Institution", "lat": 38.909, "lon": -77.04}]
-        self.assertEqual(match_employer({"employer": "SSA", "loc": {}}, emps), "ssa-reston-field-office")
+        self.assertIsNone(match_employer({"employer": "SSA", "loc": {}}, emps))  # two offices, nothing says which
+        self.assertEqual(match_employer({"employer": "SSA", "loc": {"text": "Reston, VA"}}, emps), "ssa-reston-field-office")
+        self.assertEqual(match_employer({"employer": "SSA", "loc": {"text": "Manassas, VA"}}, emps), "ssa-manassas-field-office")
         self.assertEqual(match_employer({"employer": "Social Security Administration", "loc": {"lat": 38.75, "lon": -77.48}}, emps), "ssa-manassas-field-office")
         self.assertEqual(match_employer({"employer": "The Brookings Institution", "loc": {}}, emps), "brookings")
         self.assertIsNone(match_employer({"employer": "Acme Widgets", "loc": {"lat": 38.80, "lon": -77.10}}, emps))
         self.assertEqual(match_employer({"employer": "Brookings Inst. (Foreign Policy)", "loc": {"lat": 38.9091, "lon": -77.0401}}, emps), "brookings")
         self.assertIsNone(match_employer({"employer": "Acme Institution", "loc": {"lat": 38.80, "lon": -77.10}}, emps))
+
+    def test_review_cases(self):
+        self.assertNotEqual(job_id("web", {"url": "https://www.indeed.com/rc/clk?jk=aaa"}), job_id("web", {"url": "https://www.indeed.com/rc/clk?jk=bbb"}))
+        self.assertEqual(job_id("web", {"url": "https://www.indeed.com/rc/clk?jk=aaa&from=email"}), "indeed-aaa")
+        self.assertNotEqual(job_id("careers", {"url": "https://x.org/careers?id=1"}), job_id("careers", {"url": "https://x.org/careers?id=2"}))
+        self.assertEqual(job_id("web", {"url": "https://x.org/a"}), job_id("web", {"url": "https://www.x.org/a"}))
+        self.assertEqual(job_id("web", {"url": "https://www.linkedin.com/jobs/view/senior-analyst-at-acme-4012345678"}), "linkedin-4012345678")
+        self.assertEqual(job_id("web", {"url": "https://www.linkedin.com/jobs/collections/recommended/?currentJobId=4012345679"}), "linkedin-4012345679")
+        self.assertNotEqual(job_id("web", {"url": "", "title": "A", "employer": "X"}), job_id("web", {"url": "", "title": "B", "employer": "X"}))
+        for txt in ("No clearance required", "No security clearance required.", "No polygraph required"):
+            self.assertEqual(classify_clearance(txt), "none", txt)
+        for txt in ("Must have an active driver's license.", "Ability to obtain a valid driver's license", "Obtain and maintain licensure"):
+            self.assertEqual(classify_clearance(txt), "unknown", txt)
+        self.assertEqual(classify_clearance("Public Trust position required"), "sponsor")
+        self.assertEqual(classify_clearance("Security clearance is required"), "required")
+        self.assertEqual(classify_clearance("TS//SCI"), "required")
+        self.assertEqual(classify_entry("Senior Center Aide", ""), "unknown")
+        self.assertEqual(classify_entry("Lead Poisoning Prevention Specialist", ""), "unknown")
+        self.assertEqual(classify_entry("Analyst", "15+ years of experience"), "no")
+        self.assertEqual(classify_entry("Analyst", "This is not an entry level role"), "no")
+        emps = [{"id": "rs", "name": "Reston Solutions Inc", "lat": 38.95, "lon": -77.35}, {"id": "nolatlon", "name": "Apex Widgets"}]
+        self.assertIsNone(match_employer({"employer": "Apex Solutions LLC", "loc": {"lat": 38.9501, "lon": -77.3501}}, emps))
 
     def test_posted(self):
         t = date(2026, 11, 10)

@@ -8,8 +8,9 @@ class W(unittest.TestCase):
     def test_keeps_status(self):
         ex = [{"id": "a", "title": "Old", "status": "saved", "firstSeen": "2026-11-01", "lastSeen": "2026-11-01"}]
         out = plan_writes(ex, [{"id": "a", "title": "New title", "status": "new"}], T)
-        j = out["set"][0]
-        self.assertEqual((j["status"], j["firstSeen"], j["lastSeen"], j["title"]), ("saved", "2026-11-01", T, "New title"))
+        u = out["update"][0]
+        self.assertEqual((u["id"], u["patch"]), ("a", {"title": "New title", "lastSeen": T}))
+        self.assertEqual(out["set"], [])
         self.assertEqual(out["counts"], {"new": 0, "updated": 1, "removed": 0})
 
     def test_new_gets_dates(self):
@@ -28,7 +29,7 @@ class W(unittest.TestCase):
     def test_dismissed_untouched(self):
         ex = [{"id": "d", "status": "dismissed", "lastSeen": "2026-09-01", "firstSeen": "2026-09-01"}]
         out = plan_writes(ex, [{"id": "d", "title": "Still live"}], T)
-        self.assertEqual((out["set"], out["delete"]), ([], []))
+        self.assertEqual((out["set"], out["update"], out["delete"]), ([], [], []))
 
     def test_duplicate_incoming_merged(self):
         out = plan_writes([], [{"id": "e", "title": "A"}, {"id": "e", "title": "A", "pay": "$20/hr"}], T)
@@ -36,8 +37,12 @@ class W(unittest.TestCase):
         self.assertEqual(out["counts"]["new"], 1)
 
     def test_incoming_cannot_set_status(self):
-        j = plan_writes([{"id": "f", "status": "applied", "firstSeen": T, "lastSeen": T}], [{"id": "f", "status": "dismissed"}], T)["set"][0]
-        self.assertEqual(j["status"], "applied")
+        u = plan_writes([{"id": "f", "status": "applied", "firstSeen": T, "lastSeen": T}], [{"id": "f", "status": "dismissed", "firstSeen": "2020-01-01"}], T)["update"][0]
+        self.assertNotIn("status", u["patch"]); self.assertNotIn("firstSeen", u["patch"])
+
+    def test_unknown_never_replaces_known(self):
+        u = plan_writes([{"id": "g", "status": "new", "clearance": "required", "fit": 20, "firstSeen": T, "lastSeen": T}], [{"id": "g", "clearance": "unknown", "fit": None}], T)["update"][0]
+        self.assertEqual(u["patch"], {"lastSeen": T})
 
 
 if __name__ == "__main__":
