@@ -82,7 +82,7 @@ If the batch fails, nothing was written; report it and stop. Do not retry more t
 
 ### 9. Only when `myEmployers` has entries
 
-Employers Eric added from suggestions live only in the database until they are built in. To build them in: add each to `NEW` in `src/add_employers.py` (with their real address), run `python3 add_employers.py`, then `python3 routes.py`, then `python3 build4.py`, run the test suites, commit, push, and ask Eric before republishing the page.
+Employers Eric added from suggestions live only in the database until they are built in. To build them in: add each to `NEW` in `src/add_employers.py` (with their real address), run `python3 add_employers.py`, then `python3 build4.py`, run the test suites, commit, push, and ask Eric before republishing the page.
 
 ## Last dry run
 

@@ -15,7 +15,7 @@ const res = []; const ok = (c, m) => res.push((c ? 'PASS ' : 'FAIL ') + m);
     const id = await p.evaluate(() => app.ranked[0].id);
     await p.evaluate(id => app.select(id, true), id); await p.waitForTimeout(800);
     const card = await p.evaluate(() => document.getElementById('card').innerText);
-    ok(/Getting there/i.test(card), `${name}: card has Getting there (routes)`);
+    ok(/Commute/.test(card) && / mi/.test(card), `${name}: card shows straight-line commute`);
     ok(/Track this|Star/i.test(card), `${name}: card has tracker controls`);
     ok(/Apply helper|Start applying/i.test(card), `${name}: card has apply helper entry`);
     await p.evaluate(async id => { await app.tracker.ready; const t = new Date().toISOString().slice(0, 10); app.tracker.upsert({ empId: id, role: 'Test Analyst', status: 'applied', dates: { applied: t }, nextAction: { text: 'Follow up by email', due: t, doneAt: null } }); }, id);

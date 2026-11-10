@@ -50,7 +50,6 @@ const ARGS = ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swif
   await changes('Clearance (turn Sponsors off)', '.chip[data-g=cl][data-v=some]', true); await page.evaluate(() => app.filters.reset());
   await changes('Clearance (turn Mostly on)', '.chip[data-g=cl][data-v=most]', false); await page.evaluate(() => app.filters.reset());
   await changes('Metro', '.chip[data-t=metro]', true); await page.evaluate(() => app.filters.reset());
-  await changes('Toll-free', '.chip[data-t=toll]', true); await page.evaluate(() => app.filters.reset());
   await changes('Internship/fellowship', '.chip[data-t=prog]', true); await page.evaluate(() => app.filters.reset());
   await changes('Easy entry', '.chip[data-t=entry]', true); await page.evaluate(() => app.filters.reset());
   await changes('My status (Closed off)', '.chip[data-g=status][data-v=closed]', true); await page.evaluate(() => app.filters.reset());
@@ -101,12 +100,10 @@ const ARGS = ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swif
 
   // with the real routes + tracker parts present
   page = await open({ width: 1280, height: 800 }, false);
-  ok(!(await page.locator('#filters .chip[data-t=toll]').isDisabled()), 'real routes: Toll-free chip enabled');
   ok(await page.locator('#filters legend', { hasText: 'My status' }).count() === 1, 'real tracker: My status group shown');
-  ok(!/est\./.test(await page.locator('#filters .fslide label').textContent()), 'real routes: slider not labeled est.');
+  ok(await page.locator('#filters .chip[data-t=toll]').count() === 0, 'no toll filter (routing removed)');
   // fallbacks when those parts are absent: remove them, then make the bar redraw
   await page.evaluate(() => { delete app.routes; delete app.tracker; app.emit('filters-changed'); app.refresh(); }); await page.waitForTimeout(400);
-  ok(await page.locator('#filters .chip[data-t=toll]').isDisabled(), 'no routes: Toll-free disabled with note');
   ok(await page.locator('#filters legend', { hasText: 'My status' }).count() === 0, 'no tracker: My status hidden');
   ok(/est\./.test(await page.locator('#filters .fslide label').textContent()), 'no routes: slider labeled est.');
   await page.context().close();

@@ -1,5 +1,5 @@
 """Add 'local and federal offices on your commute' employers to prep4.json (and prep4.base.json, employers.json). Idempotent by id.
-Run from src/ AFTER add_rosslyn.py:  python3 add_employers.py   then  python3 routes.py
+Run from src/ AFTER add_rosslyn.py:  python3 add_employers.py
 Addresses come from official pages seen in search (SSA open data, loudoun.gov, dvs.virginia.gov) or are flagged unverified.
 Ratings s=[role_fit, clearance_access, entry_access] (1-5) are ESTIMATES, not researched. Nothing here is a confirmed posting."""
 import json, math, os, time, urllib.request, urllib.parse

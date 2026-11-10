@@ -6,7 +6,7 @@ PARTS.push(function (app) {
   const STATUS = [["new", "Not started"], ["interested", "Interested"], ["applied", "Applied"], ["interviewing", "Interviewing"], ["closed", "Closed"]];
   // tracker statuses folded into the five filter buckets
   const BUCKET = { star: "interested", interested: "interested", applying: "applied", applied: "applied", interviewing: "interviewing", offer: "interviewing", closed: "closed" };
-  const defaults = () => ({ area: AREAS.slice(), type: TYPES.slice(), cl: ["none", "some"], max: 90, metro: false, toll: false, prog: false, entry: false, status: STATUS.map(s => s[0]), extra: {} });
+  const defaults = () => ({ area: AREAS.slice(), type: TYPES.slice(), cl: ["none", "some"], max: 90, metro: false, prog: false, entry: false, status: STATUS.map(s => s[0]), extra: {} });
   const EXTRA = []; // toggles added by other parts through app.filters.addToggle
   let F = defaults();
   (function load() {
@@ -14,7 +14,7 @@ PARTS.push(function (app) {
     const sub = (k, all) => { if (Array.isArray(s[k])) F[k] = s[k].filter(v => all.includes(v)); };
     sub("area", AREAS); sub("type", TYPES); sub("cl", CLS.map(c => c[0])); sub("status", STATUS.map(c => c[0]));
     if (typeof s.max === "number" && s.max >= 15 && s.max <= 90) F.max = Math.round(s.max / 5) * 5;
-    ["metro", "toll", "prog", "entry"].forEach(k => { if (typeof s[k] === "boolean") F[k] = s[k]; });
+    ["metro", "prog", "entry"].forEach(k => { if (typeof s[k] === "boolean") F[k] = s[k]; });
     if (s.extra && typeof s.extra === "object") Object.keys(s.extra).forEach(k => { if (s.extra[k] === true) F.extra[k] = true; });
   })();
 
@@ -28,7 +28,6 @@ PARTS.push(function (app) {
     if (!F.area.includes(e.reg) || !F.type.includes(e.type) || !F.cl.includes(e.cl)) return false;
     if (F.max < 90 && minutes(e) > F.max) return false;
     if (F.metro && !e.metro) return false;
-    if (F.toll && hasToll() && app.routes.hasTollFree(e) === false) return false;
     if (F.prog || F.entry) { if (!((F.prog && e.progs && e.progs.length) || (F.entry && e.s[2] >= 4))) return false; }
     if (hasTracker() && !F.status.includes(bucket(e))) return false;
     for (const t of EXTRA) if (F.extra[t.id] && !t.test(e)) return false;
@@ -44,7 +43,7 @@ PARTS.push(function (app) {
     { id: "area", label: "Area", on: () => !same(F.area, D0.area), off: () => { F.area = D0.area.slice(); } },
     { id: "type", label: "Employer type", on: () => !same(F.type, D0.type), off: () => { F.type = D0.type.slice(); } },
     { id: "cl", label: "Clearance", on: () => !same(F.cl, D0.cl), off: () => { F.cl = D0.cl.slice(); } },
-    { id: "commute", label: "Commute", on: () => F.max < 90 || F.metro || F.toll, off: () => { F.max = 90; F.metro = false; F.toll = false; } },
+    { id: "commute", label: "Commute", on: () => F.max < 90 || F.metro, off: () => { F.max = 90; F.metro = false; } },
     { id: "entry", label: "Entry path", on: () => F.prog || F.entry, off: () => { F.prog = false; F.entry = false; } },
     { id: "more", label: "More", on: () => EXTRA.some(t => F.extra[t.id]), off: () => { F.extra = {}; } },
     { id: "status", label: "My status", on: () => hasTracker() && !same(F.status, D0.status), off: () => { F.status = D0.status.slice(); } }
@@ -78,8 +77,7 @@ PARTS.push(function (app) {
     h += `<fieldset class="fgrp"><legend>Commute</legend>
       <div class="field fslide"><label for="f-max">Drive time: <output id="f-maxo"></output>${est}</label><input type="range" id="f-max" min="15" max="90" step="5"></div>
       <div class="chips"><button type="button" class="chip" data-t="metro" aria-pressed="false">Reachable by Metro</button>
-      <button type="button" class="chip" data-t="toll" aria-pressed="false" ${hasToll() ? "" : "disabled"}>Toll-free route</button></div>
-      ${hasToll() ? "" : '<p class="kit-note">Toll-free needs route data.</p>'}</fieldset>`;
+</div></fieldset>`;
     h += `<fieldset class="fgrp"><legend>Entry path</legend><div class="chips"><button type="button" class="chip" data-t="prog" aria-pressed="false">Has an internship or fellowship</button><button type="button" class="chip" data-t="entry" aria-pressed="false">Easy entry access</button></div></fieldset>`;
     if (EXTRA.length) h += `<fieldset class="fgrp"><legend>More</legend><div class="chips">${EXTRA.map(t => `<button type="button" class="chip" data-x="${esc(t.id)}" aria-pressed="false">${esc(t.label)}</button>`).join("")}</div></fieldset>`;
     if (hasTracker()) h += `<fieldset class="fgrp"><legend>My status</legend><div class="chips">${STATUS.map(c => chip("status", c[0], c[1], F.status.includes(c[0]))).join("")}</div></fieldset>`;
