@@ -178,6 +178,11 @@ PARTS.push(function (app) {
   let wasOn = false;
   app.on("refreshed", () => { const on = app.tab === "jobs"; if (wasOn && !on) { [...jobs.values()].forEach(j => seen.add(j.id)); saveSeen(); empFilter = null; } wasOn = on; });
 
+  // a tracker record started from a job, once applied, marks that job applied too
+  app.on("tracker-changed", () => {
+    if (!app.tracker) return;
+    app.tracker.all().forEach(r => { if (r.jobId && ["applied", "interviewing", "offer"].includes(r.status)) { const j = jobs.get(r.jobId); if (j && j.status !== "applied") { j.status = "applied"; saveLocal(); write("set", r.jobId); app.emit("jobs-changed"); } } });
+  });
   loadLocal();
   app.jobs = { ready: connect(false).then(() => {}), all, byEmp, assign, get: id => jobs.has(id) ? Object.assign({}, jobs.get(id)) : null, setStatus, save, open: openJob,
     lastRefresh: () => meta && meta.lastRun || null, syncState: () => state };

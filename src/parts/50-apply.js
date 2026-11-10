@@ -8,7 +8,7 @@ PARTS.push(function (app) {
   const instructions = () => (PROMPT_SRC && PROMPT_SRC.indexOf("__APPLY_" + "PROMPT__") < 0 ? PROMPT_SRC : DEFAULT_PROMPT).trim();
   const CL = { none: "No clearance needed for entry roles", some: "Some entry roles need a clearance", most: "Most entry roles need a clearance" };
   const MATS = [["resume", "Resume"], ["coverLetter", "Cover letter"], ["writingSample", "Writing sample"], ["references", "References"], ["transcript", "Transcript"]];
-  const emp = id => app.E.find(e => e.id === id);
+  const emp = id => app.findEmployer(id);
   const todayISO = () => { const d = new Date(); return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); };
   const nowISO = () => new Date().toISOString();
   const blank = v => v == null || (typeof v === "string" && (!v.trim() || /^unknown$/i.test(v.trim()))) || (Array.isArray(v) && !v.filter(x => !blank(x)).length) || (typeof v === "object" && !Array.isArray(v) && !Object.keys(v).some(k => !blank(v[k])));
@@ -96,7 +96,7 @@ PARTS.push(function (app) {
         <div class="sheet-actions"><button type="button" class="btn" id="apl-close">Close</button><button type="button" class="btn primary" id="apl-save">Save profile</button></div>`;
     } else {
       h = `<h2 id="apl-p-h">My profile</h2>
-        <p class="kit-note" style="margin-top:0" id="apl-pstat">${miss.length ? "Saved. A few things are still empty." : "Saved. Nothing important is missing."}</p>
+        <p class="kit-note" style="margin-top:0" id="apl-pstat">${miss.length ? "Saved. A few things are still empty." : "Saved. Nothing important is missing."}${local && local.updatedAt ? " Last updated " + esc(String(local.updatedAt).slice(0, 10)) + "." : ""}</p>
         ${miss.length ? `<div class="kit-sec"><h3>Still empty</h3><div class="chips">${miss.map(m => `<span class="tag">${esc(m)}</span>`).join("")}</div></div>` : ""}
         ${gaps.length ? `<details class="apl-gaps"><summary>Questions Claude had about your files (${gaps.length})</summary><ul>${gaps.map(g => `<li>${esc(g)}</li>`).join("")}</ul></details>` : ""}
         <div class="kit-sec"><h3>Small edits</h3>
@@ -237,5 +237,14 @@ PARTS.push(function (app) {
     b.onclick = () => openProfile(); intro.insertAdjacentElement("afterend", b);
   }
   app.on("refreshed", addProfileButton); app.on("profile-changed", addProfileButton);
+  // start applying straight from an opening (spec 6): one tracker record per job, then the helper opens filled in
+  function startFromJob(jobId) {
+    const j = app.jobs && app.jobs.get(jobId); if (!j) return null;
+    const empId = j.empId || "job:" + jobId;
+    let r = app.tracker.all().find(x => x.jobId === jobId);
+    if (!r) r = app.tracker.upsert({ empId, role: j.title, postingUrl: j.url || "", postingText: j.pasted || j.summary || "", jobId, status: "applying" });
+    openHelper(empId, r.appId); return r.appId;
+  }
+  app.apply = { open: openHelper, startFromJob };
   app.profile = { get: () => profile() ? JSON.parse(JSON.stringify(profile())) : null, open: () => openProfile(), parse: parseProfile, buildPrompt };
 });

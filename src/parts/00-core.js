@@ -46,6 +46,12 @@ const app = {
   get home() { return home; }, get selected() { return selected; }, get tab() { return tab; }, get ranked() { return ranked; },
   get glOK() { return glOK; }, get scene() { return scene; }, get camera() { return camera; },
   select(id, go) { selectEmp(id, go); }, refresh() { refresh(); }, needsRender() { needs = true; },
+  // an employer on the map, or for "job:<jobId>" a stand-in built from that opening (employer not on the map)
+  findEmployer(id) {
+    const e = E.find(x => x.id === id); if (e || !/^job:/.test(id || "") || !app.jobs) return e || null;
+    const j = app.jobs.get(id.slice(4)); if (!j) return null;
+    return { id, name: j.employer || "Employer not on your map", type: "", addr: (j.loc && j.loc.text) || "", reg: "", why: "", roles: [j.title], progs: [], cl: { none: "none", sponsor: "some", required: "most" }[j.clearance] || "none", s: [3, 3, 3], src: [], notes: "", fromJob: true };
+  },
   commuteMi: e => commuteMi(e), homeLL: () => homeLL(), fmtMi: m => fmtMi(m),
   addTab(t) {
     this.tabs[t.id] = t;

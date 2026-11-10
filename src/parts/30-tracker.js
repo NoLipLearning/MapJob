@@ -16,7 +16,7 @@ PARTS.push(function (app) {
   const todayISO = () => { const d = new Date(); return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); };
   const uuid = () => (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : "a" + Date.now().toString(36) + Math.random().toString(36).slice(2, 10);
   const clone = o => JSON.parse(JSON.stringify(o));
-  const emp = id => app.E.find(e => e.id === id);
+  const emp = id => app.findEmployer(id);
   const lsGet = () => { try { return JSON.parse(localStorage.getItem(KEY) || "null"); } catch (e) { return null; } };
   const lsSet = v => { try { localStorage.setItem(KEY, JSON.stringify(v)); } catch (e) { /* storage blocked: cloud/in-memory still work */ } };
 
@@ -28,7 +28,7 @@ PARTS.push(function (app) {
       status: st, closedReason: st === "closed" && REASON[r.closedReason] ? r.closedReason : null,
       dates: { interested: d.interested || "", applied: d.applied || "", lastContact: d.lastContact || "", interview: Array.isArray(d.interview) ? d.interview.slice() : [] },
       nextAction: { text: String(n.text || ""), due: n.due || "", doneAt: n.doneAt || null },
-      materials: { resume: m.resume || "", coverLetter: !!m.coverLetter, writingSample: !!m.writingSample, references: !!m.references, transcript: !!m.transcript }, postingText: String(r.postingText || ""),
+      materials: { resume: m.resume || "", coverLetter: !!m.coverLetter, writingSample: !!m.writingSample, references: !!m.references, transcript: !!m.transcript }, postingText: String(r.postingText || ""), jobId: r.jobId ? String(r.jobId) : null,
       contacts: Array.isArray(r.contacts) ? r.contacts.map(c => ({ name: c.name || "", role: c.role || "", how: c.how || "", note: c.note || "" })) : [],
       clearanceSponsor: !!r.clearanceSponsor, notes: String(r.notes || ""),
       createdAt: r.createdAt || nowISO(), updatedAt: r.updatedAt || nowISO()
