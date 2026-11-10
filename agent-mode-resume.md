@@ -28,3 +28,4 @@ UPDATE 8: v3 spec + plan written (docs/superpowers/specs/2026-11-10-openings-des
 
 UPDATE 9: v3 BUILT (Tasks 1-9) and pushed; 15 browser suites + 28 unit tests pass. Reviewer agent checking refresh logic. Remaining: fix review findings, republish artifact, first real refresh when Eric asks.
 UPDATE 10 (v4): routing removed (pushed). Contract docs/DATA-CONTRACT-v4.md. Next: 2 Sonnet agents in worktrees: DATA (offices.py GSA+OSM, feeds.py Greenhouse/Lever, usajobs.py, authoritative deletes, deadline/officeId, coverage+spotcheck scripts) and UI (facet counts, sorts, Openings facets, pin clustering, office pins + building card, applied-per-week). Then merge, e2e, republish. USAJOBS key not yet requested.
+UPDATE 11: v4 COMPLETE and published (v6 of page). 1059 GSA buildings, facets/sorts/clusters, feeds (6 boards; 13 relevant jobs loaded + 4 saved). Open: OSM offices (Overpass down), USAJOBS key, real profile, county data skipped.
