@@ -14,3 +14,12 @@
 .jsum { margin: 10px 0 0; white-space: pre-wrap; overflow-wrap: anywhere; }
 .jnew { margin-left: 4px; }
 .jhead .btn { white-space: nowrap; flex: none; }
+.jmeta { grid-column: 1 / 3; color: var(--muted); font-size: 12.5px; }
+.jfacets { margin: 10px 0 0; background: var(--panel); border: 1px solid var(--line); border-radius: var(--r-m); padding: 0 12px; }
+.jfacets > summary { cursor: pointer; min-height: var(--tap); display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: var(--fs-2); }
+.jfacets > summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.jfs { margin-left: auto; font-weight: 400; color: var(--muted); font-size: var(--fs-1); font-family: var(--f-mono); }
+.jfbody { display: grid; gap: 10px; padding-bottom: 10px; }
+.jfacets .chip:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.jfacets .chip .cn { font-family: var(--f-mono); font-size: var(--fs-1); font-variant-numeric: tabular-nums; opacity: .75; }
+.jfacets .chip.zero { opacity: .55; }

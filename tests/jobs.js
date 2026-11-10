@@ -23,7 +23,11 @@ const tab = p => p.evaluate(() => { document.getElementById('tab-jobs').click();
   ok(await p.locator('#tab-jobs').count() === 1, 'Openings tab exists');
   await tab(p); await p.waitForTimeout(400);
   const order = await p.evaluate(() => [...document.querySelectorAll('#list .jobrow')].map(r => r.dataset.job));
-  ok(JSON.stringify(order) === JSON.stringify(['indeed-a1', 'indeed-a2', 'linkedin-3', 'web-xss', 'indeed-4']), 'rows sorted by fit, dismissed hidden: ' + order.join(','));
+  // v4: "Needs clearance" jobs are hidden by default (Openings facet), so indeed-4 only shows once that chip is turned on
+  ok(JSON.stringify(order) === JSON.stringify(['indeed-a1', 'indeed-a2', 'linkedin-3', 'web-xss']), 'rows sorted by fit, dismissed and Needs-clearance hidden: ' + order.join(','));
+  await p.locator('#list [data-fk="cl:required"]').click(); await p.waitForTimeout(200);
+  ok(await p.evaluate(() => [...document.querySelectorAll('#list .jobrow')].map(r => r.dataset.job).join()) === 'indeed-a1,indeed-a2,linkedin-3,web-xss,indeed-4', 'Needs clearance chip brings indeed-4 back');
+  await p.locator('#list [data-fk="cl:required"]').click(); await p.waitForTimeout(200);
   ok(await p.evaluate(() => document.querySelector('[data-job="indeed-a2"]').textContent.includes('Clearance not stated')), 'unknown clearance shows "Clearance not stated"');
   ok(await p.evaluate(() => document.querySelectorAll('#list img').length === 0 && !window.__pwned && document.querySelector('[data-job="web-xss"]') !== null), 'escapes posting text');
   ok(await p.evaluate(() => document.querySelectorAll('#list .jobrow')[0].querySelectorAll('button').length <= 3), 'at most 3 actions per row');

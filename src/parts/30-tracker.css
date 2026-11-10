@@ -17,3 +17,4 @@
 .trk-more summary { cursor: pointer; font-size: var(--fs-2); font-weight: 600; color: var(--accent); min-height: var(--tap); display: flex; align-items: center; }
 .trk-check span { display: flex; align-items: center; gap: 8px; font-weight: 400; color: var(--ink); min-height: var(--tap); }
 .trk-check input { width: 20px; height: 20px; }
+.trk-weeks { margin: 0 0 6px; font-size: var(--fs-2); font-weight: 600; }

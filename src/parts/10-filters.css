@@ -24,3 +24,6 @@
 .fsheet .fbody { grid-template-columns: 1fr; }
 .fsheet .kit-note { margin: 0 0 8px; }
 @media (pointer: coarse) { .fbar .chip, .fsheet .chip { min-height: var(--tap); } }
+/* facet counts on chips: "Think tank 12"; options with no results are dimmed but still work */
+.chip .cn { font-family: var(--f-mono); font-size: var(--fs-1); font-variant-numeric: tabular-nums; opacity: .75; }
+.chip.zero { opacity: .55; }
