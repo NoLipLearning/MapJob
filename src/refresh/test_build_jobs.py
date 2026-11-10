@@ -72,5 +72,14 @@ class B(unittest.TestCase):
         self.assertEqual(out["delete"], ["greenhouse-9"]); self.assertEqual(out["set"][0]["board"], "greenhouse:acme")
 
 
+class Relevance(unittest.TestCase):
+    def test_feed_titles_filtered(self):
+        raw = [{"source": "greenhouse", "url": "https://boards.greenhouse.io/x/jobs/1", "title": "SAP ABAP Developer", "employer": "X"},
+               {"source": "greenhouse", "url": "https://boards.greenhouse.io/x/jobs/2", "title": "Policy Associate", "employer": "X"},
+               {"source": "indeed", "job_id": "k", "title": "SAP ABAP Developer", "employer": "X"}]
+        ids = [j["id"] for j in build(raw, [], P, EMPS, ROUTES, HOME, T)["set"]]
+        self.assertEqual(len(ids), 2); self.assertIn("indeed-k", ids)
+
+
 if __name__ == "__main__":
     unittest.main()
