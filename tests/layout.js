@@ -24,7 +24,7 @@ const settle = p => p.waitForTimeout(450);
     if (w < 700) await page.evaluate(() => app.sheet('half'));
     await settle(page);
     const tabs = await page.evaluate(() => [...document.querySelectorAll('#tabs [role=tab]')].map(t => { const l = t.querySelector('.tl'), r = l.getBoundingClientRect(), lh = parseFloat(getComputedStyle(l).lineHeight) || 20; return { h: r.height, lh, fits: t.scrollWidth <= t.clientWidth + 1, txt: l.textContent }; }));
-    ok(tabs.length === 3 && tabs.every(t => t.h < t.lh * 1.5 && t.fits), `${w}: three tabs, none wraps or clips (${tabs.map(t => t.txt).join(', ')})`);
+    ok(tabs.length === 4 && tabs.every(t => t.h < t.lh * 1.5 && t.fits), `${w}: four tabs, none wraps or clips (${tabs.map(t => t.txt).join(', ')})`);
     ok(await page.evaluate(() => { const r = document.getElementById('mapbox').getBoundingClientRect(); return r.width > 250 && r.height > 300; }), `${w}: map has a real size`);
     ok(page.errs.length === 0, `${w}: no console errors ${page.errs.slice(0, 2).join('|')}`);
     await ctx.close();

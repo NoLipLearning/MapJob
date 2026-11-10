@@ -1,0 +1,16 @@
+/* 70-jobs: Openings tab. Reuses kit classes; only layout here. */
+.jhead { display: flex; gap: 10px; align-items: flex-start; justify-content: space-between; }
+.jhead .intro { margin: 0; }
+.jfilter { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; font-weight: 600; margin: 8px 0; }
+.jsec { margin: 14px 0 6px; font-size: 11.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+.jobrow { display: grid; grid-template-columns: 1fr auto; gap: 4px 10px; padding: 10px 12px; margin-top: 8px; background: var(--panel); border: 1px solid var(--line); border-radius: var(--r-m); }
+.jobrow .jt { min-width: 0; overflow-wrap: anywhere; }
+.jobrow .js { grid-column: 1 / 3; color: var(--muted); font-size: 12.5px; overflow-wrap: anywhere; }
+.jobrow .jtags, .jobrow .jact { grid-column: 1 / 3; }
+.jtags { display: flex; flex-wrap: wrap; gap: 4px; }
+.jfit { font-family: var(--f-mono); font-variant-numeric: tabular-nums; font-weight: 600; min-width: 2.2em; text-align: right; }
+.jcard .kit-row { grid-template-columns: auto 1fr auto; }
+.jwhy { margin: 10px 0 0; }
+.jsum { margin: 10px 0 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+.jnew { margin-left: 4px; }
+.jhead .btn { white-space: nowrap; flex: none; }
