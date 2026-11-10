@@ -21,6 +21,8 @@ Success means Eric opens the map daily, sees real jobs he qualifies for placed o
 - **Keep usage low.** A refresh must be bounded (see 4.3).
 - **Honesty rules carry over** from `BUILD-PLAN.md` section 0: nothing invented, unverified data labelled, calm ADHD/OCD-friendly UI, real buttons, 44px touch targets, no red, no growing counters.
 
+Sources also include Eric's own job-alert emails from LinkedIn, Handshake and Indeed, read through his Gmail connector (added 2026-11-10; see `docs/REFRESH.md` step 3).
+
 ## 3. What gets built: four pieces, in this order
 
 Each piece is usable by itself and feeds the next.
@@ -67,7 +69,7 @@ Rules:
 - `status` belongs to Eric. A refresh never changes `status`, and never rewrites a job he dismissed.
 - `clearance` and `entry` come only from the posting text. If the text does not say, the value is `unknown`. The page shows `unknown` as "not stated".
 - `fit` is 0-100 and is computed by the documented formula in 4.4, never by impression.
-- A job not seen for 30 days gets removed by the next refresh unless its status is `saved` or `applied`.
+- A job not seen for 30 days gets removed by the next refresh unless its status is `saved`, `applied` or `dismissed` (dismissed jobs stay as markers so they never return as new).
 - A meta document `meta/refresh` holds `{ lastRun, counts: {new, updated, removed}, sourcesTried: [...], sourcesFailed: [...] }`.
 
 ### 4.2 Page: `70-jobs.js`
