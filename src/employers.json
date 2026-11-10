@@ -3231,7 +3231,12 @@
   "lat": 38.9441373,
   "lon": -77.3180829,
   "gc": "addr",
-  "us": ""
+  "us": "",
+  "aliases": [
+   "SSA",
+   "Social Security Administration",
+   "Social Security"
+  ]
  },
  {
   "id": "ssa-manassas-field-office",
@@ -3264,7 +3269,12 @@
   "lat": 38.7520833,
   "lon": -77.4816662,
   "gc": "addr",
-  "us": ""
+  "us": "",
+  "aliases": [
+   "SSA",
+   "Social Security Administration",
+   "Social Security"
+  ]
  },
  {
   "id": "va-dvs-loudoun-benefits-office",

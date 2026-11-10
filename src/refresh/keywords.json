@@ -1,0 +1,15 @@
+{
+  "_note": "Phrase lists for classify_clearance / classify_entry in normalize.py. Lowercase. Edit freely; rerun test_normalize.py after.",
+  "clearance": {
+    "required": ["active secret", "active top secret", "top secret", "ts/sci", "ts / sci", "must possess a clearance", "clearance required", "required clearance", "active clearance", "current clearance", "polygraph", "must hold a secret", "must have an active"],
+    "sponsor": ["ability to obtain", "able to obtain", "eligible for a clearance", "eligible to obtain", "will sponsor", "clearance sponsorship", "obtain and maintain"],
+    "none": ["no clearance required", "no security clearance", "clearance not required", "public trust", "background check only", "background investigation"]
+  },
+  "entry": {
+    "no_title": ["senior", "sr", "director", "manager", "principal", "lead", "chief", "head of", "vice president", "vp"],
+    "no_text": ["5+ years", "6+ years", "7+ years", "8+ years", "10+ years", "five years", "at least 5 years", "minimum of 5 years", "minimum of five years"],
+    "yes_title": ["intern", "internship", "trainee", "entry level", "entry-level", "junior", "jr"],
+    "yes_text": ["entry level", "entry-level", "recent graduate", "recent grad", "new grad", "0-1 years", "0-2 years", "0 to 2 years", "no experience required", "gs-5", "gs-05", "gs-7", "gs-07"],
+    "maybe_text": ["1-3 years", "1+ year", "1+ years", "2+ years", "2-4 years", "3+ years"]
+  }
+}

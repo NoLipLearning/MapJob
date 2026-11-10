@@ -5,12 +5,12 @@ Ratings s=[role_fit, clearance_access, entry_access] (1-5) are ESTIMATES, not re
 import json, math, os, time, urllib.request, urllib.parse
 LAT0, LON0 = 38.955, -77.355; KX = 111320 * math.cos(math.radians(LAT0)); P = lambda la, lo: ((lo - LON0) * KX, (LAT0 - la) * 110574)
 NEW = [
- dict(id='ssa-reston-field-office', name='Social Security Administration, Reston Field Office', type='federal', addr='10800 Parkridge Blvd, Suite 100, Reston, VA 20191', reg='Reston, Herndon and Loudoun',
+ dict(id='ssa-reston-field-office', aliases=['SSA', 'Social Security Administration', 'Social Security'], name='Social Security Administration, Reston Field Office', type='federal', addr='10800 Parkridge Blvd, Suite 100, Reston, VA 20191', reg='Reston, Herndon and Loudoun',
   url='https://www.usajobs.gov/search/results/?a=SZ&k=Social%20Security%20Administration', roles=['Claims or service representative and social insurance specialist roles (typical SSA entry titles; confirm current openings on USAJOBS)'],
   progs=[{'name': 'SSA careers', 'url': 'https://www.ssa.gov/careers/'}], cl='none', s=[3, 5, 4],
   why='Public-facing benefits work in a field office near home. SSA entry jobs normally need a background check, not a security clearance.',
   src=['https://www.ssa.gov/careers/', 'https://www.ssa.gov/data/FO-Address-Open-Close-Times.csv'], notes='UNVERIFIED: address from SSA open data seen in a search result (could be out of date); ratings are estimates; no posting checked.'),
- dict(id='ssa-manassas-field-office', name='Social Security Administration, Manassas Field Office', type='federal', addr='9500 Center Street, Manassas, VA 20110', reg='Warrenton and Prince William',
+ dict(id='ssa-manassas-field-office', aliases=['SSA', 'Social Security Administration', 'Social Security'], name='Social Security Administration, Manassas Field Office', type='federal', addr='9500 Center Street, Manassas, VA 20110', reg='Warrenton and Prince William',
   url='https://www.usajobs.gov/search/results/?a=SZ&k=Social%20Security%20Administration', roles=['Claims or service representative and social insurance specialist roles (typical SSA entry titles; confirm current openings on USAJOBS)'],
   progs=[{'name': 'SSA careers', 'url': 'https://www.ssa.gov/careers/'}], cl='none', s=[3, 5, 4],
   why='Same SSA entry path as Reston, on the Warrenton side of your drive. Background check, not a clearance.',
