@@ -35,6 +35,8 @@ def job_id(source, raw):
         return "indeed-" + str(raw["job_id"])
     if source == "usajobs" and raw.get("control"):
         return "usajobs-" + str(raw["control"])
+    if source in ("greenhouse", "lever") and raw.get("job_id"):
+        return source + "-" + str(raw["job_id"])
     # the same posting gets the same id whichever way it was found (alert email, API, careers page)
     host = urlsplit(url).netloc.lower()
     if host.endswith("linkedin.com"):
