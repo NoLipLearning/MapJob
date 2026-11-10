@@ -93,7 +93,7 @@ PARTS.push(function (app) {
       if (ip) out.push({ kind: "inprogress", r: ip, appId: ip.appId, text: "Finish applying to " + empName(ip), sub: ip.role || "" });
     }
     if (out.length < 3 && app.jobs) {
-      const j = app.jobs.all().filter(j => j.status === "new" && j.fit != null && j.fit >= 60 && !hidden("job:" + j.id, today)).sort((a, b) => b.fit - a.fit)[0];
+      const j = app.jobs.all().filter(j => j.status === "new" && j.clearance !== "required" && j.fit != null && j.fit >= 60 && !hidden("job:" + j.id, today)).sort((a, b) => b.fit - a.fit)[0];
       if (j) out.push({ kind: "newjob", j, text: "Look at: " + j.title + (j.employer ? " at " + j.employer : ""), sub: "Fit " + j.fit + (j.fitWhy && j.fitWhy[0] ? " · " + j.fitWhy[0] : "") });
     }
     return out;

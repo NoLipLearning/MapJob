@@ -4,7 +4,7 @@
 PARTS.push(function (app) {
   const esc = app.esc, KEY = "reston-map-buildings", KIND = { federal: "Federal building", government: "Government building", office: "Office building", nonprofit: "Nonprofit offices", company: "Company offices" };
   let list = Array.isArray(app.D.offices) ? app.D.offices : [];
-  if (!list.length && Array.isArray(window.RESTON_TEST_OFFICES)) list = window.RESTON_TEST_OFFICES; // tests inject a fixture while the real data is empty
+  if (Array.isArray(window.RESTON_TEST_OFFICES)) list = window.RESTON_TEST_OFFICES; // tests only: replaces the real list with a fixture
   const offices = list.filter(o => o && typeof o.id === "string" && typeof o.lat === "number" && typeof o.lon === "number").slice(0, 4000);
   offices.forEach(o => { [o.x, o.z] = app.toXZ(o.lat, o.lon); o.tenants = Array.isArray(o.tenants) ? o.tenants.filter(t => typeof t === "string" && t.trim()) : []; o.empIds = Array.isArray(o.empIds) ? o.empIds : []; o.name = o.name || o.addr || "Office building"; });
   app.D.offices = offices;
