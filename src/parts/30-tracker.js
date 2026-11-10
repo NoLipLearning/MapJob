@@ -306,6 +306,13 @@ PARTS.push(function (app) {
       <span class="s trk-next">${esc(nextLine(r))}</span><span class="trk-acts"><button type="button" class="btn sm primary" data-adv="${esc(r.appId)}">${esc(a[1])}</button><button type="button" class="btn sm quiet" data-edit="${esc(r.appId)}" aria-label="Details for ${esc(r.role || "application")}">Details</button></span></div>`;
   }
   const trackedEmps = () => { const seen = new Set(), out = []; GROUPS.concat("closed").forEach(g => tracker.all().filter(r => r.status === g).sort(newest).forEach(r => { const e = emp(r.empId); if (e && !seen.has(e.id)) { seen.add(e.id); out.push(e); } })); return out; };
+  // "Applied this week: N · last week: M" from dates.applied. Weeks run Monday to Sunday.
+  function weekCounts() {
+    const day = iso => { const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso || ""); return m ? Math.floor(Date.UTC(+m[1], +m[2] - 1, +m[3]) / 864e5) : null; };
+    const t = day(todayISO()), mon = t - (((new Date(t * 864e5).getUTCDay()) + 6) % 7); let now = 0, prev = 0;
+    tracker.all().forEach(r => { const d = day(r.dates && r.dates.applied); if (d == null) return; if (d >= mon && d <= mon + 6) now++; else if (d >= mon - 7 && d < mon) prev++; });
+    return { now, prev };
+  }
   app.addTab({
     id: "apps", label: "Applications",
     count: () => "", items: () => trackedEmps().map(e => ({ kind: "emp", id: e.id })),
@@ -313,7 +320,8 @@ PARTS.push(function (app) {
     render(el) {
       const all = tracker.all(), starOnly = Array.from(stars.keys()).filter(id => !all.some(r => r.empId === id)).map(emp).filter(Boolean);
       const closed = all.filter(r => r.status === "closed").sort(newest);
-      let h = `<p class="intro">Your applications, newest changes first. ${esc(syncNote())}</p>`;
+      const wk = weekCounts();
+      let h = `<p class="trk-weeks" id="trk-weeks">Applied this week: ${wk.now} &middot; last week: ${wk.prev}</p><p class="intro">Your applications, newest changes first. ${esc(syncNote())}</p>`;
       if (!all.length && !starOnly.length) h += `<div class="kit-empty"><b>Nothing tracked yet.</b>Star an employer to start.</div>`;
       GROUPS.forEach(g => { const rs = all.filter(r => r.status === g).sort(newest); if (rs.length) h += `<section class="trk-group" aria-label="${WORD[g]}"><h3 class="trk-gh">${pill(g)}</h3>${rs.map(rowHTML).join("")}</section>`; });
       if (starOnly.length) h += `<section class="trk-group" aria-label="Starred"><h3 class="trk-gh">${pill("star")}</h3>${starOnly.map(e => `<div class="kit-row trk-row"><div class="trk-who"><button type="button" class="trk-name" data-emp="${esc(e.id)}">${esc(e.name)}</button><span class="trk-role">Not tracking a role yet</span></div><span class="trk-acts"><button type="button" class="btn sm" data-track="${esc(e.id)}">Track this</button></span></div>`).join("")}</section>`;
