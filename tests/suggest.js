@@ -28,7 +28,7 @@ const seed = `window.__FAKE_OPTS = {}; window.__FAKE_STORE = window.__FAKE_STORE
   ok(await p.evaluate(id => app.jobs.byEmp(id).length === 3, added.id), "its jobs now belong to it");
   ok(await p.evaluate(id => app.ranked.some(e => e.id === id), added.id), 'it is ranked with default filters');
   await p.evaluate(id => { document.getElementById('tab-emp').click(); app.select(id, true); }, added.id); await p.waitForTimeout(600);
-  ok(await p.evaluate(() => document.getElementById('card').textContent.includes('Ratings are estimates') && document.getElementById('card').textContent.includes('Open jobs here')), 'card says ratings are estimates and lists its jobs');
+  ok(await p.evaluate(() => document.getElementById('card').textContent.includes('Ratings are estimates') && document.getElementById('card').textContent.includes('Where to apply')), 'card says ratings are estimates and lists its jobs');
   await p.evaluate(() => document.getElementById('tab-jobs').click()); await p.waitForTimeout(300);
   await p.click('#list .sugg [data-key] [data-s="ignore"]'); await p.waitForTimeout(400);
   ok(await p.evaluate(() => app.suggest.groups().length === 0 && !document.querySelector('#list .sugg')), 'Ignore removes the last suggestion');

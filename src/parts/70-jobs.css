@@ -23,3 +23,8 @@
 .jfacets .chip:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .jfacets .chip .cn { font-family: var(--f-mono); font-size: var(--fs-1); font-variant-numeric: tabular-nums; opacity: .75; }
 .jfacets .chip.zero { opacity: .55; }
+.jlink { color: var(--ink); font-weight: 600; text-decoration: none; }
+.jlink:hover, .jlink:focus-visible { text-decoration: underline; color: var(--accent); }
+.jwhere .jcareers { margin: 2px 0 8px; }
+.jwhere .kit-row { grid-template-columns: auto 1fr auto; }
+.jwhere .kit-row .s { grid-column: 2 / 4; }
