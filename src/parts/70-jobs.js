@@ -13,13 +13,15 @@ PARTS.push(function (app) {
   const F_EN = [["yes", "Entry level"], ["maybe", "Some experience"], ["unknown", "Not stated"], ["no", "Experienced"]];
   const F_POSTED = [["any", "Any"], ["7", "7 days"], ["30", "30 days"]];
   const SORTS = [["fit", "Best fit"], ["new", "Newest"], ["close", "Closing soon"], ["near", "Closest"]];
-  const fdefaults = () => ({ src: F_SRC.map(o => o[0]), cl: ["none", "sponsor", "unknown"], en: F_EN.map(o => o[0]), posted: "any", pay: false });
+  const F_PAY = [["50", "$50k+"], ["low", "Under $50k"], ["unk", "Not listed"]];
+  const fdefaults = () => ({ src: F_SRC.map(o => o[0]), cl: ["none", "sponsor", "unknown"], en: F_EN.map(o => o[0]), posted: "any", pb: ["50", "unk"] });
+  const payKey = j => j.payMin == null ? "unk" : j.payMin >= 50000 ? "50" : "low";
   let FS = fdefaults(), sortBy = "fit", facetsOpen = !matchMedia("(max-width: 900px)").matches, refocus = null; // phones start with the facets folded away
   (function loadFacets() {
     const sub = (k, all, s0) => { if (Array.isArray(s0[k])) FS[k] = s0[k].filter(v => all.includes(v)); };
     try {
       const s0 = JSON.parse(localStorage.getItem(FKEY) || "null");
-      if (s0 && typeof s0 === "object") { sub("src", F_SRC.map(o => o[0]), s0); sub("cl", F_CL.map(o => o[0]), s0); sub("en", F_EN.map(o => o[0]), s0); if (F_POSTED.some(o => o[0] === s0.posted)) FS.posted = s0.posted; if (typeof s0.pay === "boolean") FS.pay = s0.pay; }
+      if (s0 && typeof s0 === "object") { sub("src", F_SRC.map(o => o[0]), s0); sub("cl", F_CL.map(o => o[0]), s0); sub("en", F_EN.map(o => o[0]), s0); if (F_POSTED.some(o => o[0] === s0.posted)) FS.posted = s0.posted; sub("pb", F_PAY.map(o => o[0]), s0); }
       const so = JSON.parse(localStorage.getItem(SKEY) || "null"); if (SORTS.some(o => o[0] === so)) sortBy = so;
       const fo = localStorage.getItem(FKEY + "-open"); if (fo === "false" || fo === "true") facetsOpen = fo === "true";
     } catch (_) {}
@@ -38,10 +40,10 @@ PARTS.push(function (app) {
     const st = srcTags(j); if (st.length && !st.some(t => v("src").includes(t))) return false;
     if (!v("cl").includes(clKey(j)) || !v("en").includes(enKey(j))) return false;
     const pd = v("posted"); if (pd !== "any") { const a = ageDays(j); if (a == null || a > +pd) return false; }
-    if (v("pay") && !j.pay) return false;
+    if (!v("pb").includes(payKey(j))) return false;
     return true;
   }
-  const facetsDefault = () => { const d = fdefaults(); return ["src", "cl", "en"].every(k => d[k].length === FS[k].length && d[k].every(x => FS[k].includes(x))) && FS.posted === "any" && !FS.pay; };
+  const facetsDefault = () => { const d = fdefaults(); return ["src", "cl", "en", "pb"].every(k => d[k].length === FS[k].length && d[k].every(x => FS[k].includes(x))) && FS.posted === "any"; };
   const closeOf = j => ISO.test(j.deadline || "") ? j.deadline : "";
   function distOf(j) {
     const ll = j.loc && typeof j.loc.lat === "number" ? j.loc : (empOf(j) || null); if (!ll) return Infinity;
@@ -165,7 +167,7 @@ PARTS.push(function (app) {
     return `<details class="jfacets" id="jfacets"${facetsOpen ? " open" : ""}><summary>Filter openings <span class="jfs" role="status">${shown.length} of ${pool.length} shown</span></summary>
       <div class="jfbody">${grp("Source", "src", F_SRC)}${grp("Clearance", "cl", F_CL)}${grp("Entry", "en", F_EN)}
       <fieldset class="fgrp"><legend>Posted</legend><div class="chips">${F_POSTED.map(o => chipHTML("posted", o[0], o[1], FS.posted === o[0], cnt({ posted: o[0] }))).join("")}</div></fieldset>
-      <fieldset class="fgrp"><legend>Pay</legend><div class="chips">${chipHTML("pay", "1", "Pay listed", FS.pay, cnt({ pay: true }))}</div></fieldset>
+      <fieldset class="fgrp"><legend>Pay</legend><div class="chips">${F_PAY.map(o => chipHTML("pb", o[0], o[1], FS.pb.includes(o[0]), cnt({ pb: [o[0]] }))).join("")}</div></fieldset>
       <div class="btn-row"><button type="button" class="btn quiet sm" id="jf-reset"${facetsDefault() ? " disabled" : ""}>Reset filters</button></div></div></details>`;
   }
   function render(el) {

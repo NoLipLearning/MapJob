@@ -249,8 +249,8 @@ PARTS.push(function (app) {
     $("trk-cancel").onclick = closeSheet;
     back.addEventListener("mousedown", ev => { if (ev.target === back) closeSheet(); });
     $("trk-save").onclick = () => {
-      const role = $("trk-role").value.trim();
-      if (!role) { const m = $("trk-err"); m.hidden = false; m.textContent = "Add the role to save. A few words is enough."; $("trk-role").focus(); return; }
+      let role = $("trk-role").value.trim();
+      if (!role) role = "Any entry-level role"; // role is optional: Eric can track an employer before picking a posting
       const st = $("trk-status").value, patch = { role, postingUrl: $("trk-url").value.trim(), status: st, closedReason: st === "closed" ? ($("trk-reason").value || null) : null, notes: $("trk-notes").value, clearanceSponsor: $("trk-clear").checked, nextAction: { text: $("trk-next").value.trim(), due: $("trk-due").value || "", doneAt: null } };
       if (editing) {
         const prev = tracker.get(r.appId); tracker.update(r.appId, patch);

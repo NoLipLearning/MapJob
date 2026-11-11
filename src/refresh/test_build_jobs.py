@@ -76,9 +76,12 @@ class Relevance(unittest.TestCase):
     def test_feed_titles_filtered(self):
         raw = [{"source": "greenhouse", "url": "https://boards.greenhouse.io/x/jobs/1", "title": "SAP ABAP Developer", "employer": "X"},
                {"source": "greenhouse", "url": "https://boards.greenhouse.io/x/jobs/2", "title": "Policy Associate", "employer": "X"},
-               {"source": "indeed", "job_id": "k", "title": "SAP ABAP Developer", "employer": "X"}]
-        ids = [j["id"] for j in build(raw, [], P, EMPS, ROUTES, HOME, T)["set"]]
-        self.assertEqual(len(ids), 2); self.assertIn("indeed-k", ids)
+               {"source": "indeed", "job_id": "k", "title": "SAP ABAP Developer", "employer": "X"},
+               {"source": "greenhouse", "url": "https://boards.greenhouse.io/x/jobs/3", "title": "Client Experience Associate", "employer": "X", "pay": "$55,000 a year"}]
+        out = build(raw, [], P, EMPS, ROUTES, HOME, T)["set"]
+        ids = [j["id"] for j in out]
+        self.assertEqual(len(ids), 2); self.assertNotIn("indeed-k", ids)  # specialist roles dropped, any-field entry roles kept
+        self.assertEqual([j["payMin"] for j in out if j["title"].startswith("Client")], [55000])
 
 
 if __name__ == "__main__":

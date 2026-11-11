@@ -27,9 +27,9 @@ Collect every job found in steps 2 to 5 into one list `$S/raw.json`. Each item: 
 
 ### 2. Indeed
 
-Call `mcp__Indeed__search_jobs` with `country_code: "US"`. Searches: up to 4 of the profile's `target_roles_implied`, plus `entry level policy analyst` and `program assistant`. Locations: `Reston, VA`, `Herndon, VA`, `Tysons, VA`, `Arlington, VA`, `Washington, DC`, `Leesburg, VA`, `Manassas, VA`. Stop at 28 searches; drop the least promising pairs first (later locations with broad terms).
+Goal: entry-level jobs Eric can get hired into, in any field (not only his degree), paying $50k+ or not stated. Call `mcp__Indeed__search_jobs` with `country_code: "US"`, `job_type: "fulltime"`. Searches (at most 28): `entry level` and `recent graduate` in Reston, Herndon, Tysons, Arlington, Fairfax, McLean, Washington DC; plus `entry level analyst`, `management trainee`, `associate entry level`, `program assistant`, `policy associate`, `government affairs associate` in Washington DC; plus `<employer> entry level` for up to 6 top-ranked employers on the map.
 
-Screen titles: skip obvious mismatches (senior, director, nurse, driver, retail sales). For the rest, call `mcp__Indeed__get_job_details` (at most 25) and use its description as `desc`. `source: "indeed"`.
+Use the search results directly (title, company, location, posted date, compensation, link); call `get_job_details` (at most 25) only for the top-scoring jobs, to read clearance and experience requirements. Drop, before building: senior/supervisory/principal/mid-level/GS-12+ titles, titles that say a clearance is required, specialist-credential roles (police, nurse, engineer, scientist, technician), student-only roles, and postings dated before this year. `source: "indeed"`. Indeed short links (`to.indeed.com`) change every search; the pipeline ids them by employer + title + place, so repeats merge.
 
 ### 3. Gmail job alerts (LinkedIn, Handshake, Indeed)
 

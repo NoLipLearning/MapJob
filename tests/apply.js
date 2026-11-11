@@ -52,8 +52,7 @@ const FAKE_CLOUD = `(() => { const docs = window.__DOCS = window.__DOCS || {};
   // start applying + helper
   await page.evaluate(id => app.select(id, false), id); await page.waitForTimeout(500);
   await page.click('#apl-open'); await page.waitForTimeout(200);
-  await page.click('#apl-go');
-  ok(await page.locator('#apl-err:not([hidden])').count() === 1, 'start: role required');
+  ok(await page.evaluate(() => !document.getElementById('apl-role').required), 'start: role is optional');
   await page.fill('#apl-role', 'Research Assistant (fake)'); await page.click('#apl-go'); await page.waitForTimeout(400);
   let rec = (await page.evaluate(id => app.tracker.byEmp(id), id))[0];
   ok(rec && rec.role === 'Research Assistant (fake)' && rec.status === 'applying', 'start: record created via tracker');
