@@ -43,6 +43,34 @@ class B(unittest.TestCase):
         out = build([{"source": "saved-other", "id": "saved-2", "url": "https://x.org"}, {"source": "indeed", "job_id": "q", "title": "Policy Analyst", "employer": "X"}], [], P, EMPS, ROUTES, HOME, T)
         self.assertEqual([t["title"] for t in out["top"]], ["Policy Analyst"])
 
+    OFFICES = [{"id": "gsa-VA0001", "lat": 38.9441, "lon": -77.3181, "empIds": ["ssa-reston-field-office"]}, {"id": "gsa-VA0002", "lat": 38.9500, "lon": -77.3000, "empIds": []}]
+
+    def test_deadline_passthrough(self):
+        raw = {"source": "usajobs", "control": "123", "title": "Program Analyst", "employer": "X", "desc": "d"}
+        out = build([dict(raw, deadline="2026-12-01"), dict(raw, control="124", deadline="soon"), dict(raw, control="125")], [], P, EMPS, ROUTES, HOME, T)["set"]
+        d = {j["id"]: j["deadline"] for j in out}
+        self.assertEqual(d, {"usajobs-123": "2026-12-01", "usajobs-124": None, "usajobs-125": None})
+        self.assertEqual(out[0]["checked"], "2026-11-10")  # fetched source
+
+    def test_office_id_match_and_no_match(self):
+        near = {"source": "greenhouse", "job_id": "1", "title": "Analyst", "employer": "Nobody", "desc": "d", "lat": 38.94415, "lon": -77.31812}
+        far = dict(near, job_id="2", lat=38.9461, lon=-77.3181)  # about 220 m away
+        out = {j["id"]: j for j in build([near, far], [], P, EMPS, ROUTES, HOME, T, offices=self.OFFICES)["set"]}
+        self.assertEqual(out["greenhouse-1"]["officeId"], "gsa-VA0001")
+        self.assertIsNone(out["greenhouse-2"]["officeId"])
+
+    def test_office_id_via_employer_but_not_city_centre(self):
+        j = build([{"source": "linkedin", "url": "https://www.linkedin.com/jobs/view/9/", "title": "Claims Specialist", "employer": "Social Security Administration", "desc": "d"}], [], P, EMPS, ROUTES, HOME, T, offices=self.OFFICES)["set"][0]
+        self.assertEqual(j["officeId"], "gsa-VA0001"); self.assertIsNone(j["checked"])
+        g = lambda q: (38.9500, -77.3000)  # a geocoded place name is a guess, not a building
+        k = build([{"source": "web", "url": "https://x.org/a", "title": "Analyst", "employer": "Nobody", "location": "Reston, VA"}], [], P, EMPS, ROUTES, HOME, T, geocode=g, offices=self.OFFICES)["set"][0]
+        self.assertIsNone(k["officeId"])
+
+    def test_board_kept_for_authoritative_delete(self):
+        ex = [{"id": "greenhouse-9", "status": "new", "board": "greenhouse:acme", "firstSeen": "2026-11-08", "lastSeen": "2026-11-08"}]
+        out = build([{"source": "greenhouse", "job_id": "1", "title": "A", "employer": "Acme", "desc": "d", "board": "greenhouse:acme"}], ex, P, EMPS, ROUTES, HOME, T, authoritative={"greenhouse:acme"})
+        self.assertEqual(out["delete"], ["greenhouse-9"]); self.assertEqual(out["set"][0]["board"], "greenhouse:acme")
+
 
 if __name__ == "__main__":
     unittest.main()

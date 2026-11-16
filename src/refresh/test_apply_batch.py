@@ -44,6 +44,19 @@ class W(unittest.TestCase):
         u = plan_writes([{"id": "g", "status": "new", "clearance": "required", "fit": 20, "firstSeen": T, "lastSeen": T}], [{"id": "g", "clearance": "unknown", "fit": None}], T)["update"][0]
         self.assertEqual(u["patch"], {"lastSeen": T})
 
+    def test_authoritative_delete_unless_user_status(self):
+        base = {"board": "greenhouse:acme", "firstSeen": "2026-11-08", "lastSeen": "2026-11-08"}
+        ex = [dict(base, id="n", status="new"), dict(base, id="s", status="saved"), dict(base, id="a", status="applied"), dict(base, id="d", status="dismissed"),
+              dict(base, id="live", status="new"), dict(base, id="other", status="new", board="lever:other"), {"id": "noboard", "status": "new", "lastSeen": "2026-11-08"}]
+        out = plan_writes(ex, [{"id": "live", "title": "Still here", "board": "greenhouse:acme"}], T, {"greenhouse:acme"})
+        self.assertEqual(out["delete"], ["n"]); self.assertEqual(out["counts"]["removed"], 1)
+
+    def test_board_not_fetched_deletes_nothing(self):
+        ex = [{"id": "n", "status": "new", "board": "greenhouse:acme", "firstSeen": "2026-11-08", "lastSeen": "2026-11-08"}]
+        self.assertEqual(plan_writes(ex, [], T, set())["delete"], [])
+        self.assertEqual(plan_writes(ex, [], T, {"lever:another"})["delete"], [])
+        self.assertEqual(plan_writes(ex, [], T)["delete"], [])
+
 
 if __name__ == "__main__":
     unittest.main()

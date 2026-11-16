@@ -1,5 +1,6 @@
 reston-hiring-map.html
 src/osm_raw/
+src/gsa_raw/
 test-shots/
 node_modules/
 __pycache__/

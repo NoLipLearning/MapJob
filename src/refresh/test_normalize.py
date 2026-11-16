@@ -83,6 +83,10 @@ class T(unittest.TestCase):
         self.assertIsNone(parse_posted("30+ days ago", t))
         self.assertIsNone(parse_posted("", t))
 
+    def test_feed_job_ids(self):
+        self.assertEqual(job_id("greenhouse", {"job_id": 4620055006, "url": "https://x.org/a"}), "greenhouse-4620055006")
+        self.assertEqual(job_id("lever", {"job_id": "abc-1"}), "lever-abc-1")
+
 
 if __name__ == "__main__":
     unittest.main()

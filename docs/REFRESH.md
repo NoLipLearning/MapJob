@@ -47,6 +47,16 @@ These are Eric's own emails, sent to him by those sites. Read only these senders
 
 Up to 15 web searches, limited with `allowed_domains` to `usajobs.gov` or to the careers hosts of employers on the map (their `url` in `src/prep4.json`). Prefer employers rated well for Eric (high match, `cl: "none"`). Record only what the result states. `source: "usajobs"` (put the announcement number in `control` when shown) or `"careers"`.
 
+### 4b. Employer feeds, USAJOBS API, offices
+
+```bash
+cd /home/user/reston-hiring-map/reston-hiring-map/src/refresh
+python3 feeds.py --out $S/feeds.json --boards-out $S/boards_ok.json   # Greenhouse + Lever boards (employer links in prep4.json + boards.json)
+USAJOBS_KEY=... USAJOBS_EMAIL=... python3 usajobs.py --out $S/usajobs.json   # prints "skipped: no USAJOBS key" if either is unset
+```
+
+Append both outputs to `$S/raw.json`. Boards that failed or came back empty are not in `boards_ok.json`, so they delete nothing. To add a board, confirm `https://boards-api.greenhouse.io/v1/boards/<token>/jobs` or `https://api.lever.co/v0/postings/<company>?mode=json` answers 200, then add `{"kind","token","employer","empId"}` to `src/refresh/boards.json`. Office buildings (`src/offices.json`) change rarely: `python3 src/offices.py` then `python3 src/check_coverage.py` (must print PASS).
+
 ### 5. Saved jobs
 
 Every document in `$S/existing.json` whose id starts with `saved-`: add it to `raw.json` as `{source: <its source>, id, url, title, employer, location, desc: <its pasted text, if any>}`. Do not fetch its link.
@@ -57,7 +67,7 @@ Every document in `$S/existing.json` whose id starts with `saved-`: add it to `r
 cd /home/user/reston-hiring-map/reston-hiring-map/src/refresh
 python3 build_jobs.py --raw $S/raw.json --existing $S/existing.json --profile $S/profile.json \
   --extra-employers $S/my.json --out $S/writes.json --geocode \
-  --tried indeed,gmail,usajobs,careers --failed <comma list of sources that errored or were blocked>
+  --authoritative $S/boards_ok.json --tried indeed,gmail,usajobs,careers,greenhouse,lever --failed <comma list of sources that errored or were blocked>
 ```
 
 It prints the counts and the top five. `--geocode` looks up at most 20 new places through Nominatim (1 per second, cached in `src/geocache.json`).
@@ -68,10 +78,14 @@ One `ArtifactData batch` call to the artifact:
 
 - each document in `writes.json` → `set` → `set` in collection `jobs`, document id = its `id` (new jobs only).
 - each entry in `writes.json` → `update` → `update` collection `jobs`, document `id`, with its `patch`. Patches never contain `status` or `firstSeen`, so a job Eric dismissed or saved during the refresh keeps his choice. Never turn an update into a `set`.
-- each id in `writes.json` → `delete` → `delete`.
+- each id in `writes.json` → `delete` → `delete`. Feed jobs (Greenhouse, Lever) whose board was fetched OK this run but that are no longer on it are in `delete` right away, unless saved, applied or dismissed; all other jobs expire after 30 days unseen.
 - `set` `meta/refresh` = `writes.json` → `meta`.
 
 If the batch fails, nothing was written; report it and stop. Do not retry more than once.
+
+### 7b. Spot check (optional, after writing)
+
+`python3 spotcheck.py $S/existing.json` samples up to 20 jobs and reports live / gone / not checked (only Greenhouse, Lever and USAJOBS hosts are requested; Greenhouse and Lever postings are checked through their APIs). Mention "gone" ones in the report.
 
 ### 8. Report to Eric (under 12 lines)
 

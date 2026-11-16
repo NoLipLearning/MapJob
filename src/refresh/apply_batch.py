@@ -19,7 +19,10 @@ def _fold(dst, src, skip=()):
     return dst
 
 
-def plan_writes(existing, incoming, today):
+def plan_writes(existing, incoming, today, authoritative=None):
+    """authoritative: set of boards ("greenhouse:<token>", "lever:<company>") fetched successfully this run. An existing job whose `board`
+    is in it but that is absent from incoming is deleted now, unless its status is saved, applied or dismissed."""
+    authoritative = set(authoritative or ())
     ex = {j["id"]: j for j in existing}
     merged = {}
     for j in incoming:  # merge duplicates inside one refresh
@@ -39,6 +42,6 @@ def plan_writes(existing, incoming, today):
             new.append(rec); counts["new"] += 1
     delete = [jid for jid, j in ex.items()
               if jid not in merged and j.get("status") not in ("saved", "applied", "dismissed")
-              and j.get("lastSeen") and _days(j["lastSeen"], today) > 30]
+              and ((j.get("board") in authoritative) or (j.get("lastSeen") and _days(j["lastSeen"], today) > 30))]
     counts["removed"] = len(delete)
     return {"set": new, "update": update, "delete": delete, "counts": counts}
