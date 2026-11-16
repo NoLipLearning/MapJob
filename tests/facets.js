@@ -27,11 +27,15 @@ const JOBS = [
   mk('a13', { source: 'usajobs', clearance: 'required', entry: 'no', posted: iso(-12), deadline: iso(2), fit: 20, loc: at(38.89, -77.03) }),
   mk('a14', { source: 'indeed', clearance: 'none', entry: 'yes', posted: iso(-15), fit: 88, loc: at(38.94, -77.33), checked: iso(-2) })
 ];
+// annual minimum pay as the pipeline would set it; one job under $50k so every pay band is exercised
+JOBS.forEach(j => { const m = /\$(\d+)k/.exec(j.pay || ""); if (m) j.payMin = +m[1] * 1000; });
+JOBS[1].pay = "$40k"; JOBS[1].payMin = 40000;
 const SRC_OF = j => /^saved-/.test(j.source) ? ['saved'] : j.source === 'web' ? ['careers'] : [j.source].concat(j.status === 'saved' ? ['saved'] : []);
 const age = j => { const a = new Date(String(j.posted || j.firstSeen) + 'T00:00:00'), t = new Date(iso(0) + 'T00:00:00'); return Math.round((t - a) / 864e5); };
 // independent model of the Openings filters: f = {src, cl, en, posted, pay}
-const DEF = () => ({ src: ['indeed', 'linkedin', 'handshake', 'usajobs', 'greenhouse', 'lever', 'careers', 'saved'], cl: ['none', 'sponsor', 'unknown'], en: ['yes', 'maybe', 'unknown', 'no'], posted: 'any', pay: false });
-const pass = (j, f) => SRC_OF(j).some(s => f.src.includes(s)) && f.cl.includes(j.clearance) && f.en.includes(j.entry) && (f.posted === 'any' || age(j) <= +f.posted) && (!f.pay || !!j.pay);
+const DEF = () => ({ src: ['indeed', 'linkedin', 'handshake', 'usajobs', 'greenhouse', 'lever', 'careers', 'saved'], cl: ['none', 'sponsor', 'unknown'], en: ['yes', 'maybe', 'unknown', 'no'], posted: 'any', pb: ['50', 'unk'] });
+const PAYK = j => j.payMin == null ? 'unk' : j.payMin >= 50000 ? '50' : 'low';
+const pass = (j, f) => SRC_OF(j).some(s => f.src.includes(s)) && f.cl.includes(j.clearance) && f.en.includes(j.entry) && (f.posted === 'any' || age(j) <= +f.posted) && f.pb.includes(PAYK(j));
 const ids = f => JOBS.filter(j => pass(j, f)).map(j => j.id);
 const HOME = [38.93472, -77.32540];
 const mi = (a, b, c, d) => { const R = 3958.8, r = Math.PI / 180, dl = (c - a) * r, dn = (d - b) * r; const h = Math.sin(dl / 2) ** 2 + Math.cos(a * r) * Math.cos(c * r) * Math.sin(dn / 2) ** 2; return 2 * R * Math.asin(Math.sqrt(h)); };
@@ -158,12 +162,12 @@ const order = (f, k) => { const L = JOBS.filter(j => pass(j, f)).sort(SORTS[k]);
   ok((await labels('src')).join() === 'Indeed,LinkedIn,Handshake,USAJOBS,Greenhouse,Lever,Careers,Saved', 'Source facet options');
   ok((await labels('cl')).join() === 'No clearance,Can be sponsored,Not stated,Needs clearance', 'Clearance facet options');
   ok((await labels('en')).join() === 'Entry level,Some experience,Not stated,Experienced', 'Entry facet options');
-  ok((await labels('posted')).join() === 'Any,7 days,30 days' && (await labels('pay')).join() === 'Pay listed', 'Posted and Pay facet options');
+  ok((await labels('posted')).join() === 'Any,7 days,30 days' && (await labels('pb')).join() === '$50k+,Under $50k,Not listed', 'Posted and Pay facet options');
   async function countsMatch(label, f) {
     const bad = [];
     const groups = { src: DEF().src, cl: DEF().cl.concat('required'), en: DEF().en, posted: ['any', '7', '30'] };
     for (const g of Object.keys(groups)) for (const v of groups[g]) { const exp = JOBS.filter(j => pass(j, Object.assign({}, f, { [g]: g === 'posted' ? v : [v] }))).length, got = await jcn(g + ':' + v); if (got !== exp) bad.push(`${g}:${v} shows ${got}, expected ${exp}`); }
-    const payExp = JOBS.filter(j => pass(j, Object.assign({}, f, { pay: true }))).length; if (await jcn('pay:1') !== payExp) bad.push('pay');
+    for (const b of ['50', 'low', 'unk']) { const e = JOBS.filter(j => pass(j, Object.assign({}, f, { pb: [b] }))).length; if (await jcn('pb:' + b) !== e) bad.push('pay ' + b); }
     ok(bad.length === 0, `${label}: every Openings chip count matches ${bad.join('; ')}`);
   }
   await countsMatch('default', f);
@@ -191,8 +195,8 @@ const order = (f, k) => { const L = JOBS.filter(j => pass(j, f)).sort(SORTS[k]);
   await clickChip('posted:30'); f.posted = '30'; await check('Posted: 30 days');
   ok(!(await shown()).includes('a5') && (await shown()).includes('a14'), 'Posted 30 days: 40-day-old job gone, 15-day-old job stays');
   await clickChip('posted:any'); f.posted = 'any'; await check('Posted: Any');
-  await clickChip('pay:1'); f.pay = true; await check('Pay listed');
-  ok((await shown()).every(id => JOBS.find(j => j.id === id).pay), 'Pay listed: every row has pay');
+  await clickChip('pb:low'); f.pb = ['50', 'unk', 'low']; await check('Under $50k turned on');
+  ok((await shown()).some(id => PAYK(JOBS.find(j => j.id === id)) === 'low'), 'Under $50k jobs appear once turned on');
   // combination
   await clickChip('src:usajobs'); f.src = f.src.filter(s => s !== 'usajobs'); await clickChip('posted:30'); f.posted = '30'; await check('combined: Pay + no USAJOBS + 30 days');
   // everything off -> calm empty state with a way out

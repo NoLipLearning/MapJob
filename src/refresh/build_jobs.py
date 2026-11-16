@@ -8,7 +8,7 @@ Feed items (feeds.py, usajobs.py) also carry job_id|control, deadline (YYYY-MM-D
 --authoritative FILE: JSON list of boards fetched OK this run (feeds.py writes it); their vanished jobs are deleted (apply_batch.plan_writes)."""
 import argparse, json, math, os, re, time, urllib.parse, urllib.request
 from datetime import date
-from normalize import job_id, classify_clearance, classify_entry, match_employer, parse_posted, _meters
+from normalize import parse_pay, job_id, classify_clearance, classify_entry, match_employer, parse_posted, _meters
 from score import score, estimate_minutes
 from apply_batch import plan_writes
 
@@ -44,13 +44,13 @@ def office_for(lat, lon, offices, emp_id=None, max_m=100):
 
 # Employer feeds list every opening (mostly engineering at some boards); keep only titles that fit a policy job hunt.
 FEED_GOOD = re.compile(r"polic|politic|legislat|congress|government affairs|public affairs|advocacy|research|international|communications|editorial|program (?:assistant|associate|coordinator|analyst)|\bintern\b|internship|fellow|analyst|associate", re.I)
-FEED_BAD = re.compile(r"develop|engineer|architect|\bsap\b|abap|cloud|devops|software|scientist|administrator|technician|cyber|\bdata ", re.I)
+FEED_BAD = re.compile(r"develop|engineer|architect|\bsap\b|abap|cloud|devops|software|scientist|administrator|technician|cyber|data (?:architect|engineer)", re.I)
 
 
 def relevant(r):
-    if r.get("source") not in ("greenhouse", "lever"): return True
-    t = r.get("title") or ""
-    return bool(FEED_GOOD.search(t)) and not FEED_BAD.search(t)
+    # any field is fine (not tailored to the degree); drop only roles that need a specialist skill set Eric lacks
+    if r.get("source") not in ("greenhouse", "lever", "indeed"): return True
+    return not FEED_BAD.search(r.get("title") or "")
 
 
 def build(raw, existing, profile, employers, routes, home, today, geocode=None, offices=None, authoritative=None):
@@ -60,7 +60,7 @@ def build(raw, existing, profile, employers, routes, home, today, geocode=None, 
     for r in raw:
         if not relevant(r): continue
         src = r.get("source") or "web"
-        jid = r.get("id") if src.startswith("saved-") else job_id(src, r)
+        jid = r.get("id") or job_id(src, r)  # an explicit id (saved jobs, re-scored existing jobs) is kept
         if not jid: continue
         title = (r.get("title") or "").strip() or "Saved job"
         desc = re.sub(r"\s+", " ", r.get("desc") or "").strip()
@@ -68,6 +68,7 @@ def build(raw, existing, profile, employers, routes, home, today, geocode=None, 
         loc = {"text": r.get("location") or "", "lat": r.get("lat"), "lon": r.get("lon"), "exact": isinstance(r.get("lat"), (int, float))}
         job = {"id": jid, "title": title, "employer": (r.get("employer") or "").strip(), "loc": loc, "source": src}
         job["empId"] = match_employer(job, employers)
+        job["payMin"] = parse_pay(r.get("pay") or "")
         trusted = loc["exact"]  # a real point, or (below) the employer's own building; a geocoded city centre is not
         if not isinstance(loc["lat"], (int, float)):
             e = by_id.get(job["empId"])
@@ -143,7 +144,7 @@ def main():
     D = json.load(open(os.path.join(SRC, "prep4.json"))); routes = load(os.path.join(SRC, "routes.json"), {})
     emps = D["emps"] + load(o.extra_employers, [])
     h = (routes.get("meta") or {}).get("home") or {}
-    home = (h["lat"], h["lon"]) if "lat" in h else None
+    home = (h["lat"], h["lon"]) if "lat" in h else (38.93472, -77.32540)  # Eric's home (DEFAULT_HOME in 00-core.js); routing was removed
     today = date.fromisoformat(o.today) if o.today else date.today()
     offices = load(o.offices or os.path.join(SRC, "offices.json"), [])
     auth = set(load(o.authoritative, []))

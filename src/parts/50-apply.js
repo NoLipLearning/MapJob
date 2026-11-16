@@ -161,8 +161,8 @@ PARTS.push(function (app) {
     const $ = id => w.querySelector("#" + id);
     $("apl-close").onclick = () => closeSheet();
     const go = () => {
-      const role = $("apl-role").value.trim();
-      if (!role) { const m = $("apl-err"); m.hidden = false; m.textContent = "Add the role to start. A few words is enough."; $("apl-role").focus(); return; }
+      let role = $("apl-role").value.trim();
+      if (!role) role = "Any entry-level role";
       const r = app.tracker.upsert({ empId, role, status: "applying" }); openHelper(empId, r.appId);
     };
     $("apl-go").onclick = go;

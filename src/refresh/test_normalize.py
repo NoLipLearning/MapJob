@@ -1,6 +1,6 @@
 import unittest
 from datetime import date
-from normalize import job_id, norm_name, classify_clearance, classify_entry, match_employer, parse_posted
+from normalize import parse_pay, job_id, norm_name, classify_clearance, classify_entry, match_employer, parse_posted
 
 
 class T(unittest.TestCase):
@@ -73,6 +73,19 @@ class T(unittest.TestCase):
         self.assertEqual(classify_entry("Analyst", "This is not an entry level role"), "no")
         emps = [{"id": "rs", "name": "Reston Solutions Inc", "lat": 38.95, "lon": -77.35}, {"id": "nolatlon", "name": "Apex Widgets"}]
         self.assertIsNone(match_employer({"employer": "Apex Solutions LLC", "loc": {"lat": 38.9501, "lon": -77.3501}}, emps))
+
+    def test_indeed_short_links_stable(self):
+        a = job_id("indeed", {"url": "https://to.indeed.com/aaa111", "employer": "Hilton", "title": "Analyst", "location": "McLean, VA"})
+        b = job_id("indeed", {"url": "https://to.indeed.com/bbb222", "employer": "Hilton", "title": "Analyst", "location": "McLean, VA"})
+        self.assertEqual(a, b); self.assertTrue(a.startswith("indeed-"))
+
+    def test_pay(self):
+        self.assertEqual(parse_pay("$52,500 - $75,000 a year"), 52500)
+        self.assertEqual(parse_pay("$20 - $30 an hour"), 41600)
+        self.assertEqual(parse_pay("$4,500 a month"), 54000)
+        self.assertEqual(parse_pay("$3,000 stipend"), 3000)
+        self.assertIsNone(parse_pay("Competitive")); self.assertIsNone(parse_pay(""))
+        self.assertEqual(parse_pay("$18.40/hr"), 38272)
 
     def test_posted(self):
         t = date(2026, 11, 10)

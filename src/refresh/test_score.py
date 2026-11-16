@@ -7,15 +7,15 @@ P = {"keywords_for_job_matching": ["policy", "research", "legislative", "writing
 class T(unittest.TestCase):
     def test_perfect(self):
         j = {"title": "Program Analyst, Policy Research", "summary": "legislative writing research policy", "entry": "yes", "clearance": "none"}
-        self.assertEqual(score(j, P, 10)[0], 100)
+        self.assertEqual(score(dict(j, payMin=60000), P, 10)[0], 100)
 
     def test_unknowns(self):
         j = {"title": "Clerk", "summary": "", "entry": "unknown", "clearance": "unknown"}
-        self.assertEqual(score(j, P, 10)[0], round(100 * (0 + .25 * .4 + .20 * .5 + .20 * 1)))  # 40
+        self.assertEqual(score(j, P, 10)[0], round(100 * (0 + .30 * .4 + .20 * .5 + .20 * .5 + .20 * 1)))  # 52
 
     def test_required_clearance_and_far(self):
         j = {"title": "Program Analyst", "summary": "", "entry": "no", "clearance": "required"}
-        self.assertEqual(score(j, P, 70)[0], round(100 * .35 * min(1, 2 / 5)))  # 14
+        self.assertEqual(score(dict(j, payMin=40000), P, 70)[0], round(100 * .10 * min(1, 2 / 5)))  # 4
 
     def test_sponsor_is_below_none(self):
         base = {"title": "Program Analyst", "summary": "", "entry": "yes"}
@@ -30,6 +30,11 @@ class T(unittest.TestCase):
         # 'policy' must not match 'policyholder'
         self.assertEqual(score({"title": "Policyholder Services Rep", "summary": "", "entry": "unknown", "clearance": "unknown"}, P, None)[0],
                          score({"title": "Services Rep", "summary": "", "entry": "unknown", "clearance": "unknown"}, P, None)[0])
+
+    def test_any_field_entry_job_scores_high(self):
+        # not tailored to the degree: an entry-level $55k job with no topic match still scores well
+        j = {"title": "Client Experience Associate", "summary": "", "entry": "yes", "clearance": "none", "payMin": 55000}
+        self.assertGreaterEqual(score(j, P, 15)[0], 85)
 
     def test_bands(self):
         self.assertEqual([commute_score(m) for m in (15, 16, 25, 35, 45, 60, 61)], [1, .8, .8, .6, .4, .2, 0])

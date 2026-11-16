@@ -52,8 +52,7 @@ const FAKE = `(() => {
   ok(await page.evaluate(id => app.tracker.statusOf(id) === 'star' && app.tracker.isStarred(id), first), 'local: star -> statusOf star');
   await page.click('#trk-add'); await page.waitForTimeout(300);
   await page.screenshot({ path: 'test-shots/tracker-2-sheet.png' });
-  await page.click('#trk-save'); await page.waitForTimeout(200);
-  ok(await page.locator('#trk-err:not([hidden])').count() === 1, 'local: role is required');
+  ok(await page.evaluate(() => !document.getElementById('trk-role').required), 'local: role is optional');
   await page.fill('#trk-role', 'Research Assistant'); await page.click('#trk-save'); await page.waitForTimeout(400);
   let recs = await page.evaluate(id => app.tracker.byEmp(id), first);
   ok(recs.length === 1 && recs[0].status === 'interested' && /^\d{4}-\d\d-\d\d$/.test(recs[0].dates.interested) && recs[0].appId, 'local: created record, interested date stamped');

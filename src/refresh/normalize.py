@@ -47,6 +47,9 @@ def job_id(source, raw):
     if host.endswith("joinhandshake.com"):
         m = re.search(r"/(?:jobs|postings)/(\d+)", url)
         if m: return "handshake-" + m.group(1)
+    if host == "to.indeed.com":  # short links change on every search: identify by who, what and where instead
+        key = "|".join([norm_name(raw.get("employer")), (raw.get("title") or "").lower().strip(), (raw.get("location") or "").lower().strip()])
+        return "indeed-" + hashlib.sha1(key.encode()).hexdigest()[:12]
     if host.endswith("indeed.com"):
         m = re.search(r"[?&]v?jk=([0-9a-f]+)", url)
         if m: return "indeed-" + m.group(1)
@@ -148,3 +151,16 @@ def parse_posted(text, today):
         n = int(m.group(1)) * (7 if m.group(2) == "week" else 1)
         return (today - timedelta(days=n)).isoformat()
     return None
+
+
+def parse_pay(text):
+    """Annual minimum pay in dollars from text like '$52,500 - $75,000 a year' or '$20 - $30 an hour'. None if unclear."""
+    t = (text or "").lower().replace(",", "")
+    m = re.search(r"\$\s*(\d+(?:\.\d+)?)\s*(k)?", t)
+    if not m: return None
+    v = float(m.group(1)) * (1000 if m.group(2) else 1)
+    if re.search(r"\b(an? |per |/ ?)hour|hourly|/hr\b", t): v *= 2080
+    elif re.search(r"\b(a |per |/ ?)month|monthly", t): v *= 12
+    elif re.search(r"\b(a |per |/ ?)week|weekly", t): v *= 52
+    elif v < 1000: return None  # bare small number with no period: not a salary
+    return int(round(v))
