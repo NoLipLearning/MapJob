@@ -1,0 +1,16 @@
+/* 80-offices: Buildings layer. Pins are rounded squares labelled "B", so they differ from employer circles by shape and letter, not only by color. */
+:root { --office: #5d6f2f; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --office: #b4c46b; } }
+:root[data-theme="dark"] { --office: #b4c46b; }
+#bldbtn[aria-pressed="true"] { background: var(--soft); border-color: var(--accent); }
+#bldbtn .bk { min-width: 1em; font-weight: 700; }
+#bldbtn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.ofc-list { margin: 0; padding: 0 0 0 18px; display: grid; gap: 4px; font-size: var(--fs-2); }
+.ofc-list li { overflow-wrap: anywhere; }
+.ofc-job { grid-template-columns: auto 1fr auto; }
+.ofc-job .t { overflow-wrap: anywhere; }
+.ofc-more { margin-top: 8px; }
+.ofc-more > summary { cursor: pointer; min-height: var(--tap); display: flex; align-items: center; font-size: var(--fs-2); font-weight: 600; color: var(--accent); }
+.ofc-more > summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.ofc-more > .kit-row { margin-top: 8px; }
+@media (max-width: 480px) { #places { flex-wrap: wrap; right: 64px; } }

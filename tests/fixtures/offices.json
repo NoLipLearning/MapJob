@@ -1,0 +1,622 @@
+[
+ {
+  "id": "fixture-01",
+  "name": "Fixture Tower 01 <i id=\"xss\">x</i>",
+  "kind": "federal",
+  "tenants": [
+   "Fixture Tenant 01-A",
+   "<img src=x onerror=\"window.__pwned=1\">",
+   "Fixture Tenant 01-C",
+   "Fixture Tenant 01-D",
+   "Fixture Tenant 01-E",
+   "Fixture Tenant 01-F",
+   "Fixture Tenant 01-G",
+   "Fixture Tenant 01-H"
+  ],
+  "addr": "101 Fixture Street, Faketown, VA 20001",
+  "lat": 38.894704,
+  "lon": -77.048475,
+  "source": "osm",
+  "sourceUrl": "https://example.com/fixture/1",
+  "empIds": [
+   "us-department-of-state"
+  ],
+  "checked": "2026-11-02"
+ },
+ {
+  "id": "fixture-02",
+  "name": "Fixture Tower 02",
+  "kind": "office",
+  "tenants": [
+   "Fixture Tenant 02-A",
+   "Fixture Tenant 02-B"
+  ],
+  "addr": "102 Fixture Street, Faketown, VA 20002",
+  "lat": 38.898455,
+  "lon": -77.032993,
+  "source": "gsa-iolp",
+  "sourceUrl": "https://example.com/fixture/2",
+  "empIds": [
+   "library-of-congress-crs"
+  ],
+  "checked": "2026-11-03"
+ },
+ {
+  "id": "fixture-03",
+  "name": "Fixture Tower 03",
+  "kind": "nonprofit",
+  "tenants": [
+   "Fixture Tenant 03-A",
+   "Fixture Tenant 03-B"
+  ],
+  "addr": "103 Fixture Street, Faketown, VA 20003",
+  "lat": 38.897879,
+  "lon": -77.03094,
+  "source": "osm",
+  "sourceUrl": "https://example.com/fixture/3",
+  "empIds": [],
+  "checked": "2026-11-04"
+ },
+ {
+  "id": "fixture-04",
+  "name": "Fixture Tower 04",
+  "kind": "company",
+  "tenants": [],
+  "addr": "104 Fixture Street, Faketown, VA 20004",
+  "lat": 38.89549,
+  "lon": -77.029948,
+  "source": "gsa-iolp",
+  "sourceUrl": "https://example.com/fixture/4",
+  "empIds": [],
+  "checked": "2026-11-05"
+ },
+ {
+  "id": "fixture-05",
+  "name": "Fixture Tower 05",
+  "kind": "federal",
+  "tenants": [
+   "Fixture Tenant 05-A",
+   "Fixture Tenant 05-B"
+  ],
+  "addr": "105 Fixture Street, Faketown, VA 20005",
+  "lat": 38.895387,
+  "lon": -77.030464,
+  "source": "osm",
+  "sourceUrl": "https://example.com/fixture/5",
+  "empIds": [],
+  "checked": "2026-11-06"
+ },
+ {
+  "id": "fixture-06",
+  "name": "Fixture Tower 06",
+  "kind": "government",
+  "tenants": [
+   "Fixture Tenant 06-A",
+   "Fixture Tenant 06-B"
+  ],
+  "addr": "106 Fixture Street, Faketown, VA 20006",
+  "lat": 38.895549,
+  "lon": -77.032865,
+  "source": "gsa-iolp",
+  "sourceUrl": "https://example.com/fixture/6",
+  "empIds": [],
+  "checked": "2026-11-07"
+ },
+ {
+  "id": "fixture-07",
+  "name": "Fixture Tower 07",
+  "kind": "office",
+  "tenants": [
+   "Fixture Tenant 07-A",
+   "Fixture Tenant 07-B"
+  ],
+  "addr": "107 Fixture Street, Faketown, VA 20007",
+  "lat": 38.897323,
+  "lon": -77.027712,
+  "source": "osm",
+  "sourceUrl": "https://example.com/fixture/7",
+  "empIds": [],
+  "checked": "2026-11-08"
+ },
+ {
+  "id": "fixture-08",
+  "name": "Fixture Tower 08",
+  "kind": "nonprofit",
+  "tenants": [],
+  "addr": "108 Fixture Street, Faketown, VA 20008",
+  "lat": 38.895819,
+  "lon": -77.031937,
+  "source": "gsa-iolp",
+  "sourceUrl": "https://example.com/fixture/8",
+  "empIds": [],
+  "checked": "2026-11-09"
+ },
+ {
+  "id": "fixture-09",
+  "name": "Fixture Tower 09",
+  "kind": "company",
+  "tenants": [
+   "Fixture Tenant 09-A",
+   "Fixture Tenant 09-B"
+  ],
+  "addr": "109 Fixture Street, Faketown, VA 20009",
+  "lat": 38.898337,
+  "lon": -77.026866,
+  "source": "osm",
+  "sourceUrl": "https://example.com/fixture/9",
+  "empIds": [],
+  "checked": "2026-11-01"
+ },
+ {
+  "id": "fixture-10",
+  "name": "Fixture Tower 10",
+  "kind": "federal",
+  "tenants": [
+   "Fixture Tenant 10-A",
+   "Fixture Tenant 10-B"
+  ],
+  "addr": "110 Fixture Street, Faketown, VA 20010",
+  "lat": 38.898086,
+  "lon": -77.030723,
+  "source": "gsa-iolp",
+  "sourceUrl": "https://example.com/fixture/10",
+  "empIds": [],
+  "checked": "2026-11-02"
+ },
+ {
+  "id": "fixture-11",
+  "name": "Fixture Tower 11",
+  "kind": "government",
+  "tenants": [
+   "Fixture Tenant 11-A",
+   "Fixture Tenant 11-B"
+  ],
+  "addr": "111 Fixture Street, Faketown, VA 20011",
+  "lat": 38.900081,
+  "lon": -77.033174,
+  "source": "osm",
+  "sourceUrl": "https://example.com/fixture/11",
+  "empIds": [],
+  "checked": "2026-11-03"
+ },
+ {
+  "id": "fixture-12",
+  "name": "Fixture Tower 12",
+  "kind": "office",
+  "tenants": [],
+  "addr": "112 Fixture Street, Faketown, VA 20012",
+  "lat": 38.899492,
+  "lon": -77.031473,
+  "source": "gsa-iolp",
+  "sourceUrl": "https://example.com/fixture/12",
+  "empIds": [],
+  "checked": "2026-11-04"
+ },
+ {
+  "id": "fixture-13",
+  "name": "Fixture Tower 13",
+  "kind": "nonprofit",
+  "tenants": [
+   "Fixture Tenant 13-A",
+   "Fixture Tenant 13-B"
+  ],
+  "addr": "113 Fixture Street, Faketown, VA 20013",
+  "lat": 38.895921,
+  "lon": -77.032675,
+  "source": "osm",
+  "sourceUrl": "https://example.com/fixture/13",
+  "empIds": [],
+  "checked": "2026-11-05"
+ },
+ {
+  "id": "fixture-14",
+  "name": "Fixture Tower 14",
+  "kind": "company",
+  "tenants": [
+   "Fixture Tenant 14-A",
+   "Fixture Tenant 14-B"
+  ],
+  "addr": "114 Fixture Street, Faketown, VA 20014",
+  "lat": 38.896742,
+  "lon": -77.027787,
+  "source": "gsa-iolp",
+  "sourceUrl": "https://example.com/fixture/14",
+  "empIds": [],
+  "checked": "2026-11-06"
+ },
+ {
+  "id": "fixture-15",
+  "name": "Fixture Tower 15",
+  "kind": "federal",
+  "tenants": [
+   "Fixture Tenant 15-A",
+   "Fixture Tenant 15-B"
+  ],
+  "addr": "115 Fixture Street, Faketown, VA 20015",
+  "lat": 38.956904,
+  "lon": -77.357229,
+  "source": "osm",
+  "sourceUrl": "https://example.com/fixture/15",
+  "empIds": [],
+  "checked": "2026-11-07"
+ },
+ {
+  "id": "fixture-16",
+  "name": "Fixture Tower 16",
+  "kind": "government",
+  "tenants": [],
+  "addr": "116 Fixture Street, Faketown, VA 20016",
+  "lat": 38.959195,
+  "lon": -77.358693,
+  "source": "gsa-iolp",
+  "sourceUrl": "https://example.com/fixture/16",
+  "empIds": [],
+  "checked": "2026-11-08"
+ },
+ {
+  "id": "fixture-17",
+  "name": "Fixture Tower 17",
+  "kind": "office",
+  "tenants": [
+   "Fixture Tenant 17-A",
+   "Fixture Tenant 17-B"
+  ],
+  "addr": "117 Fixture Street, Faketown, VA 20017",
+  "lat": 38.958739,
+  "lon": -77.36086,
+  "source": "osm",
+  "sourceUrl": "https://example.com/fixture/17",
+  "empIds": [],
+  "checked": "2026-11-09"
+ },
+ {
+  "id": "fixture-18",
+  "name": "Fixture Tower 18",
+  "kind": "nonprofit",
+  "tenants": [
+   "Fixture Tenant 18-A",
+   "Fixture Tenant 18-B"
+  ],
+  "addr": "118 Fixture Street, Faketown, VA 20018",
+  "lat": 38.956298,
+  "lon": -77.359858,
+  "source": "gsa-iolp",
+  "sourceUrl": "https://example.com/fixture/18",
+  "empIds": [],
+  "checked": "2026-11-01"
+ },
+ {
+  "id": "fixture-19",
+  "name": "Fixture Tower 19",
+  "kind": "company",
+  "tenants": [
+   "Fixture Tenant 19-A",
+   "Fixture Tenant 19-B"
+  ],
+  "addr": "119 Fixture Street, Faketown, VA 20019",
+  "lat": 38.959402,
+  "lon": -77.358307,
+  "source": "osm",
+  "sourceUrl": "https://example.com/fixture/19",
+  "empIds": [],
+  "checked": "2026-11-02"
+ },
+ {
+  "id": "fixture-20",
+  "name": "Fixture Tower 20",
+  "kind": "federal",
+  "tenants": [],
+  "addr": "120 Fixture Street, Faketown, VA 20020",
+  "lat": 38.957571,
+  "lon": -77.357201,
+  "source": "gsa-iolp",
+  "sourceUrl": "https://example.com/fixture/20",
+  "empIds": [],
+  "checked": "2026-11-03"
+ },
+ {
+  "id": "fixture-21",
+  "name": "Fixture Tower 21",
+  "kind": "government",
+  "tenants": [
+   "Fixture Tenant 21-A",
+   "Fixture Tenant 21-B"
+  ],
+  "addr": "121 Fixture Street, Faketown, VA 20021",
+  "lat": 38.958266,
+  "lon": -77.359202,
+  "source": "osm",
+  "sourceUrl": "https://example.com/fixture/21",
+  "empIds": [],
+  "checked": "2026-11-04"
+ },
+ {
+  "id": "fixture-22",
+  "name": "Fixture Tower 22",
+  "kind": "office",
+  "tenants": [
+   "Fixture Tenant 22-A",
+   "Fixture Tenant 22-B"
+  ],
+  "addr": "122 Fixture Street, Faketown, VA 20022",
+  "lat": 38.959972,
+  "lon": -77.356407,
+  "source": "gsa-iolp",
+  "sourceUrl": "https://example.com/fixture/22",
+  "empIds": [],
+  "checked": "2026-11-05"
+ },
+ {
+  "id": "fixture-23",
+  "name": "Fixture Tower 23",
+  "kind": "nonprofit",
+  "tenants": [
+   "Fixture Tenant 23-A",
+   "Fixture Tenant 23-B"
+  ],
+  "addr": "123 Fixture Street, Faketown, VA 20023",
+  "lat": 38.95722,
+  "lon": -77.357279,
+  "source": "osm",
+  "sourceUrl": "https://example.com/fixture/23",
+  "empIds": [],
+  "checked": "2026-11-06"
+ },
+ {
+  "id": "fixture-24",
+  "name": "Fixture Tower 24",
+  "kind": "company",
+  "tenants": [],
+  "addr": "124 Fixture Street, Faketown, VA 20024",
+  "lat": 38.958626,
+  "lon": -77.355174,
+  "source": "gsa-iolp",
+  "sourceUrl": "https://example.com/fixture/24",
+  "empIds": [],
+  "checked": "2026-11-07"
+ },
+ {
+  "id": "fixture-25",
+  "name": "Fixture Tower 25",
+  "kind": "federal",
+  "tenants": [
+   "Fixture Tenant 25-A",
+   "Fixture Tenant 25-B"
+  ],
+  "addr": "125 Fixture Street, Faketown, VA 20025",
+  "lat": 38.919847,
+  "lon": -77.232584,
+  "source": "osm",
+  "sourceUrl": "https://example.com/fixture/25",
+  "empIds": [],
+  "checked": "2026-11-08"
+ },
+ {
+  "id": "fixture-26",
+  "name": "Fixture Tower 26",
+  "kind": "government",
+  "tenants": [
+   "Fixture Tenant 26-A",
+   "Fixture Tenant 26-B"
+  ],
+  "addr": "126 Fixture Street, Faketown, VA 20026",
+  "lat": 38.921101,
+  "lon": -77.233774,
+  "source": "gsa-iolp",
+  "sourceUrl": "https://example.com/fixture/26",
+  "empIds": [],
+  "checked": "2026-11-09"
+ },
+ {
+  "id": "fixture-27",
+  "name": "Fixture Tower 27",
+  "kind": "office",
+  "tenants": [
+   "Fixture Tenant 27-A",
+   "Fixture Tenant 27-B"
+  ],
+  "addr": "127 Fixture Street, Faketown, VA 20027",
+  "lat": 38.918291,
+  "lon": -77.2293,
+  "source": "osm",
+  "sourceUrl": "https://example.com/fixture/27",
+  "empIds": [],
+  "checked": "2026-11-01"
+ },
+ {
+  "id": "fixture-28",
+  "name": "Fixture Tower 28",
+  "kind": "nonprofit",
+  "tenants": [],
+  "addr": "128 Fixture Street, Faketown, VA 20028",
+  "lat": 38.91696,
+  "lon": -77.231177,
+  "source": "gsa-iolp",
+  "sourceUrl": "https://example.com/fixture/28",
+  "empIds": [],
+  "checked": "2026-11-02"
+ },
+ {
+  "id": "fixture-29",
+  "name": "Fixture Tower 29",
+  "kind": "company",
+  "tenants": [
+   "Fixture Tenant 29-A",
+   "Fixture Tenant 29-B"
+  ],
+  "addr": "129 Fixture Street, Faketown, VA 20029",
+  "lat": 38.916396,
+  "lon": -77.229922,
+  "source": "osm",
+  "sourceUrl": "https://example.com/fixture/29",
+  "empIds": [],
+  "checked": "2026-11-03"
+ },
+ {
+  "id": "fixture-30",
+  "name": "Fixture Tower 30",
+  "kind": "federal",
+  "tenants": [
+   "Fixture Tenant 30-A",
+   "Fixture Tenant 30-B"
+  ],
+  "addr": "130 Fixture Street, Faketown, VA 20030",
+  "lat": 38.920023,
+  "lon": -77.230589,
+  "source": "gsa-iolp",
+  "sourceUrl": "https://example.com/fixture/30",
+  "empIds": [],
+  "checked": "2026-11-04"
+ },
+ {
+  "id": "fixture-31",
+  "name": "Fixture Tower 31",
+  "kind": "government",
+  "tenants": [
+   "Fixture Tenant 31-A",
+   "Fixture Tenant 31-B"
+  ],
+  "addr": "131 Fixture Street, Faketown, VA 20031",
+  "lat": 38.920577,
+  "lon": -77.232404,
+  "source": "osm",
+  "sourceUrl": "https://example.com/fixture/31",
+  "empIds": [],
+  "checked": "2026-11-05"
+ },
+ {
+  "id": "fixture-32",
+  "name": "Fixture Tower 32",
+  "kind": "office",
+  "tenants": [],
+  "addr": "132 Fixture Street, Faketown, VA 20032",
+  "lat": 38.919676,
+  "lon": -77.230439,
+  "source": "gsa-iolp",
+  "sourceUrl": "https://example.com/fixture/32",
+  "empIds": [],
+  "checked": "2026-11-06"
+ },
+ {
+  "id": "fixture-33",
+  "name": "Fixture Tower 33",
+  "kind": "nonprofit",
+  "tenants": [
+   "Fixture Tenant 33-A",
+   "Fixture Tenant 33-B"
+  ],
+  "addr": "133 Fixture Street, Faketown, VA 20033",
+  "lat": 38.919099,
+  "lon": -77.231407,
+  "source": "osm",
+  "sourceUrl": "https://example.com/fixture/33",
+  "empIds": [],
+  "checked": "2026-11-07"
+ },
+ {
+  "id": "fixture-34",
+  "name": "Fixture Tower 34",
+  "kind": "company",
+  "tenants": [
+   "Fixture Tenant 34-A",
+   "Fixture Tenant 34-B"
+  ],
+  "addr": "134 Fixture Street, Faketown, VA 20034",
+  "lat": 38.9204,
+  "lon": -77.227987,
+  "source": "gsa-iolp",
+  "sourceUrl": "https://example.com/fixture/34",
+  "empIds": [],
+  "checked": "2026-11-08"
+ },
+ {
+  "id": "fixture-35",
+  "name": "Fixture Tower 35",
+  "kind": "federal",
+  "tenants": [
+   "Fixture Tenant 35-A",
+   "Fixture Tenant 35-B"
+  ],
+  "addr": "135 Fixture Street, Faketown, VA 20035",
+  "lat": 38.89587,
+  "lon": -77.074851,
+  "source": "osm",
+  "sourceUrl": "https://example.com/fixture/35",
+  "empIds": [],
+  "checked": "2026-11-09"
+ },
+ {
+  "id": "fixture-36",
+  "name": "Fixture Tower 36",
+  "kind": "government",
+  "tenants": [],
+  "addr": "136 Fixture Street, Faketown, VA 20036",
+  "lat": 38.893803,
+  "lon": -77.07459,
+  "source": "gsa-iolp",
+  "sourceUrl": "https://example.com/fixture/36",
+  "empIds": [],
+  "checked": "2026-11-01"
+ },
+ {
+  "id": "fixture-37",
+  "name": "Fixture Tower 37",
+  "kind": "office",
+  "tenants": [
+   "Fixture Tenant 37-A",
+   "Fixture Tenant 37-B"
+  ],
+  "addr": "137 Fixture Street, Faketown, VA 20037",
+  "lat": 38.896736,
+  "lon": -77.072548,
+  "source": "osm",
+  "sourceUrl": "https://example.com/fixture/37",
+  "empIds": [],
+  "checked": "2026-11-02"
+ },
+ {
+  "id": "fixture-38",
+  "name": "Fixture Tower 38",
+  "kind": "nonprofit",
+  "tenants": [
+   "Fixture Tenant 38-A",
+   "Fixture Tenant 38-B"
+  ],
+  "addr": "138 Fixture Street, Faketown, VA 20038",
+  "lat": 38.89761,
+  "lon": -77.077508,
+  "source": "gsa-iolp",
+  "sourceUrl": "https://example.com/fixture/38",
+  "empIds": [],
+  "checked": "2026-11-03"
+ },
+ {
+  "id": "fixture-39",
+  "name": "Fixture Tower 39",
+  "kind": "company",
+  "tenants": [
+   "Fixture Tenant 39-A",
+   "Fixture Tenant 39-B"
+  ],
+  "addr": "139 Fixture Street, Faketown, VA 20039",
+  "lat": 38.895429,
+  "lon": -77.074819,
+  "source": "osm",
+  "sourceUrl": "https://example.com/fixture/39",
+  "empIds": [],
+  "checked": "2026-11-04"
+ },
+ {
+  "id": "fixture-40",
+  "name": "Fixture Tower 40",
+  "kind": "federal",
+  "tenants": [],
+  "addr": "140 Fixture Street, Faketown, VA 20040",
+  "lat": 38.893613,
+  "lon": -77.076268,
+  "source": "gsa-iolp",
+  "sourceUrl": "https://example.com/fixture/40",
+  "empIds": [],
+  "checked": "2026-11-05"
+ }
+]

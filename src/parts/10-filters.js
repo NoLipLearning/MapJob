@@ -18,21 +18,23 @@ PARTS.push(function (app) {
     if (s.extra && typeof s.extra === "object") Object.keys(s.extra).forEach(k => { if (s.extra[k] === true) F.extra[k] = true; });
   })();
 
-  const hasRoutes = () => !!(app.routes && app.routes.bestMinutes);
-  const hasToll = () => !!(app.routes && app.routes.hasTollFree);
   const hasTracker = () => !!(app.tracker && app.tracker.statusOf);
-  const minutes = e => { if (hasRoutes()) { const m = app.routes.bestMinutes(e); if (m != null) return m; } return app.commuteMi(e) * 2.4; };
+  const minutes = e => app.commuteMi(e) * 2.4; // straight-line miles x 2.4, shown as "est."
   const bucket = e => hasTracker() ? (BUCKET[app.tracker.statusOf(e.id)] || "new") : "new";
 
-  function match(e) {
-    if (!F.area.includes(e.reg) || !F.type.includes(e.type) || !F.cl.includes(e.cl)) return false;
+  // `ov` overrides some filter values so a chip can ask "how many would I get with only this option?" (facet counts)
+  function matchWith(e, ov) {
+    const v = k => ov && k in ov ? ov[k] : F[k], ex = ov && ov.extra || F.extra;
+    if (!v("area").includes(e.reg) || !v("type").includes(e.type) || !v("cl").includes(e.cl)) return false;
     if (F.max < 90 && minutes(e) > F.max) return false;
-    if (F.metro && !e.metro) return false;
-    if (F.prog || F.entry) { if (!((F.prog && e.progs && e.progs.length) || (F.entry && e.s[2] >= 4))) return false; }
-    if (hasTracker() && !F.status.includes(bucket(e))) return false;
-    for (const t of EXTRA) if (F.extra[t.id] && !t.test(e)) return false;
+    if (v("metro") && !e.metro) return false;
+    const prog = v("prog"), entry = v("entry");
+    if (prog || entry) { if (!((prog && e.progs && e.progs.length) || (entry && e.s[2] >= 4))) return false; }
+    if (hasTracker() && !v("status").includes(bucket(e))) return false;
+    for (const t of EXTRA) if (ex[t.id] && !t.test(e)) return false;
     return true;
   }
+  const match = e => matchWith(e, null);
   app.hooks.filter.push(match);
   app.hooks.row.push(e => e.cl === "some" ? '<span class="s ftag"><span class="tag">Sponsors clearance</span></span>' : "");
 
@@ -51,6 +53,13 @@ PARTS.push(function (app) {
   const activeGroups = () => GROUPS.filter(g => g.on());
   const activeCount = () => activeGroups().length;
   const count = () => E.filter(match).length;
+  // employers that pass the search box and every other part's filter, but not this part's own: the pool the counts are taken from
+  const pool = () => E.filter(e => app.queryMatch(e) && app.hooks.filter.every(fn => fn === match || fn(e)));
+  const OPT = { // chip -> overrides that leave only that option on within its group
+    g: (g, v) => ({ [g]: [v] }),
+    t: t => t === "prog" ? { prog: true, entry: false } : t === "entry" ? { prog: false, entry: true } : { [t]: true },
+    x: id => ({ extra: Object.assign({}, F.extra, { [id]: true }) })
+  };
 
   // ---- DOM ----
   const bar = app.$("filters"), phone = matchMedia("(max-width: 900px)");
@@ -66,20 +75,21 @@ PARTS.push(function (app) {
   const sheetBody = back.querySelector("#fsheet-body");
   let sig = null, lastFocus = null;
 
-  const chip = (g, v, label, on) => `<button type="button" class="chip" data-g="${g}" data-v="${esc(v)}" aria-pressed="${on}">${esc(label)}</button>`;
+  const lab = label => `<span class="cl">${esc(label)}</span> <span class="cn"></span>`; // label + facet count (filled by sync)
+  const chip = (g, v, label, on) => `<button type="button" class="chip" data-g="${g}" data-v="${esc(v)}" aria-pressed="${on}">${lab(label)}</button>`;
   function build() {
-    const s = [hasRoutes(), hasToll(), hasTracker(), EXTRA.map(t => t.id)].join();
+    const s = [hasTracker(), EXTRA.map(t => t.id)].join();
     if (s === sig) return; sig = s;
-    const est = hasRoutes() ? "" : " (est.)";
+    const est = " (est.)";
     let h = "";
     h += `<fieldset class="fgrp"><legend>Area</legend><div class="chips">${AREAS.map(a => chip("area", a, a, F.area.includes(a))).join("")}</div></fieldset>`;
     h += `<fieldset class="fgrp"><legend>Clearance</legend><div class="chips">${CLS.map(c => chip("cl", c[0], c[1], F.cl.includes(c[0]))).join("")}</div></fieldset>`;
     h += `<fieldset class="fgrp"><legend>Commute</legend>
       <div class="field fslide"><label for="f-max">Drive time: <output id="f-maxo"></output>${est}</label><input type="range" id="f-max" min="15" max="90" step="5"></div>
-      <div class="chips"><button type="button" class="chip" data-t="metro" aria-pressed="false">Reachable by Metro</button>
+      <div class="chips"><button type="button" class="chip" data-t="metro" aria-pressed="false">${lab("Reachable by Metro")}</button>
 </div></fieldset>`;
-    h += `<fieldset class="fgrp"><legend>Entry path</legend><div class="chips"><button type="button" class="chip" data-t="prog" aria-pressed="false">Has an internship or fellowship</button><button type="button" class="chip" data-t="entry" aria-pressed="false">Easy entry access</button></div></fieldset>`;
-    if (EXTRA.length) h += `<fieldset class="fgrp"><legend>More</legend><div class="chips">${EXTRA.map(t => `<button type="button" class="chip" data-x="${esc(t.id)}" aria-pressed="false">${esc(t.label)}</button>`).join("")}</div></fieldset>`;
+    h += `<fieldset class="fgrp"><legend>Entry path</legend><div class="chips"><button type="button" class="chip" data-t="prog" aria-pressed="false">${lab("Has an internship or fellowship")}</button><button type="button" class="chip" data-t="entry" aria-pressed="false">${lab("Easy entry access")}</button></div></fieldset>`;
+    if (EXTRA.length) h += `<fieldset class="fgrp"><legend>More</legend><div class="chips">${EXTRA.map(t => `<button type="button" class="chip" data-x="${esc(t.id)}" aria-pressed="false">${lab(t.label)}</button>`).join("")}</div></fieldset>`;
     if (hasTracker()) h += `<fieldset class="fgrp"><legend>My status</legend><div class="chips">${STATUS.map(c => chip("status", c[0], c[1], F.status.includes(c[0]))).join("")}</div></fieldset>`;
     h += `<fieldset class="fgrp wide"><legend>Employer type</legend><div class="chips">${TYPES.map(t => chip("type", t, TYPE_LABEL[t], F.type.includes(t))).join("")}</div></fieldset>`;
     body.innerHTML = h;
@@ -97,6 +107,11 @@ PARTS.push(function (app) {
     body.querySelectorAll(".chip[data-x]").forEach(b => b.setAttribute("aria-pressed", String(!!F.extra[b.dataset.x])));
     const r = body.querySelector("#f-max");
     if (r) { r.value = F.max; body.querySelector("#f-maxo").textContent = F.max >= 90 ? "any" : "up to " + F.max + " min"; r.setAttribute("aria-valuetext", F.max >= 90 ? "any" : F.max + " minutes"); }
+    const P = pool(), cnt = ov => P.filter(e => matchWith(e, ov)).length;
+    body.querySelectorAll(".chip").forEach(b => {
+      const ov = b.dataset.g ? OPT.g(b.dataset.g, b.dataset.v) : b.dataset.t ? OPT.t(b.dataset.t) : b.dataset.x ? OPT.x(b.dataset.x) : null; if (!ov) return;
+      const n = cnt(ov), c = b.querySelector(".cn"); if (c) c.textContent = n; b.classList.toggle("zero", n === 0);
+    });
     const n = activeCount(), c = `Showing ${app.ranked.length} of ${E.length}`;
     head.querySelector(".fcount").textContent = c; pcount.textContent = c;
     head.querySelector(".fres").disabled = n === 0;
@@ -159,6 +174,6 @@ PARTS.push(function (app) {
   function addToggle(t) { if (!t || !t.id || typeof t.test !== "function" || EXTRA.some(x => x.id === t.id)) return; EXTRA.push(t); sig = null; app.refresh(); }
   app.filters = { count, reset, activeCount, match, addToggle };
   place();
-  // routes/tracker parts register after this one, so re-check for them once every part has run
-  setTimeout(() => { if (sig !== [hasRoutes(), hasToll(), hasTracker(), EXTRA.map(t => t.id)].join()) app.refresh(); }, 0);
+  // the tracker part registers after this one, so re-check for it once every part has run
+  setTimeout(() => { if (sig !== [hasTracker(), EXTRA.map(t => t.id)].join()) app.refresh(); }, 0);
 });

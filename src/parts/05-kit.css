@@ -77,3 +77,9 @@
 .toast.on { opacity: 1; transform: translate(-50%, 0); pointer-events: auto; }
 .toast button { font: inherit; font-weight: 700; color: inherit; background: transparent; border: 0; text-decoration: underline; cursor: pointer; min-height: 30px; }
 .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* sort control above a list: <div class="sortbar"><label for=..>Sort by</label><select id=..>..</select></div> */
+.sortbar { display: flex; align-items: center; gap: 8px; margin: 8px 0 4px; }
+.sortbar label { font-size: var(--fs-1); font-weight: 600; color: var(--muted); }
+.sortbar select { font: inherit; font-size: var(--fs-2); font-weight: 600; color: var(--ink); background: var(--panel); border: 1px solid var(--line); border-radius: var(--r-s); padding: 0 10px; min-height: var(--tap); }
+.sortbar select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }

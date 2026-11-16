@@ -38,9 +38,20 @@ const RANK_AREAS = [...new Set(RANK.map(r => r.area))];
 //   app.employers.add(list) -> number   add employers after load (new ids only), then refresh
 //   app.hooks.row        [fn(e) -> html]       extra line(s) inside a list row
 //   app.addTab({id, label, render(listEl), count(), items(), markers()})  extra list tab
+//   app.pinProviders     [fn() -> [pin]]  extra map pins (office buildings). pin = {key, kind, id, ref, x, y, z, order, px, badge(ctx)->[label, fill, ring, txt, round], tip(), pick()}
+//   app.openCard({kind, id, html, bind, x, z, go})   show a card for a non-employer thing (selected becomes {kind, id})
+//   app.queryMatch(e)    true when the employer passes the search box;  app.cluster  {layout(), stats()} for pin clustering
 const app = {
   D, E, RANK, store, esc, miles, toXZ, toLL, $,
-  hooks: { filter: [], commute: null, card: [], markers: [], row: [], rankCard: [] }, tabs: {}, _h: {},
+  hooks: { filter: [], commute: null, card: [], markers: [], row: [], rankCard: [] }, tabs: {}, _h: {}, pinProviders: [], cssv,
+  queryMatch(e) { return qmatchEmp(e); },
+  openCard(o) {
+    selected = { kind: o.kind, id: o.id }; highlight(null);
+    if (o.go && glOK && typeof o.x === "number") flyTo(o.x, o.z, Math.min(Math.max(curDist() * 0.6, 500), 1800), curPolar());
+    showCard(o.html); if (o.bind) { try { o.bind(card); } catch (x) { console.error(x); } }
+    card.scrollTop = 0; refresh(); app.emit("selection-changed", { kind: o.kind, id: o.id });
+  },
+  closeCard() { closeCard(); },
   on(ev, fn) { (this._h[ev] = this._h[ev] || []).push(fn); },
   emit(ev, d) { (this._h[ev] || []).forEach(fn => { try { fn(d); } catch (x) { console.error("[" + ev + "]", x); } }); },
   get home() { return home; }, get selected() { return selected; }, get tab() { return tab; }, get ranked() { return ranked; },
@@ -73,6 +84,10 @@ const app = {
   }
 };
 
+app.cluster = { layout: () => layoutClusters(true), stats: () => Object.assign({}, clusterStats, { dist: glOK ? curDist() : 0, bubbles: clusterStats.bubbles.slice() }),
+  // screen position (px, relative to the canvas) of each cluster bubble, for tests and keyboard-free checks
+  bubbleAt: () => sprites.filter(s => s.kind === "cluster").map(s => { const p = project(s.sp.position); return p ? { n: s.ref.n, kind: s.ref.kind, x: p[0], y: p[1] } : null; }).filter(Boolean) };
+
 // ---------- Scoring ----------
 const homeLL = () => home ? [home.lat, home.lon] : DEFAULT_HOME;
 function commuteMi(e) { const h = homeLL(); return miles(h[0], h[1], e.lat, e.lon); }
@@ -81,17 +96,22 @@ function factors(e) { return [(e.s[0] - 1) / 4, (e.s[1] - 1) / 4, (e.s[2] - 1) /
 function score(e) { const f = factors(e), tot = weights.reduce((a, b) => a + b, 0) || 1; return Math.round(100 * f.reduce((a, v, i) => a + v * weights[i], 0) / tot); }
 const band = s => s >= 80 ? "m1" : s >= 65 ? "m2" : s >= 50 ? "m3" : "m4";
 let ranked = [];
+const SORT_EMP = [["best", "Best match"], ["near", "Closest"], ["name", "Name"]], SORT_EMP_KEY = "reston-map-sort-emp";
+let sortEmp = (v => SORT_EMP.some(o => o[0] === v) ? v : "best")(store.get(SORT_EMP_KEY));
+const SORT_FN = {
+  best: (a, b) => b.score - a.score || commuteMi(a) - commuteMi(b) || a.name.localeCompare(b.name),
+  near: (a, b) => commuteMi(a) - commuteMi(b) || b.score - a.score || a.name.localeCompare(b.name),
+  name: (a, b) => a.name.localeCompare(b.name) || b.score - a.score
+};
 function computeRanking() {
   E.forEach(e => { e.score = score(e); });
-  ranked = E.filter(visEmp).sort((a, b) => b.score - a.score || commuteMi(a) - commuteMi(b) || a.name.localeCompare(b.name));
+  ranked = E.filter(visEmp).sort(SORT_FN[sortEmp]);
   ranked.forEach((e, i) => e.rank = i + 1);
   E.forEach(e => { if (!ranked.includes(e)) e.rank = null; });
 }
 function qmatch(s) { const q = query.trim().toLowerCase(); return !q || s.toLowerCase().includes(q); }
-function visEmp(e) {
-  return app.hooks.filter.every(fn => fn(e)) &&
-    qmatch([e.name, e.addr, e.reg, TYPE_LABEL[e.type], e.roles.join(" "), e.why].join(" "));
-}
+const qmatchEmp = e => qmatch([e.name, e.addr, e.reg, TYPE_LABEL[e.type], e.roles.join(" "), e.why].join(" "));
+function visEmp(e) { return app.hooks.filter.every(fn => fn(e)) && qmatchEmp(e); }
 function visRank(r) { return (rankArea === "all" || r.area === rankArea) && qmatch(r.title + " " + r.addr + " " + r.area + " " + (r.emps || []).map(id => (E.find(e => e.id === id) || {}).name).join(" ")); }
 
 // ---------- 3D ----------
@@ -238,35 +258,78 @@ function markerDots(e) {
   return Object.values(out);
 }
 function makeSprite(tex, order) { const sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, sizeAttenuation: false, depthTest: false, transparent: true })); sp.renderOrder = order; scene.add(sp); return sp; }
-function clearSprites() { sprites.forEach(s => { scene.remove(s.sp); s.sp.material.map.dispose(); s.sp.material.dispose(); }); sprites.length = 0; }
+// Pins are described once per rebuild (`pins`); which of them become sprites depends on the camera: pins closer than
+// CLUSTER_PX on screen merge into one count bubble (layoutClusters). Clustering is off once the camera is close in.
+const pins = [], CLUSTER_PX = 44, CLUSTER_MIN_DIST = 450; let texCache = new Map(), clusterSig = "", camSig = [], clusterT = 0, clusterStats = { pins: 0, inView: 0, sprites: 0, bubbles: [] };
+function pinTex(args) { const k = JSON.stringify(args); let t = texCache.get(k); if (!t) { t = badge(...args); texCache.set(k, t); } return t; }
+function clearSprites() { sprites.forEach(s => { scene.remove(s.sp); s.sp.material.dispose(); }); sprites.length = 0; }
+function clearPins() { clearSprites(); pins.length = 0; texCache.forEach(t => t.dispose()); texCache = new Map(); clusterSig = ""; }
+function addPin(p) { pins.push(p); }
 function rebuildMarkers() {
   if (!glOK || !scene) return;
-  clearSprites();
-  const ring = cssv("--panel"), dark = ring !== "#fafaf7";
-  if (tab === "emp") ranked.slice(0, showCount).forEach(e => {
-    const sp = makeSprite(badge(String(e.rank), cssv("--" + band(e.score)), ring, dark ? "#0e1517" : "#ffffff", true, markerDots(e)), 100);
-    sp.position.set(e.x, Math.max(e.roof, 14) + 10, e.z); sprites.push({ key: "emp:" + e.id, kind: "emp", ref: e, sp });
-  });
+  clearPins();
+  const ring = cssv("--panel"), dark = ring !== "#fafaf7", txt = dark ? "#0e1517" : "#ffffff";
+  const empPin = (e, label, order, withDots) => addPin({ key: "emp:" + e.id, kind: "emp", id: e.id, ref: e, x: e.x, y: Math.max(e.roof, 14) + 10, z: e.z, order, px: 28, sel: 40, rs: 100,
+    badge: () => [String(label), cssv("--" + band(e.score)), ring, txt, true, withDots ? markerDots(e) : undefined], tip: () => `${e.name} · ${e.score}`, pick: () => selectEmp(e.id, true) });
+  if (tab === "emp") ranked.slice(0, showCount).forEach(e => empPin(e, e.rank, e.rank, true));
   if (tab === "emp" && selected && selected.kind === "emp") {
     const e = E.find(x => x.id === selected.id);
-    if (e && !sprites.some(s => s.ref === e)) { const sp = makeSprite(badge(e.rank ? String(e.rank) : "•", cssv("--" + band(e.score)), ring, dark ? "#0e1517" : "#ffffff", true), 100); sp.position.set(e.x, Math.max(e.roof, 14) + 10, e.z); sprites.push({ key: "emp:" + e.id, kind: "emp", ref: e, sp }); }
+    if (e && !pins.some(p => p.ref === e)) empPin(e, e.rank ? e.rank : "•", 9000, false);
   }
-  if (app.tabs[tab] && app.tabs[tab].markers) app.tabs[tab].markers().forEach(m => {
-    const sp = makeSprite(badge(String(m.label), cssv("--" + band(m.e.score)), ring, dark ? "#0e1517" : "#ffffff", true, markerDots(m.e)), 100);
-    sp.position.set(m.e.x, Math.max(m.e.roof, 14) + 10, m.e.z); sprites.push({ key: "emp:" + m.e.id, kind: "emp", ref: m.e, sp });
-  });
-  if (tab === "rank") RANK.filter(visRank).forEach(r => {
-    const sp = makeSprite(badge(String(r.n), cssv("--ink"), ring, cssv("--panel"), false), 99); sp.position.set(r.x, r.bp[0] / 10 + 10, r.z);
-    sprites.push({ key: "rank:" + r.n, kind: "rank", ref: r, sp });
-  });
+  if (app.tabs[tab] && app.tabs[tab].markers) app.tabs[tab].markers().forEach((m, i) => empPin(m.e, m.label, i + 1, true));
+  if (tab === "rank") RANK.filter(visRank).forEach(r => addPin({ key: "rank:" + r.n, kind: "rank", id: r.n, ref: r, x: r.x, y: r.bp[0] / 10 + 10, z: r.z, order: r.n, px: 26, sel: 40, rs: 99,
+    badge: () => [String(r.n), cssv("--ink"), ring, cssv("--panel"), false], tip: () => `#${r.n} ${r.title} · ${sqft(r.sqft)} sq ft`, pick: () => selectRank(r.n, true) }));
+  app.pinProviders.forEach(fn => { let L = []; try { L = fn() || []; } catch (x) { console.error(x); } L.forEach(p => addPin(Object.assign({ px: 22, sel: 30, rs: 98, order: 50000 }, p, { badge: () => p.badge({ ring, dark, txt }) }))); });
   if (homeSprite) { scene.remove(homeSprite); homeSprite.material.map.dispose(); homeSprite = null; }
   if (home) { const [x, z] = toXZ(home.lat, home.lon); homeSprite = makeSprite(badge("⌂", cssv("--accent"), ring, cssv("--accent-ink"), false), 101); homeSprite.position.set(x, 30, z); }
+  layoutClusters(true);
+}
+const bubbleStyle = { emp: ["--ink", true], rank: ["--ink", false], office: ["--office", false] };
+function layoutClusters(force) {
+  if (!glOK || !scene || !camera) return;
+  camera.updateMatrixWorld();
+  const selKey = selected ? selected.kind + ":" + selected.id : null, on = camera.position.distanceTo(controls.target) >= CLUSTER_MIN_DIST;
+  const vis = [], M = 80;
+  pins.forEach(p => { const pr = project(new THREE.Vector3(p.x, p.y, p.z)); if (pr && pr[0] > -M && pr[0] < W + M && pr[1] > -M && pr[1] < H + M) vis.push({ p, sx: pr[0], sy: pr[1], used: false }); });
+  vis.sort((a, b) => a.p.order - b.p.order);
+  const out = [], groups = {};
+  vis.forEach(v => { (groups[v.p.kind] = groups[v.p.kind] || []).push(v); });
+  Object.keys(groups).forEach(kind => {
+    const grid = new Map(), cell = v => Math.floor(v.sx / CLUSTER_PX) + "," + Math.floor(v.sy / CLUSTER_PX);
+    groups[kind].forEach(v => { if (!on || v.p.key === selKey) { v.used = true; out.push({ one: v.p }); return; } const k = cell(v); if (!grid.has(k)) grid.set(k, []); grid.get(k).push(v); });
+    groups[kind].forEach(v => {
+      if (v.used) return; v.used = true; const mem = [v], cx = Math.floor(v.sx / CLUSTER_PX), cy = Math.floor(v.sy / CLUSTER_PX);
+      for (let i = -1; i <= 1; i++) for (let j = -1; j <= 1; j++) (grid.get((cx + i) + "," + (cy + j)) || []).forEach(o => { if (!o.used && Math.hypot(o.sx - v.sx, o.sy - v.sy) < CLUSTER_PX) { o.used = true; mem.push(o); } });
+      out.push(mem.length === 1 ? { one: v.p } : { kind, mem: mem.map(m => m.p) });
+    });
+  });
+  const sig = on + "|" + out.map(c => c.one ? c.one.key : "c:" + c.mem.map(m => m.key).join(",")).join(";");
+  if (!force && sig === clusterSig) return; clusterSig = sig;
+  clearSprites();
+  const ring = cssv("--panel"), dark = ring !== "#fafaf7", bubbles = [];
+  out.forEach(c => {
+    if (c.one) { const p = c.one, sp = makeSprite(pinTex(p.badge()), p.rs); sp.position.set(p.x, p.y, p.z); sprites.push({ key: p.key, kind: p.kind, id: p.id, ref: p.ref, pin: p, sp, tip: p.tip, pick: p.pick }); return; }
+    const n = c.mem.length, st = bubbleStyle[c.kind] || bubbleStyle.emp, sp = makeSprite(pinTex([String(n), cssv(st[0]), ring, dark ? "#0e1517" : "#ffffff", st[1]]), 102);
+    const cx = c.mem.reduce((a, m) => a + m.x, 0) / n, cy = c.mem.reduce((a, m) => a + m.y, 0) / n, cz = c.mem.reduce((a, m) => a + m.z, 0) / n; sp.position.set(cx, cy, cz);
+    const ref = { n, kind: c.kind, members: c.mem, x: cx, z: cz };
+    sprites.push({ key: "cluster:" + c.kind + ":" + c.mem[0].key, kind: "cluster", ref, sp, tip: () => `${n} ${c.kind === "office" ? "buildings" : "places"} here. Click to zoom in.`, pick: () => zoomToCluster(ref) });
+    bubbles.push({ n, kind: c.kind });
+  });
+  clusterStats = { pins: pins.length, inView: vis.length, sprites: sprites.length, bubbles };
   sizeMarkers();
+}
+function zoomToCluster(c) {
+  let x0 = 1e9, x1 = -1e9, z0 = 1e9, z1 = -1e9; c.members.forEach(m => { x0 = Math.min(x0, m.x); x1 = Math.max(x1, m.x); z0 = Math.min(z0, m.z); z1 = Math.max(z1, m.z); });
+  const need = Math.max((x1 - x0) / (W / H), (z1 - z0) * 1.35) * 1.2 / (2 * Math.tan(22.5 * Math.PI / 180));
+  flyTo((x0 + x1) / 2, (z0 + z1) / 2, clamp(need, 380, Math.max(380, curDist() * 0.7)), curPolar());
 }
 function sizeMarkers() {
   if (!glOK || !scene) return;
   const k = 1 / (H * 1.207);
-  sprites.forEach(s => { const isSel = selected && selected.kind === s.kind && String(selected.id) === String(s.kind === "emp" ? s.ref.id : s.ref.n); const px = isSel ? 40 : s.kind === "rank" ? 26 : 28; s.sp.scale.set(px * k, px * k, 1); });
+  sprites.forEach(s => {
+    const isSel = s.pin && selected && selected.kind === s.kind && String(selected.id) === String(s.id);
+    const px = s.kind === "cluster" ? 36 : isSel ? s.pin.sel : s.pin.px; s.sp.scale.set(px * k, px * k, 1);
+  });
   if (homeSprite) homeSprite.scale.set(36 * k, 36 * k, 1);
   needs = true;
 }
@@ -295,6 +358,9 @@ function loop(t) {
     $("needle").style.transform = "rotate(" + controls.getAzimuthalAngle() + "rad)";
     if (!fly) { const on = controls.getPolarAngle() > 0.5; if (on !== tiltOn) setTilt(on); }
   }
+  const cam = [camera.position.x, camera.position.y, camera.position.z, controls.target.x, controls.target.z, W, H];
+  if (cam.some((v, i) => v !== camSig[i])) { camSig = cam; clusterT = t; }
+  if (clusterT && t - clusterT > 140) { clusterT = 0; layoutClusters(false); }
   if (t - lastTileCheck > 500) { lastTileCheck = t; checkTiles(); }
 }
 function flyTo(x, z, dist, polar, az) {
@@ -355,7 +421,7 @@ canvas.addEventListener("pointerup", e => {
   if (!down || Math.hypot(e.clientX - down[0], e.clientY - down[1]) > 6) { down = null; return; } down = null;
   const r = canvas.getBoundingClientRect(), px = e.clientX - r.left, py = e.clientY - r.top;
   if (setMode) { const g = groundPoint(px, py); if (g) { const [lat, lon] = toLL(g.x, g.z); home = { lat, lon }; store.set("reston-map-home", home); endSetMode(); homeChip(); refresh(); app.emit("home-changed", home); flyTo(g.x, g.z, 3000, TILT); setTilt(true); } return; }
-  const s = nearest(px, py, 20); if (s) s.kind === "emp" ? selectEmp(s.ref.id, true) : selectRank(s.ref.n, true);
+  const s = nearest(px, py, 20); if (s) s.pick();
 });
 canvas.addEventListener("pointermove", e => {
   if (e.buttons) { hoverKey = null; placeTip(); return; }
@@ -367,7 +433,7 @@ function placeTip() {
   if (!glOK) return;
   const selKey = selected && window.innerWidth > 900 ? selected.kind + ":" + selected.id : null; const s = sprites.find(q => q.key === (hoverKey || selKey));
   if (!s) { tip.hidden = true; return; } const p = project(s.sp.position); if (!p) { tip.hidden = true; return; }
-  tip.hidden = false; tip.textContent = s.kind === "emp" ? `${s.ref.name} · ${s.ref.score}` : `#${s.ref.n} ${s.ref.title} · ${sqft(s.ref.sqft)} sq ft`;
+  tip.hidden = false; tip.textContent = s.tip();
   tip.style.maxWidth = ""; const room = W - p[0] - 28, left = p[0] - 28, flip = tip.offsetWidth > room && left > room; tip.classList.toggle("flip", flip); tip.style.maxWidth = Math.max(90, flip ? left : room) + "px"; tip.style.left = (flip ? p[0] - 12 : p[0] + 12) + "px"; tip.style.top = p[1] + "px";
 }
 
@@ -465,12 +531,14 @@ function rankRow(r) {
     <span class="bar" aria-hidden="true"><i style="width:${(r.sqft / maxSq * 100).toFixed(1)}%"></i></span></button>`;
 }
 let listLimit = 40;
+const sortSelect = (id, label, opts, cur) => `<div class="sortbar"><label for="${id}">${label}</label><select id="${id}">${opts.map(o => `<option value="${o[0]}"${o[0] === cur ? " selected" : ""}>${esc(o[1])}</option>`).join("")}</select></div>`;
 function refresh() {
   computeRanking();
+  const sortFocus = document.activeElement && document.activeElement.id === "sort-emp";
   let html = "";
   if (tab === "emp") {
     const shown = ranked.slice(0, listLimit);
-    html = `<p class="intro">Ranked for you by the weights above. Numbers on the map match this list.</p>`;
+    html = `<p class="intro">${sortEmp === "best" ? "Ranked for you by the weights above." : sortEmp === "near" ? "Closest to your home first." : "In alphabetical order."} Numbers on the map match this list.</p>` + sortSelect("sort-emp", "Sort by", SORT_EMP, sortEmp);
     html += shown.length ? `<div class="items">${shown.map(empRow).join("")}</div>` : `<p class="empty">No employers match. Clear the search or widen the filters.</p>`;
     if (ranked.length > listLimit) html += `<button type="button" class="more" id="more">Show all ${ranked.length}</button>`;
   } else if (app.tabs[tab]) {
@@ -481,6 +549,7 @@ function refresh() {
       (items.length ? `<div class="items">${items.map(rankRow).join("")}</div>` : `<p class="empty">No buildings match the search.</p>`);
   }
   if (html !== null) listEl.innerHTML = html;
+  const ss = $("sort-emp"); if (ss) { ss.onchange = () => { sortEmp = ss.value; store.set(SORT_EMP_KEY, sortEmp); refresh(); }; if (sortFocus) ss.focus(); }
   const mb = $("more"); if (mb) mb.onclick = () => { listLimit = 1000; refresh(); };
   $("cnt-emp").textContent = ranked.length; $("cnt-rank").textContent = RANK.filter(visRank).length;
   Object.values(app.tabs).forEach(t => { const c = $("cnt-" + t.id); if (c && t.count) c.textContent = t.count(); });
