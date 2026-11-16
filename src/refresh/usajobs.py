@@ -5,7 +5,7 @@ email as the User-Agent; both come from the environment. Missing either -> print
 import argparse, json, math, os, sys, time, urllib.parse, urllib.request
 
 HOME = (38.93472, -77.32540)
-KEYWORDS = ["policy analyst", "program analyst", "program assistant", "management analyst", "public affairs", "foreign affairs", "legislative", "research assistant"]
+KEYWORDS = ["", "policy analyst", "program analyst", "program assistant", "management analyst", "public affairs", "foreign affairs", "legislative", "research assistant"]
 
 
 def miles(a, b):
@@ -37,7 +37,7 @@ def to_item(d):
 
 
 def search(key, email, keyword, page=1):
-    q = urllib.parse.urlencode({"Keyword": keyword, "LocationName": "Reston, Virginia", "Radius": 30, "PayGradeLow": 5, "PayGradeHigh": 9,
+    q = urllib.parse.urlencode({**({"Keyword": keyword} if keyword else {}), "LocationName": "Reston, Virginia", "Radius": 30, "PayGradeLow": 5, "PayGradeHigh": 9,
                                 "WhoMayApply": "public", "ResultsPerPage": 100, "Page": page})
     req = urllib.request.Request("https://data.usajobs.gov/api/search?" + q, headers={"Host": "data.usajobs.gov", "User-Agent": email, "Authorization-Key": key})
     with urllib.request.urlopen(req, timeout=60) as r:
@@ -51,15 +51,18 @@ def main():
         print("skipped: no USAJOBS key"); return
     items, seen = [], set()
     for kw in KEYWORDS:
-        try:
-            res = search(key, email, kw)
-        except Exception as ex:
-            print("USAJOBS search %r failed: %s" % (kw, str(ex)[:80])); continue
-        for it in res.get("SearchResultItems") or []:
-            d = dict(it["MatchedObjectDescriptor"], _id=it.get("MatchedObjectId"))
-            x = to_item(d)
-            if x and x["control"] not in seen: seen.add(x["control"]); items.append(x)
-        time.sleep(1)
+        for page in range(1, 11):
+            try:
+                res = search(key, email, kw, page)
+            except Exception as ex:
+                print("USAJOBS search %r failed: %s" % (kw, str(ex)[:80])); break
+            got = res.get("SearchResultItems") or []
+            for it in got:
+                d = dict(it["MatchedObjectDescriptor"], _id=it.get("MatchedObjectId"))
+                x = to_item(d)
+                if x and x["control"] not in seen: seen.add(x["control"]); items.append(x)
+            time.sleep(1)
+            if len(got) < 100: break
     json.dump(items, open(o.out, "w"), indent=1)
     print("usajobs: %d jobs within 30 miles -> %s" % (len(items), o.out))
 

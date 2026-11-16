@@ -44,13 +44,17 @@ def office_for(lat, lon, offices, emp_id=None, max_m=100):
 
 # Employer feeds list every opening (mostly engineering at some boards); keep only titles that fit a policy job hunt.
 FEED_GOOD = re.compile(r"polic|politic|legislat|congress|government affairs|public affairs|advocacy|research|international|communications|editorial|program (?:assistant|associate|coordinator|analyst)|\bintern\b|internship|fellow|analyst|associate", re.I)
-FEED_BAD = re.compile(r"\bdeveloper|engineer|architect|\bsap\b|abap|cloud|devops|software|scientist|administrator|technician|cyber|data (?:architect|engineer)", re.I)
+FEED_BAD = re.compile(r"\bdeveloper|engineer|architect|\bsap\b|abap|cloud|devops|software|scientist|administrator|technician|cyber|data (?:architect|engineer)|servicenow|database|\bUX\b|designer"
+                      r"|police|firefighter|nurs|physician|medical|dental|psycholog|pharmac|patholog|therap|attorney|pilot|mechanic|electrician|plumb|paint|carpent|machin"
+                      r"|explosive|\bstudent\b|pathways|supervis|\bchief\b|director|\bsenior\b|\bsr\.?\b|\blead\b|principal|\bSVP\b|\bVP\b|\bhead of\b|manager(?! trainee)", re.I)
 
 
 def relevant(r):
     # any field is fine (not tailored to the degree); drop only roles that need a specialist skill set Eric lacks
-    if r.get("source") not in ("greenhouse", "lever", "indeed"): return True
-    return not FEED_BAD.search(r.get("title") or "")
+    if r.get("source") not in ("greenhouse", "lever", "indeed", "usajobs"): return True
+    t = r.get("title") or ""
+    if re.search(r"\b(?:junior|jr|entry|associate|assistant|trainee)\b", t, re.I) and not re.search(r"engineer|developer|scientist|nurs|police|\bstudent\b|pathways|\bsenior\b|\bsr\b", t, re.I): return True
+    return not FEED_BAD.search(t)
 
 
 def build(raw, existing, profile, employers, routes, home, today, geocode=None, offices=None, authoritative=None):

@@ -55,7 +55,7 @@ python3 feeds.py --out $S/feeds.json --boards-out $S/boards_ok.json   # Greenhou
 USAJOBS_KEY=... USAJOBS_EMAIL=... python3 usajobs.py --out $S/usajobs.json   # prints "skipped: no USAJOBS key" if either is unset
 ```
 
-Append both outputs to `$S/raw.json`. Boards that failed or came back empty are not in `boards_ok.json`, so they delete nothing. To add a board, confirm `https://boards-api.greenhouse.io/v1/boards/<token>/jobs` or `https://api.lever.co/v0/postings/<company>?mode=json` answers 200, then add `{"kind","token","employer","empId"}` to `src/refresh/boards.json`. Office buildings (`src/offices.json`) change rarely: `python3 src/offices.py` then `python3 src/check_coverage.py` (must print PASS).
+Append both outputs to `$S/raw.json`. `usajobs.py` now pulls every GS-5 to GS-9 public opening within 30 miles (about 500); after the build, write only new jobs with `entry != "no"` and `fit >= 40`, and skip feed jobs whose clearance is `required`. Never store the USAJOBS key in the repo. Boards that failed or came back empty are not in `boards_ok.json`, so they delete nothing. To add a board, confirm `https://boards-api.greenhouse.io/v1/boards/<token>/jobs` or `https://api.lever.co/v0/postings/<company>?mode=json` answers 200, then add `{"kind","token","employer","empId"}` to `src/refresh/boards.json`. Office buildings (`src/offices.json`) change rarely: `python3 src/offices.py` then `python3 src/check_coverage.py` (must print PASS).
 
 ### 5. Saved jobs
 
