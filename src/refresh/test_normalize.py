@@ -79,6 +79,14 @@ class T(unittest.TestCase):
         b = job_id("indeed", {"url": "https://to.indeed.com/bbb222", "employer": "Hilton", "title": "Analyst", "location": "McLean, VA"})
         self.assertEqual(a, b); self.assertTrue(a.startswith("indeed-"))
 
+    def test_entry_word_beats_manager(self):
+        self.assertEqual(classify_entry("Junior Account Manager", ""), "yes")
+        self.assertEqual(classify_entry("Entry Level Account Manager", ""), "yes")
+        self.assertEqual(classify_entry("Account Manager", ""), "unknown")
+        self.assertEqual(classify_entry("Senior Account Manager", ""), "no")
+        self.assertEqual(classify_entry("Finance Manager", ""), "no")
+        self.assertEqual(classify_entry("Director of Sales", "entry level"), "no")
+
     def test_pay(self):
         self.assertEqual(parse_pay("$52,500 - $75,000 a year"), 52500)
         self.assertEqual(parse_pay("$20 - $30 an hour"), 41600)

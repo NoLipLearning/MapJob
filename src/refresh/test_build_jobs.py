@@ -84,5 +84,13 @@ class Relevance(unittest.TestCase):
         self.assertEqual([j["payMin"] for j in out if j["title"].startswith("Client")], [55000])
 
 
+class SalesTitles(unittest.TestCase):
+    def test_development_roles_kept(self):
+        raw = [{"source": "indeed", "url": "https://to.indeed.com/a", "title": "Sales Development Representative", "employer": "X", "location": "Sterling, VA"},
+               {"source": "indeed", "url": "https://to.indeed.com/b", "title": "Land Development Intern", "employer": "Y", "location": "Reston, VA"},
+               {"source": "indeed", "url": "https://to.indeed.com/c", "title": "Java Developer", "employer": "Z", "location": "Reston, VA"}]
+        self.assertEqual(sorted(j["title"] for j in build(raw, [], P, EMPS, ROUTES, HOME, T)["set"]), ["Land Development Intern", "Sales Development Representative"])
+
+
 if __name__ == "__main__":
     unittest.main()

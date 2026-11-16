@@ -91,7 +91,10 @@ YEARS = re.compile(r"(?:minimum of |at least )?(\d{1,2})\s*(?:\+|-\s*\d{1,2}|to 
 
 def classify_entry(title, text):
     ti, tx, e = (title or "").lower(), (text or "").lower(), KW["entry"]
-    if SENIOR_TITLE.search(ti) or re.search(r"not (?:an? )?entry[- ]level", tx): return "no"
+    hard = re.search(r"\b(?:senior|sr\.?|principal|chief|director|vice president|vp|head of)\b", ti) and SENIOR_TITLE.search(ti)
+    # "Junior Account Manager", "Entry Level Account Manager", "Management Trainee": the entry word wins over "manager"
+    soft_ok = _any(ti, e["yes_title"]) or re.search(r"\baccount manager\b", ti)
+    if hard or (SENIOR_TITLE.search(ti) and not soft_ok) or re.search(r"not (?:an? )?entry[- ]level", tx): return "no"
     yrs = [int(m.group(1)) for m in YEARS.finditer(tx)]
     if yrs and max(yrs) >= 5: return "no"
     if _any(ti, e["yes_title"]) or _any(tx, e["yes_text"]) or (yrs and max(yrs) <= 1 and "0" in [m.group(1) for m in YEARS.finditer(tx)]): return "yes"

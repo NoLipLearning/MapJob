@@ -44,7 +44,7 @@ def office_for(lat, lon, offices, emp_id=None, max_m=100):
 
 # Employer feeds list every opening (mostly engineering at some boards); keep only titles that fit a policy job hunt.
 FEED_GOOD = re.compile(r"polic|politic|legislat|congress|government affairs|public affairs|advocacy|research|international|communications|editorial|program (?:assistant|associate|coordinator|analyst)|\bintern\b|internship|fellow|analyst|associate", re.I)
-FEED_BAD = re.compile(r"develop|engineer|architect|\bsap\b|abap|cloud|devops|software|scientist|administrator|technician|cyber|data (?:architect|engineer)", re.I)
+FEED_BAD = re.compile(r"\bdeveloper|engineer|architect|\bsap\b|abap|cloud|devops|software|scientist|administrator|technician|cyber|data (?:architect|engineer)", re.I)
 
 
 def relevant(r):
@@ -74,8 +74,12 @@ def build(raw, existing, profile, employers, routes, home, today, geocode=None, 
             e = by_id.get(job["empId"])
             if e: loc.update(lat=e["lat"], lon=e["lon"], exact=False); trusted = True
             elif geocode and loc["text"]:
-                ll = geocode(loc["text"])
-                if ll: loc.update(lat=ll[0], lon=ll[1], exact=False)
+                # try the employer's own office first (a named place in OpenStreetMap), then fall back to the town centre
+                ll = geocode(job["employer"] + ", " + loc["text"]) if job["employer"] else None
+                if ll and home and _miles(home, ll) <= 45: loc.update(lat=ll[0], lon=ll[1], exact=True)
+                else:
+                    ll = geocode(loc["text"])
+                    if ll: loc.update(lat=ll[0], lon=ll[1], exact=False)
         mins = best_minutes(routes, job["empId"]) if job["empId"] else None
         if mins is None and isinstance(loc["lat"], (int, float)) and home:
             mins = round(estimate_minutes(_miles(home, (loc["lat"], loc["lon"]))))
@@ -104,7 +108,7 @@ def build(raw, existing, profile, employers, routes, home, today, geocode=None, 
     return plan
 
 
-def make_geocoder(max_lookups=20):
+def make_geocoder(max_lookups=80):
     path = os.path.join(SRC, "geocache.json"); cache = json.load(open(path)) if os.path.exists(path) else {}; left = [max_lookups]
 
     def geo(q):
