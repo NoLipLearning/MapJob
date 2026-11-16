@@ -42,11 +42,23 @@ def office_for(lat, lon, offices, emp_id=None, max_m=100):
     return best[1] if best else None
 
 
+# Employer feeds list every opening (mostly engineering at some boards); keep only titles that fit a policy job hunt.
+FEED_GOOD = re.compile(r"polic|politic|legislat|congress|government affairs|public affairs|advocacy|research|international|communications|editorial|program (?:assistant|associate|coordinator|analyst)|\bintern\b|internship|fellow|analyst|associate", re.I)
+FEED_BAD = re.compile(r"develop|engineer|architect|\bsap\b|abap|cloud|devops|software|scientist|administrator|technician|cyber|\bdata ", re.I)
+
+
+def relevant(r):
+    if r.get("source") not in ("greenhouse", "lever"): return True
+    t = r.get("title") or ""
+    return bool(FEED_GOOD.search(t)) and not FEED_BAD.search(t)
+
+
 def build(raw, existing, profile, employers, routes, home, today, geocode=None, offices=None, authoritative=None):
     by_id = {e["id"]: e for e in employers}
     known = {j["id"] for j in existing}
     jobs = []
     for r in raw:
+        if not relevant(r): continue
         src = r.get("source") or "web"
         jid = r.get("id") if src.startswith("saved-") else job_id(src, r)
         if not jid: continue
