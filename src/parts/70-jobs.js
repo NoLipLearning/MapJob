@@ -149,7 +149,7 @@ PARTS.push(function (app) {
     const where = [j.employer, j.loc && j.loc.text, d].filter(Boolean).map(esc).join(" &middot; ");
     const title = j.title === "Saved job" && !j.summary ? "Saved job &middot; Details not added yet" : esc(j.title);
     return `<div class="jobrow" data-job="${esc(j.id)}">
-      <div class="jt"><b>${title}</b>${isNew ? ' <span class="pill soft jnew">New</span>' : ""}${j.status === "applied" ? ' <span class="pill st-applied">✓ Applied</span>' : ""}</div>
+      <div class="jt">${safeUrl(j.url) ? `<a class="jlink" href="${esc(safeUrl(j.url))}" target="_blank" rel="noopener noreferrer" title="Open the posting">${title} <span aria-hidden="true">↗</span></a>` : `<b>${title}</b>`}${isNew ? ' <span class="pill soft jnew">New</span>' : ""}${j.status === "applied" ? ' <span class="pill st-applied">✓ Applied</span>' : ""}</div>
       <div class="jfit" title="Fit with your background (0 to 100)">${j.fit == null ? "–" : j.fit}</div>
       <div class="js">${where || esc(SRC[j.source] || "")}</div>
       <div class="jtags">${tags(j)}${j.pay ? `<span class="tag">${esc(j.pay)}</span>` : ""}</div>
@@ -255,10 +255,15 @@ PARTS.push(function (app) {
   // ---------- wiring ----------
   const calm = () => getComputedStyle(document.documentElement).getPropertyValue("--calm").trim() || "#2c6bb5";
   app.hooks.markers.push(e => { const n = byEmp(e.id).length; return n ? { color: calm(), glyph: n > 9 ? "+" : String(n), pos: "tl" } : null; });
+  // "Where to apply": the employer's own careers page first, then every loaded opening linked straight to its posting
   app.hooks.card.push(e => {
-    const L = byEmp(e.id); if (!L.length) return null;
-    return { slot: "main", html: `<div class="kit-sec jcard"><h3>Open jobs here</h3>${L.slice(0, 3).map(j => `<div class="kit-row"><span class="jfit">${j.fit == null ? "–" : j.fit}</span><span class="t">${esc(j.title)}</span><button type="button" class="btn sm" data-jopen="${esc(j.id)}">Open</button></div>`).join("")}
-      ${L.length > 3 ? `<button type="button" class="btn sm quiet" data-jall>Show all ${L.length}</button>` : ""}</div>`,
+    const L = byEmp(e.id), careers = safeUrl(e.url), more = L.length > 5;
+    const jobLink = j => safeUrl(j.url) ? `<a class="jlink t" href="${esc(safeUrl(j.url))}" target="_blank" rel="noopener noreferrer">${esc(j.title)} <span aria-hidden="true">↗</span></a>` : `<span class="t">${esc(j.title)}</span>`;
+    return { slot: "top", html: `<div class="kit-sec jcard jwhere"><h3>Where to apply</h3>
+      ${careers ? `<a class="btn primary jcareers" href="${esc(careers)}" target="_blank" rel="noopener noreferrer">${esc(e.name.length > 34 ? "Their careers page" : e.name + " careers")} ↗</a>` : ""}
+      ${L.length ? `<p class="kit-note">${L.length} ${L.length === 1 ? "opening" : "openings"} found. Tap a title to open the posting.</p>` + L.slice(0, 5).map(j => `<div class="kit-row"><span class="jfit">${j.fit == null ? "–" : j.fit}</span>${jobLink(j)}<button type="button" class="btn sm" data-jopen="${esc(j.id)}">Details</button><span class="s">${[j.pay, j.loc && j.loc.text].filter(Boolean).map(esc).join(" · ")}</span></div>`).join("")
+        : `<p class="kit-note">No openings loaded for them yet. Their careers page lists everything they are hiring for.</p>`}
+      ${more ? `<button type="button" class="btn sm quiet" data-jall>Show all ${L.length}</button>` : ""}</div>`,
       bind: root => { root.querySelectorAll("[data-jopen]").forEach(b => b.onclick = () => openJob(b.dataset.jopen)); const a = root.querySelector("[data-jall]"); if (a) a.onclick = () => { empFilter = e.id; const t = $("tab-jobs"); if (t) t.click(); }; } };
   });
   if (app.filters && app.filters.addToggle) app.filters.addToggle({ id: "openings", label: "Has openings", test: e => byEmp(e.id).length > 0 });

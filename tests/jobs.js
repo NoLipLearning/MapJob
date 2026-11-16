@@ -50,7 +50,7 @@ const tab = p => p.evaluate(() => { document.getElementById('tab-jobs').click();
   // markers, card, filter
   ok(await p.evaluate(() => { const e = app.E.find(x => x.id === 'brookings'); return app.hooks.markers.some(fn => { const r = fn(e); return r && r.pos === 'tl' && r.glyph === '2'; }); }), 'employer pin gets a job-count dot (tl)');
   await p.evaluate(() => { document.getElementById('tab-emp').click(); app.select('brookings', true); }); await p.waitForTimeout(600);
-  ok(await p.evaluate(() => { const s = document.querySelector('#card .jcard'); return !!s && s.textContent.includes('Open jobs here') && s.textContent.includes('Program Assistant') && !s.textContent.includes('Hidden Job'); }), 'employer card: Open jobs here, dismissed excluded');
+  ok(await p.evaluate(() => { const s = document.querySelector('#card .jcard'); return !!s && s.textContent.includes('Where to apply') && s.textContent.includes('Program Assistant') && !s.textContent.includes('Hidden Job'); }), 'employer card: Open jobs here, dismissed excluded');
   ok(await p.evaluate(() => { app.filters.reset(); document.querySelector('#filters .chip[data-x="openings"]').click(); return app.ranked.length > 0 && app.ranked.every(e => app.jobs.byEmp(e.id).length > 0); }), '"Has openings" filter');
   await p.evaluate(() => app.filters.reset());
   // New clears after leaving the tab

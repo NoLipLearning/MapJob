@@ -302,7 +302,7 @@ PARTS.push(function (app) {
   const newest = (a, b) => a.updatedAt < b.updatedAt ? 1 : -1;
   function rowHTML(r) {
     const e = emp(r.empId), a = ADV[r.status];
-    return `<div class="kit-row trk-row" data-app="${esc(r.appId)}"><div class="trk-who"><button type="button" class="trk-name" data-emp="${esc(r.empId)}">${esc(e ? e.name : r.empId)}</button><span class="trk-role">${esc(r.role || "Untitled role")}</span></div>${pill(r.status)}
+    return `<div class="kit-row trk-row" data-app="${esc(r.appId)}"><div class="trk-who"><button type="button" class="trk-name" data-emp="${esc(r.empId)}">${esc(e ? e.name : r.empId)}</button><span class="trk-role">${/^https:\/\//.test(r.postingUrl || "") ? `<a href="${esc(r.postingUrl)}" target="_blank" rel="noopener noreferrer" title="Open the posting">${esc(r.role || "Untitled role")} ↗</a>` : esc(r.role || "Untitled role")}</span></div>${pill(r.status)}
       <span class="s trk-next">${esc(nextLine(r))}</span><span class="trk-acts"><button type="button" class="btn sm primary" data-adv="${esc(r.appId)}">${esc(a[1])}</button><button type="button" class="btn sm quiet" data-edit="${esc(r.appId)}" aria-label="Details for ${esc(r.role || "application")}">Details</button></span></div>`;
   }
   const trackedEmps = () => { const seen = new Set(), out = []; GROUPS.concat("closed").forEach(g => tracker.all().filter(r => r.status === g).sort(newest).forEach(r => { const e = emp(r.empId); if (e && !seen.has(e.id)) { seen.add(e.id); out.push(e); } })); return out; };
