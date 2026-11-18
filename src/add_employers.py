@@ -24,6 +24,38 @@ NEW = [
   why='State benefits office in Ashburn, near the Rt 7 and Dulles route. Service-oriented work, no clearance.',
   src=['https://www.dvs.virginia.gov/?p=8543'], notes='UNVERIFIED: address from the DVS office page seen in a search result; ratings are estimates; no posting checked.'),
 ]
+# I-66 corridor (added 2026-11-18). Locations: OpenStreetMap features found through Nominatim by name. Ratings are estimates; no posting checked.
+I66 = 'On the I-66 corridor. '
+OSMN = 'Location: OpenStreetMap feature found by name through Nominatim (2026-11-18). Ratings are estimates; no posting checked.'
+def emp(id, name, type, addr, reg, url, roles, cl, s, why):
+    return dict(id=id, name=name, type=type, addr=addr, reg=reg, url=url, roles=roles, progs=[], cl=cl, s=s, why=I66 + why, src=['https://nominatim.openstreetmap.org/'], notes=OSMN)
+TF, PW, AA = 'Tysons, McLean and Fairfax', 'Warrenton and Prince William', 'Arlington and Alexandria'
+NEW += [
+ emp('navy-federal-vienna', 'Navy Federal Credit Union (headquarters, Vienna)', 'corporate', '900 Follin Lane SE, Vienna, VA 22180', TF, 'https://www.navyfederal.org/',
+     ['Member service, operations and branch roles (titles vary; use the Careers link)'], 'none', [3, 5, 4], 'Very large employer near the Vienna Metro with member-service and operations entry roles.'),
+ emp('george-mason-university', 'George Mason University (Fairfax campus)', 'education-health', '4400 University Drive, Fairfax, VA 22030', TF, 'https://www.gmu.edu/',
+     ['Administrative, program coordinator and research staff roles (use the Jobs link)'], 'none', [4, 5, 3], 'Public university with staff jobs in program coordination, research centers and policy schools.'),
+ emp('city-of-fairfax', 'City of Fairfax Government (City Hall)', 'state-local', 'Armstrong Street, Fairfax, VA 22030', TF, 'https://www.fairfaxva.gov/',
+     ['City analyst, program and administrative roles (use the Employment link)'], 'none', [4, 5, 3], 'Small city government in Old Town Fairfax; local policy and administration work, no clearance.'),
+ emp('northrop-grumman-hq', 'Northrop Grumman (global headquarters, Falls Church)', 'contractor', '2980 Fairview Park Drive, Falls Church, VA 22042', TF, 'https://jobs.northropgrumman.com/careers',
+     ['Associate business, finance and program analyst roles'], 'most', [2, 1, 3], 'Corporate headquarters next to I-495/US-50; most roles need a clearance or the ability to get one.'),
+ emp('inova-fair-oaks', 'Inova Fair Oaks Hospital', 'education-health', '3600 Joseph Siewick Drive, Fairfax, VA 22033', TF, 'https://www.inova.org/',
+     ['Patient access, scheduling and administrative roles (use the Careers link)'], 'none', [2, 5, 4], 'Hospital at Fair Oaks by I-66 and US-50; non-clinical admin roles hire graduates.'),
+ emp('inova-fairfax', 'Inova Fairfax Hospital', 'education-health', '3300 Gallows Road, Falls Church, VA 22042', TF, 'https://www.inova.org/',
+     ['Patient access, scheduling and administrative roles (use the Careers link)'], 'none', [2, 5, 4], 'Largest hospital in Northern Virginia, near Dunn Loring Metro; many non-clinical admin roles.'),
+ emp('defense-health-agency', 'Defense Health Agency (headquarters, Falls Church)', 'federal', '7700 Arlington Boulevard, Falls Church, VA 22042', TF, 'https://www.usajobs.gov/search/results/?k=Defense%20Health%20Agency',
+     ['Program, management and health-policy analyst roles (check USAJOBS)'], 'some', [3, 3, 3], 'Federal health agency headquarters; analyst roles, some need a clearance.'),
+ emp('lockheed-martin-manassas', 'Lockheed Martin (Manassas)', 'contractor', 'Nokesville Road, Manassas, VA 20110', PW, 'https://www.lockheedmartin.com/',
+     ['Business, finance and program support roles (use the Careers link)'], 'most', [2, 1, 3], 'Large defense site in Manassas; most roles need a clearance or the ability to get one.'),
+ emp('micron-manassas', 'Micron Technology (Manassas)', 'corporate', 'Nokesville Road, Manassas, VA 20110', PW, 'https://www.micron.com/',
+     ['Operations, supply-chain and business roles (use the Careers link)'], 'none', [2, 5, 3], 'Big memory-chip plant in Manassas; operations and business roles alongside engineering.'),
+ emp('city-of-manassas', 'City of Manassas Government (City Hall)', 'state-local', '9027 Center Street, Manassas, VA 20110', PW, 'https://www.manassasva.gov/',
+     ['City analyst, program and administrative roles (use the Employment link)'], 'none', [4, 5, 3], 'City government by the Manassas VRE station; local policy and admin work.'),
+ emp('nestle-usa', 'Nestle USA (headquarters, Rosslyn)', 'corporate', '1812 North Moore Street, Arlington, VA 22209', AA, 'https://www.nestleusa.com/',
+     ['Corporate analyst, sales and marketing associate roles (use the Careers link)'], 'none', [3, 5, 3], 'US headquarters at the east end of I-66 by Rosslyn Metro; corporate, sales and marketing roles.'),
+ emp('marymount-university', 'Marymount University', 'education-health', '2807 North Glebe Road, Arlington, VA 22207', AA, 'https://www.marymount.edu/',
+     ['Administrative and program coordinator staff roles (use the Employment link)'], 'none', [3, 5, 3], 'University just off I-66 in Arlington; staff jobs in admissions, programs and administration.'),
+]
 gc = json.load(open('geocache.json')) if os.path.exists('geocache.json') else {}
 def geocode(addr):
     if gc.get(addr): return gc[addr][:2]
@@ -40,6 +72,10 @@ for e in NEW:
     e['metro'] = any(math.hypot(*(a - b for a, b in zip(P(s[1], s[2]), pt))) < 1000 for s in stations)
     print(e['id'], ll, 'metro', e['metro'])
 json.dump(gc, open('geocache.json', 'w'))
+# two Manassas sites share one street address; use their own OSM feature points (Nominatim, by name)
+for e in NEW:
+    if e['id'] == 'lockheed-martin-manassas': e['lat'], e['lon'], e['gc'] = 38.7523, -77.5022, 'osm-name'
+    if e['id'] == 'micron-manassas': e['lat'], e['lon'], e['gc'] = 38.7483, -77.5050, 'osm-name'
 ok = [e for e in NEW if 'lat' in e]
 for f in ('prep4.json', 'prep4.base.json'):
     if not os.path.exists(f): continue

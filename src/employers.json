@@ -3302,5 +3302,329 @@
   "lon": -77.4663037,
   "gc": "addr",
   "us": ""
+ },
+ {
+  "id": "navy-federal-vienna",
+  "name": "Navy Federal Credit Union (headquarters, Vienna)",
+  "type": "corporate",
+  "addr": "900 Follin Lane SE, Vienna, VA 22180",
+  "reg": "Tysons, McLean and Fairfax",
+  "url": "https://www.navyfederal.org/",
+  "roles": [
+   "Member service, operations and branch roles (titles vary; use the Careers link)"
+  ],
+  "progs": [],
+  "cl": "none",
+  "s": [
+   3,
+   5,
+   4
+  ],
+  "why": "On the I-66 corridor. Very large employer near the Vienna Metro with member-service and operations entry roles.",
+  "src": [
+   "https://nominatim.openstreetmap.org/"
+  ],
+  "notes": "Location: OpenStreetMap feature found by name through Nominatim (2026-11-18). Ratings are estimates; no posting checked.",
+  "lat": 38.903232,
+  "lon": -77.2431344,
+  "gc": "addr",
+  "us": ""
+ },
+ {
+  "id": "george-mason-university",
+  "name": "George Mason University (Fairfax campus)",
+  "type": "education-health",
+  "addr": "4400 University Drive, Fairfax, VA 22030",
+  "reg": "Tysons, McLean and Fairfax",
+  "url": "https://www.gmu.edu/",
+  "roles": [
+   "Administrative, program coordinator and research staff roles (use the Jobs link)"
+  ],
+  "progs": [],
+  "cl": "none",
+  "s": [
+   4,
+   5,
+   3
+  ],
+  "why": "On the I-66 corridor. Public university with staff jobs in program coordination, research centers and policy schools.",
+  "src": [
+   "https://nominatim.openstreetmap.org/"
+  ],
+  "notes": "Location: OpenStreetMap feature found by name through Nominatim (2026-11-18). Ratings are estimates; no posting checked.",
+  "lat": 38.8300568,
+  "lon": -77.3121967,
+  "gc": "addr",
+  "us": ""
+ },
+ {
+  "id": "city-of-fairfax",
+  "name": "City of Fairfax Government (City Hall)",
+  "type": "state-local",
+  "addr": "Armstrong Street, Fairfax, VA 22030",
+  "reg": "Tysons, McLean and Fairfax",
+  "url": "https://www.fairfaxva.gov/",
+  "roles": [
+   "City analyst, program and administrative roles (use the Employment link)"
+  ],
+  "progs": [],
+  "cl": "none",
+  "s": [
+   4,
+   5,
+   3
+  ],
+  "why": "On the I-66 corridor. Small city government in Old Town Fairfax; local policy and administration work, no clearance.",
+  "src": [
+   "https://nominatim.openstreetmap.org/"
+  ],
+  "notes": "Location: OpenStreetMap feature found by name through Nominatim (2026-11-18). Ratings are estimates; no posting checked.",
+  "lat": 38.8415751,
+  "lon": -77.3081263,
+  "gc": "addr",
+  "us": ""
+ },
+ {
+  "id": "northrop-grumman-hq",
+  "name": "Northrop Grumman (global headquarters, Falls Church)",
+  "type": "contractor",
+  "addr": "2980 Fairview Park Drive, Falls Church, VA 22042",
+  "reg": "Tysons, McLean and Fairfax",
+  "url": "https://jobs.northropgrumman.com/careers",
+  "roles": [
+   "Associate business, finance and program analyst roles"
+  ],
+  "progs": [],
+  "cl": "most",
+  "s": [
+   2,
+   1,
+   3
+  ],
+  "why": "On the I-66 corridor. Corporate headquarters next to I-495/US-50; most roles need a clearance or the ability to get one.",
+  "src": [
+   "https://nominatim.openstreetmap.org/"
+  ],
+  "notes": "Location: OpenStreetMap feature found by name through Nominatim (2026-11-18). Ratings are estimates; no posting checked.",
+  "lat": 38.8671148,
+  "lon": -77.2150414,
+  "gc": "addr",
+  "us": ""
+ },
+ {
+  "id": "inova-fair-oaks",
+  "name": "Inova Fair Oaks Hospital",
+  "type": "education-health",
+  "addr": "3600 Joseph Siewick Drive, Fairfax, VA 22033",
+  "reg": "Tysons, McLean and Fairfax",
+  "url": "https://www.inova.org/",
+  "roles": [
+   "Patient access, scheduling and administrative roles (use the Careers link)"
+  ],
+  "progs": [],
+  "cl": "none",
+  "s": [
+   2,
+   5,
+   4
+  ],
+  "why": "On the I-66 corridor. Hospital at Fair Oaks by I-66 and US-50; non-clinical admin roles hire graduates.",
+  "src": [
+   "https://nominatim.openstreetmap.org/"
+  ],
+  "notes": "Location: OpenStreetMap feature found by name through Nominatim (2026-11-18). Ratings are estimates; no posting checked.",
+  "lat": 38.8850971,
+  "lon": -77.3807512,
+  "gc": "addr",
+  "us": ""
+ },
+ {
+  "id": "inova-fairfax",
+  "name": "Inova Fairfax Hospital",
+  "type": "education-health",
+  "addr": "3300 Gallows Road, Falls Church, VA 22042",
+  "reg": "Tysons, McLean and Fairfax",
+  "url": "https://www.inova.org/",
+  "roles": [
+   "Patient access, scheduling and administrative roles (use the Careers link)"
+  ],
+  "progs": [],
+  "cl": "none",
+  "s": [
+   2,
+   5,
+   4
+  ],
+  "why": "On the I-66 corridor. Largest hospital in Northern Virginia, near Dunn Loring Metro; many non-clinical admin roles.",
+  "src": [
+   "https://nominatim.openstreetmap.org/"
+  ],
+  "notes": "Location: OpenStreetMap feature found by name through Nominatim (2026-11-18). Ratings are estimates; no posting checked.",
+  "lat": 38.8584151,
+  "lon": -77.2307533,
+  "gc": "addr",
+  "us": ""
+ },
+ {
+  "id": "defense-health-agency",
+  "name": "Defense Health Agency (headquarters, Falls Church)",
+  "type": "federal",
+  "addr": "7700 Arlington Boulevard, Falls Church, VA 22042",
+  "reg": "Tysons, McLean and Fairfax",
+  "url": "https://www.usajobs.gov/search/results/?k=Defense%20Health%20Agency",
+  "roles": [
+   "Program, management and health-policy analyst roles (check USAJOBS)"
+  ],
+  "progs": [],
+  "cl": "some",
+  "s": [
+   3,
+   3,
+   3
+  ],
+  "why": "On the I-66 corridor. Federal health agency headquarters; analyst roles, some need a clearance.",
+  "src": [
+   "https://nominatim.openstreetmap.org/"
+  ],
+  "notes": "Location: OpenStreetMap feature found by name through Nominatim (2026-11-18). Ratings are estimates; no posting checked.",
+  "lat": 38.8676473,
+  "lon": -77.2103419,
+  "gc": "addr",
+  "us": ""
+ },
+ {
+  "id": "lockheed-martin-manassas",
+  "name": "Lockheed Martin (Manassas)",
+  "type": "contractor",
+  "addr": "Nokesville Road, Manassas, VA 20110",
+  "reg": "Warrenton and Prince William",
+  "url": "https://www.lockheedmartin.com/",
+  "roles": [
+   "Business, finance and program support roles (use the Careers link)"
+  ],
+  "progs": [],
+  "cl": "most",
+  "s": [
+   2,
+   1,
+   3
+  ],
+  "why": "On the I-66 corridor. Large defense site in Manassas; most roles need a clearance or the ability to get one.",
+  "src": [
+   "https://nominatim.openstreetmap.org/"
+  ],
+  "notes": "Location: OpenStreetMap feature found by name through Nominatim (2026-11-18). Ratings are estimates; no posting checked.",
+  "lat": 38.7523,
+  "lon": -77.5022,
+  "gc": "osm-name",
+  "us": ""
+ },
+ {
+  "id": "micron-manassas",
+  "name": "Micron Technology (Manassas)",
+  "type": "corporate",
+  "addr": "Nokesville Road, Manassas, VA 20110",
+  "reg": "Warrenton and Prince William",
+  "url": "https://www.micron.com/",
+  "roles": [
+   "Operations, supply-chain and business roles (use the Careers link)"
+  ],
+  "progs": [],
+  "cl": "none",
+  "s": [
+   2,
+   5,
+   3
+  ],
+  "why": "On the I-66 corridor. Big memory-chip plant in Manassas; operations and business roles alongside engineering.",
+  "src": [
+   "https://nominatim.openstreetmap.org/"
+  ],
+  "notes": "Location: OpenStreetMap feature found by name through Nominatim (2026-11-18). Ratings are estimates; no posting checked.",
+  "lat": 38.7483,
+  "lon": -77.505,
+  "gc": "osm-name",
+  "us": ""
+ },
+ {
+  "id": "city-of-manassas",
+  "name": "City of Manassas Government (City Hall)",
+  "type": "state-local",
+  "addr": "9027 Center Street, Manassas, VA 20110",
+  "reg": "Warrenton and Prince William",
+  "url": "https://www.manassasva.gov/",
+  "roles": [
+   "City analyst, program and administrative roles (use the Employment link)"
+  ],
+  "progs": [],
+  "cl": "none",
+  "s": [
+   4,
+   5,
+   3
+  ],
+  "why": "On the I-66 corridor. City government by the Manassas VRE station; local policy and admin work.",
+  "src": [
+   "https://nominatim.openstreetmap.org/"
+  ],
+  "notes": "Location: OpenStreetMap feature found by name through Nominatim (2026-11-18). Ratings are estimates; no posting checked.",
+  "lat": 38.7508201,
+  "lon": -77.4707639,
+  "gc": "addr",
+  "us": ""
+ },
+ {
+  "id": "nestle-usa",
+  "name": "Nestle USA (headquarters, Rosslyn)",
+  "type": "corporate",
+  "addr": "1812 North Moore Street, Arlington, VA 22209",
+  "reg": "Arlington and Alexandria",
+  "url": "https://www.nestleusa.com/",
+  "roles": [
+   "Corporate analyst, sales and marketing associate roles (use the Careers link)"
+  ],
+  "progs": [],
+  "cl": "none",
+  "s": [
+   3,
+   5,
+   3
+  ],
+  "why": "On the I-66 corridor. US headquarters at the east end of I-66 by Rosslyn Metro; corporate, sales and marketing roles.",
+  "src": [
+   "https://nominatim.openstreetmap.org/"
+  ],
+  "notes": "Location: OpenStreetMap feature found by name through Nominatim (2026-11-18). Ratings are estimates; no posting checked.",
+  "lat": 38.8964112,
+  "lon": -77.0719196,
+  "gc": "addr",
+  "us": ""
+ },
+ {
+  "id": "marymount-university",
+  "name": "Marymount University",
+  "type": "education-health",
+  "addr": "2807 North Glebe Road, Arlington, VA 22207",
+  "reg": "Arlington and Alexandria",
+  "url": "https://www.marymount.edu/",
+  "roles": [
+   "Administrative and program coordinator staff roles (use the Employment link)"
+  ],
+  "progs": [],
+  "cl": "none",
+  "s": [
+   3,
+   5,
+   3
+  ],
+  "why": "On the I-66 corridor. University just off I-66 in Arlington; staff jobs in admissions, programs and administration.",
+  "src": [
+   "https://nominatim.openstreetmap.org/"
+  ],
+  "notes": "Location: OpenStreetMap feature found by name through Nominatim (2026-11-18). Ratings are estimates; no posting checked.",
+  "lat": 38.9049663,
+  "lon": -77.1265023,
+  "gc": "addr",
+  "us": ""
  }
 ]
