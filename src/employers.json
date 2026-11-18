@@ -3752,7 +3752,7 @@
    5,
    3
   ],
-  "why": "On the I-66 corridor. Large Smithsonian museum near Dulles and Rt 28, north of I-66; federal and trust jobs.",
+  "why": "Large Smithsonian museum near Dulles and Rt 28, north of I-66; federal and trust jobs.",
   "src": [
    "https://nominatim.openstreetmap.org/"
   ],
@@ -3921,6 +3921,330 @@
   "notes": "Location: OpenStreetMap feature found by name through Nominatim (2026-11-18). Ratings are estimates; no posting checked.",
   "lat": 38.8587217,
   "lon": -77.3701916,
+  "gc": "osm-name",
+  "us": ""
+ },
+ {
+  "id": "nra-hq",
+  "name": "National Rifle Association (headquarters, Fairfax)",
+  "type": "ngo-advocacy",
+  "addr": "11250 Waples Mill Road, Fairfax, VA 22030",
+  "reg": "Tysons, McLean and Fairfax",
+  "url": "https://home.nra.org/",
+  "roles": [
+   "Government relations, policy, program and communications roles (use the Careers link)"
+  ],
+  "progs": [],
+  "cl": "none",
+  "s": [
+   4,
+   5,
+   3
+  ],
+  "why": "On the I-66 corridor. Large advocacy HQ in Fair Lakes right by I-66; government relations, communications and member-services roles.",
+  "src": [
+   "https://nominatim.openstreetmap.org/"
+  ],
+  "notes": "Location: OpenStreetMap names this organization (or its building) at this address, found through Nominatim 2026-11-18. Ratings are estimates; no posting checked.",
+  "lat": 38.8629981,
+  "lon": -77.3355673,
+  "gc": "osm-name",
+  "us": ""
+ },
+ {
+  "id": "nature-conservancy",
+  "name": "The Nature Conservancy (headquarters, Ballston)",
+  "type": "ngo-advocacy",
+  "addr": "4245 North Fairfax Drive, Arlington, VA 22203",
+  "reg": "Arlington and Alexandria",
+  "url": "https://www.nature.org/",
+  "roles": [
+   "Government relations, policy, program and communications roles (use the Careers link)"
+  ],
+  "progs": [],
+  "cl": "none",
+  "s": [
+   4,
+   5,
+   3
+  ],
+  "why": "On the I-66 corridor. Global conservation nonprofit HQ by Ballston Metro off I-66; policy, program and development roles.",
+  "src": [
+   "https://nominatim.openstreetmap.org/"
+  ],
+  "notes": "Location: OpenStreetMap names this organization (or its building) at this address, found through Nominatim 2026-11-18. Ratings are estimates; no posting checked.",
+  "lat": 38.8826,
+  "lon": -77.1123,
+  "gc": "osm-name",
+  "us": ""
+ },
+ {
+  "id": "asce",
+  "name": "American Society of Civil Engineers (headquarters, Reston)",
+  "type": "ngo-advocacy",
+  "addr": "1801 Alexander Bell Drive, Reston, VA 20191",
+  "reg": "Reston, Herndon and Loudoun",
+  "url": "https://www.asce.org/",
+  "roles": [
+   "Government relations, policy, program and communications roles (use the Careers link)"
+  ],
+  "progs": [],
+  "cl": "none",
+  "s": [
+   3,
+   5,
+   3
+  ],
+  "why": "Professional association HQ in Reston; government relations, membership, events and communications roles.",
+  "src": [
+   "https://nominatim.openstreetmap.org/"
+  ],
+  "notes": "Location: OpenStreetMap names this organization (or its building) at this address, found through Nominatim 2026-11-18. Ratings are estimates; no posting checked.",
+  "lat": 38.944081,
+  "lon": -77.3212634,
+  "gc": "osm-name",
+  "us": ""
+ },
+ {
+  "id": "ausa",
+  "name": "Association of the United States Army (Arlington)",
+  "type": "ngo-advocacy",
+  "addr": "2425 Wilson Boulevard, Arlington, VA 22201",
+  "reg": "Arlington and Alexandria",
+  "url": "https://www.ausa.org/",
+  "roles": [
+   "Government relations, policy, program and communications roles (use the Careers link)"
+  ],
+  "progs": [],
+  "cl": "none",
+  "s": [
+   4,
+   5,
+   3
+  ],
+  "why": "On the I-66 corridor. Military advocacy association near Courthouse Metro off I-66; government affairs, events and membership roles.",
+  "src": [
+   "https://nominatim.openstreetmap.org/"
+  ],
+  "notes": "Location: OpenStreetMap names this organization (or its building) at this address, found through Nominatim 2026-11-18. Ratings are estimates; no posting checked.",
+  "lat": 38.8908557,
+  "lon": -77.088166,
+  "gc": "osm-name",
+  "us": ""
+ },
+ {
+  "id": "nctm",
+  "name": "National Council of Teachers of Mathematics (Reston)",
+  "type": "ngo-advocacy",
+  "addr": "1906 Association Drive, Reston, VA 20191",
+  "reg": "Reston, Herndon and Loudoun",
+  "url": "https://www.nctm.org/",
+  "roles": [
+   "Government relations, policy, program and communications roles (use the Careers link)"
+  ],
+  "progs": [],
+  "cl": "none",
+  "s": [
+   3,
+   5,
+   3
+  ],
+  "why": "Education association in Reston; advocacy, programs and membership roles.",
+  "src": [
+   "https://nominatim.openstreetmap.org/"
+  ],
+  "notes": "UNVERIFIED: address is from my own knowledge (not a source page); the map point is that street address in OpenStreetMap. Check the organization site. Ratings are estimates; no posting checked.",
+  "lat": 38.945978,
+  "lon": -77.346769,
+  "gc": "osm-name",
+  "us": ""
+ },
+ {
+  "id": "nreca",
+  "name": "National Rural Electric Cooperative Association (Ballston)",
+  "type": "ngo-advocacy",
+  "addr": "4301 Wilson Boulevard, Arlington, VA 22203",
+  "reg": "Arlington and Alexandria",
+  "url": "https://www.electric.coop/",
+  "roles": [
+   "Government relations, policy, program and communications roles (use the Careers link)"
+  ],
+  "progs": [],
+  "cl": "none",
+  "s": [
+   4,
+   5,
+   3
+  ],
+  "why": "On the I-66 corridor. Large trade association in Ballston; government relations, regulatory and communications roles.",
+  "src": [
+   "https://nominatim.openstreetmap.org/"
+  ],
+  "notes": "UNVERIFIED: address is from my own knowledge (not a source page); the map point is that street address in OpenStreetMap. Check the organization site. Ratings are estimates; no posting checked.",
+  "lat": 38.8806242,
+  "lon": -77.1106159,
+  "gc": "osm-name",
+  "us": ""
+ },
+ {
+  "id": "institute-for-justice",
+  "name": "Institute for Justice (Ballston)",
+  "type": "ngo-advocacy",
+  "addr": "901 North Glebe Road, Arlington, VA 22203",
+  "reg": "Arlington and Alexandria",
+  "url": "https://ij.org/",
+  "roles": [
+   "Government relations, policy, program and communications roles (use the Careers link)"
+  ],
+  "progs": [],
+  "cl": "none",
+  "s": [
+   5,
+   5,
+   3
+  ],
+  "why": "On the I-66 corridor. Public-interest law and policy nonprofit in Ballston; research, communications and activism roles.",
+  "src": [
+   "https://nominatim.openstreetmap.org/"
+  ],
+  "notes": "UNVERIFIED: address is from my own knowledge (not a source page); the map point is that street address in OpenStreetMap. Check the organization site. Ratings are estimates; no posting checked.",
+  "lat": 38.8814225,
+  "lon": -77.1151307,
+  "gc": "osm-name",
+  "us": ""
+ },
+ {
+  "id": "mercatus-center",
+  "name": "Mercatus Center at George Mason University (Arlington)",
+  "type": "think-tank",
+  "addr": "3434 Washington Boulevard, Arlington, VA 22201",
+  "reg": "Arlington and Alexandria",
+  "url": "https://www.mercatus.org/",
+  "roles": [
+   "Government relations, policy, program and communications roles (use the Careers link)"
+  ],
+  "progs": [],
+  "cl": "none",
+  "s": [
+   5,
+   5,
+   3
+  ],
+  "why": "On the I-66 corridor. Policy research center on the Mason Arlington campus near Virginia Square Metro; research assistant and program roles.",
+  "src": [
+   "https://nominatim.openstreetmap.org/"
+  ],
+  "notes": "UNVERIFIED: address is from my own knowledge (not a source page); the map point is that street address in OpenStreetMap. Check the organization site. Ratings are estimates; no posting checked.",
+  "lat": 38.8856485,
+  "lon": -77.1017448,
+  "gc": "osm-name",
+  "us": ""
+ },
+ {
+  "id": "leadership-institute",
+  "name": "Leadership Institute (Clarendon)",
+  "type": "ngo-advocacy",
+  "addr": "1101 North Highland Street, Arlington, VA 22201",
+  "reg": "Arlington and Alexandria",
+  "url": "https://www.leadershipinstitute.org/",
+  "roles": [
+   "Government relations, policy, program and communications roles (use the Careers link)"
+  ],
+  "progs": [],
+  "cl": "none",
+  "s": [
+   5,
+   5,
+   4
+  ],
+  "why": "On the I-66 corridor. Political training organization in Clarendon; program, recruiting and events roles that hire recent grads.",
+  "src": [
+   "https://nominatim.openstreetmap.org/"
+  ],
+  "notes": "UNVERIFIED: address is from my own knowledge (not a source page); the map point is that street address in OpenStreetMap. Check the organization site. Ratings are estimates; no posting checked.",
+  "lat": 38.8864071,
+  "lon": -77.0946046,
+  "gc": "osm-name",
+  "us": ""
+ },
+ {
+  "id": "young-americas-foundation",
+  "name": "Young America's Foundation (Reston)",
+  "type": "ngo-advocacy",
+  "addr": "11480 Commerce Park Drive, Reston, VA 20191",
+  "reg": "Reston, Herndon and Loudoun",
+  "url": "https://www.yaf.org/",
+  "roles": [
+   "Government relations, policy, program and communications roles (use the Careers link)"
+  ],
+  "progs": [],
+  "cl": "none",
+  "s": [
+   5,
+   5,
+   4
+  ],
+  "why": "Political youth organization in Reston; program, outreach and development roles that hire recent grads.",
+  "src": [
+   "https://nominatim.openstreetmap.org/"
+  ],
+  "notes": "UNVERIFIED: address is from my own knowledge (not a source page); the map point is that street address in OpenStreetMap. Check the organization site. Ratings are estimates; no posting checked.",
+  "lat": 38.9461165,
+  "lon": -77.3426057,
+  "gc": "osm-name",
+  "us": ""
+ },
+ {
+  "id": "media-research-center",
+  "name": "Media Research Center (Reston)",
+  "type": "ngo-advocacy",
+  "addr": "1900 Campus Commons Drive, Reston, VA 20191",
+  "reg": "Reston, Herndon and Loudoun",
+  "url": "https://www.mrc.org/",
+  "roles": [
+   "Government relations, policy, program and communications roles (use the Careers link)"
+  ],
+  "progs": [],
+  "cl": "none",
+  "s": [
+   4,
+   5,
+   3
+  ],
+  "why": "Media watchdog nonprofit in Reston; research analyst and communications roles.",
+  "src": [
+   "https://nominatim.openstreetmap.org/"
+  ],
+  "notes": "UNVERIFIED: address is from my own knowledge (not a source page); the map point is that street address in OpenStreetMap. Check the organization site. Ratings are estimates; no posting checked.",
+  "lat": 38.9447967,
+  "lon": -77.3367324,
+  "gc": "osm-name",
+  "us": ""
+ },
+ {
+  "id": "americans-for-prosperity",
+  "name": "Americans for Prosperity (Courthouse, Arlington)",
+  "type": "ngo-advocacy",
+  "addr": "1310 North Courthouse Road, Arlington, VA 22201",
+  "reg": "Arlington and Alexandria",
+  "url": "https://americansforprosperity.org/",
+  "roles": [
+   "Government relations, policy, program and communications roles (use the Careers link)"
+  ],
+  "progs": [],
+  "cl": "none",
+  "s": [
+   5,
+   5,
+   4
+  ],
+  "why": "On the I-66 corridor. Advocacy network near Courthouse Metro off I-66; policy, grassroots and communications roles.",
+  "src": [
+   "https://nominatim.openstreetmap.org/"
+  ],
+  "notes": "UNVERIFIED: address is from my own knowledge (not a source page); the map point is that street address in OpenStreetMap. Check the organization site. Ratings are estimates; no posting checked.",
+  "lat": 38.8887046,
+  "lon": -77.0841685,
   "gc": "osm-name",
   "us": ""
  }
