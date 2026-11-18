@@ -56,6 +56,19 @@ NEW += [
  emp('marymount-university', 'Marymount University', 'education-health', '2807 North Glebe Road, Arlington, VA 22207', AA, 'https://www.marymount.edu/',
      ['Administrative and program coordinator staff roles (use the Employment link)'], 'none', [3, 5, 3], 'University just off I-66 in Arlington; staff jobs in admissions, programs and administration.'),
 ]
+NEW += [
+ dict(emp('virginia-hospital-center', 'Virginia Hospital Center', 'education-health', '1701 North George Mason Drive, Arlington, VA 22205', 'Arlington and Alexandria', 'https://www.virginiahospitalcenter.com/', ['Patient access, scheduling and administrative roles (use the Careers link)'], 'none', [2, 5, 4], 'Arlington hospital a few blocks off I-66; non-clinical admin roles hire graduates.'), lat=38.8897796, lon=-77.1275542, gc='osm-name'),
+ dict(emp('city-of-falls-church', 'City of Falls Church Government (City Hall)', 'state-local', '300 Park Avenue, Falls Church, VA 22046', 'Tysons, McLean and Fairfax', 'https://www.fallschurchva.gov/', ['City analyst, program and administrative roles (use the Employment link)'], 'none', [4, 5, 3], 'Small city government between East and West Falls Church Metro; local policy and admin work.'), lat=38.885729, lon=-77.1724008, gc='osm-name'),
+ dict(emp('fairfax-water', 'Fairfax Water', 'state-local', '8570 Executive Park Avenue, Fairfax, VA 22031', 'Tysons, McLean and Fairfax', 'https://www.fairfaxwater.org/', ['Customer service, administrative and analyst roles (use the Careers link)'], 'none', [2, 5, 3], 'Public water utility in Merrifield; customer service, admin and analyst jobs.'), lat=38.8667776, lon=-77.2381707, gc='osm-name'),
+ dict(emp('town-of-vienna', 'Town of Vienna Government (Town Hall)', 'state-local', '127 Center Street South, Vienna, VA 22180', 'Tysons, McLean and Fairfax', 'https://www.viennava.gov/', ['Town program and administrative roles (use the Employment link)'], 'none', [4, 5, 3], 'Town government in central Vienna; local policy and admin work.'), lat=38.9006689, lon=-77.2644509, gc='osm-name'),
+ dict(emp('smithsonian-udvar-hazy', 'Smithsonian National Air and Space Museum, Udvar-Hazy Center', 'federal', '14390 Air and Space Museum Parkway, Chantilly, VA 20151', 'Reston, Herndon and Loudoun', 'https://www.si.edu/', ['Museum program, visitor services and admin roles (check USAJOBS and Smithsonian jobs)'], 'none', [3, 5, 3], 'Large Smithsonian museum near Dulles and Rt 28, north of I-66; federal and trust jobs.'), lat=38.9108365, lon=-77.4444613, gc='osm-name'),
+ dict(emp('gmu-scitech-manassas', 'George Mason University (Science and Technology Campus, Manassas)', 'education-health', '10900 University Boulevard, Manassas, VA 20110', 'Warrenton and Prince William', 'https://www.gmu.edu/', ['Administrative and program staff roles (use the Jobs link)'], 'none', [3, 5, 3], 'Mason campus near Manassas with program and admin staff jobs.'), lat=38.7581872, lon=-77.5199468, gc='osm-name'),
+ dict(emp('nova-manassas', 'Northern Virginia Community College (Manassas Campus)', 'education-health', '10950 Campus Drive, Manassas, VA 20109', 'Warrenton and Prince William', 'https://www.nvcc.edu/', ['Student services, admissions and administrative roles (use the Employment link)'], 'none', [3, 5, 4], 'Community college campus right by I-66 at Manassas; student-services and admin jobs.'), lat=38.8087149, lon=-77.5171186, gc='osm-name'),
+ dict(emp('prince-william-medical-center', 'Prince William Medical Center (Manassas)', 'education-health', '8700 Sudley Road, Manassas, VA 20110', 'Warrenton and Prince William', 'https://www.novanthealth.org/', ['Patient access, scheduling and administrative roles (use the Careers link)'], 'none', [2, 5, 4], 'Manassas hospital off Sudley Road; non-clinical admin roles.'), lat=38.7672132, lon=-77.4880504, gc='osm-name'),
+ dict(emp('bae-systems-manassas', 'BAE Systems (Manassas)', 'contractor', '9300 Wellington Road, Manassas, VA 20110', 'Warrenton and Prince William', 'https://www.baesystems.com/', ['Business, finance and program support roles (use the Careers link)'], 'most', [2, 1, 3], 'Defense electronics site in Manassas; most roles need a clearance or the ability to get one.'), lat=38.754977, lon=-77.5017197, gc='osm-name'),
+ dict(emp('haymarket-medical-center', 'Haymarket Medical Center', 'education-health', '15225 Heathcote Boulevard, Haymarket, VA 20169', 'Warrenton and Prince William', 'https://www.novanthealth.org/', ['Patient access, scheduling and administrative roles (use the Careers link)'], 'none', [2, 5, 4], 'Hospital at the west end of I-66 near Gainesville; non-clinical admin roles.'), lat=38.8210584, lon=-77.6419226, gc='osm-name'),
+ dict(emp('kaiser-fair-oaks', 'Kaiser Permanente Fair Oaks Medical Center', 'education-health', '12255 Fair Lakes Parkway, Fairfax, VA 22033', 'Tysons, McLean and Fairfax', 'https://www.kaiserpermanente.org/', ['Member services, scheduling and administrative roles (use the Careers link)'], 'none', [2, 5, 4], 'Large medical center in Fair Lakes right by I-66; member-service and admin jobs.'), lat=38.8587217, lon=-77.3701916, gc='osm-name'),
+]
 gc = json.load(open('geocache.json')) if os.path.exists('geocache.json') else {}
 def geocode(addr):
     if gc.get(addr): return gc[addr][:2]
@@ -66,9 +79,9 @@ def geocode(addr):
     gc[addr] = [float(r[0]['lat']), float(r[0]['lon'])] if r else None; return gc[addr][:2] if gc[addr] else None
 stations = json.load(open('stations_list.json'))
 for e in NEW:
-    ll = geocode(e['addr'])
+    ll = (e['lat'], e['lon']) if 'lat' in e else geocode(e['addr'])
     if not ll: print('GEOCODE FAILED', e['id'], e['addr']); continue
-    e['lat'], e['lon'], e['gc'], e['us'] = ll[0], ll[1], 'addr', ''; pt = P(ll[0], ll[1])
+    e['lat'], e['lon'], e['gc'], e['us'] = ll[0], ll[1], e.get('gc', 'addr'), ''; pt = P(ll[0], ll[1])
     e['metro'] = any(math.hypot(*(a - b for a, b in zip(P(s[1], s[2]), pt))) < 1000 for s in stations)
     print(e['id'], ll, 'metro', e['metro'])
 json.dump(gc, open('geocache.json', 'w'))
