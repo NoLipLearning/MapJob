@@ -30,3 +30,9 @@ UPDATE 9: v3 BUILT (Tasks 1-9) and pushed; 15 browser suites + 28 unit tests pas
 UPDATE 10 (v4): routing removed (pushed). Contract docs/DATA-CONTRACT-v4.md. Next: 2 Sonnet agents in worktrees: DATA (offices.py GSA+OSM, feeds.py Greenhouse/Lever, usajobs.py, authoritative deletes, deadline/officeId, coverage+spotcheck scripts) and UI (facet counts, sorts, Openings facets, pin clustering, office pins + building card, applied-per-week). Then merge, e2e, republish. USAJOBS key not yet requested.
 UPDATE 11: v4 COMPLETE and published (v6 of page). 1059 GSA buildings, facets/sorts/clusters, feeds (6 boards; 13 relevant jobs loaded + 4 saved). Open: OSM offices (Overpass down), USAJOBS key, real profile, county data skipped.
 UPDATE 12: scoring is now 'chance of getting hired' (any field, $50k+). 94 openings in db (31 corporate/sales/internship added 2026-11-16). Overpass still refusing: OSM office names NOT loaded; rerun python3 src/offices.py later. Employers of new jobs show under Suggested employers (town-centre pins).
+
+## UPDATE 13 (2026-11-20): route buildings (docs/AGENT-PROMPT-ROUTE-BUILDINGS.md)
+- Routes from Eric's screenshots -> src/routes_corridor.json (OSRM). Coverage tool src/route_coverage.py; baseline docs/route-coverage-before.json (Rt 7 2-16 bldgs/mile; Toll Rd 5 zero miles; US-29 sparse until Warrenton).
+- MapJob env now allows logis.loudoun.gov, gisdata.pwcgov.org, gis.fauquiercounty.gov, router.project-osrm.org, minedbuildings.z5.web.core.windows.net.
+- Fairfax Buildings layer: services1.arcgis.com/ioennV6PpG5Xodq0/.../Buildings/FeatureServer/0 (TYPE C/O/I/P vs SFR houses, BLDG_HEIGHT, NAME sparse). Parcels layer PIN = tax PARID.
+- In flight: Sonnet builder writing src/route_buildings.py (Fairfax adapter); Haiku scout on Loudoun/PW/Fauquier endpoints. Next: second adapter, review, commit, ask Eric before republish.
