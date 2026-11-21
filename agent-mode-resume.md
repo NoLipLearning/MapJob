@@ -1,3 +1,4 @@
+# COMPLETE (2026-11-21, published v14, commit e7e6686)
 # Agent mode resume note (history before 2026-11-21 is in docs/agent-mode-history.md)
 Goal: finish docs/AGENT-PROMPT-ROUTE-BUILDINGS.md.
 DONE (published v13, commit 6c79365): Fairfax+Loudoun+Microsoft route tiles (55 rb-* tiles), coverage before/after (docs/route-coverage-*.json, no zero miles), 8/10 spot checks, all tiles published via files map.
