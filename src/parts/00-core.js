@@ -40,6 +40,7 @@ const RANK_AREAS = [...new Set(RANK.map(r => r.area))];
 //   app.addTab({id, label, render(listEl), count(), items(), markers()})  extra list tab
 //   app.pinProviders     [fn() -> [pin]]  extra map pins (office buildings). pin = {key, kind, id, ref, x, y, z, order, px, badge(ctx)->[label, fill, ring, txt, round], tip(), pick()}
 //   app.openCard({kind, id, html, bind, x, z, go})   show a card for a non-employer thing (selected becomes {kind, id})
+//   event tile-loaded {id, list}: a lazy building tile was added; event map-click {ray}: the map was clicked and no pin was hit (THREE.Ray, metres)
 //   app.queryMatch(e)    true when the employer passes the search box;  app.cluster  {layout(), stats()} for pin clustering
 const app = {
   D, E, RANK, store, esc, miles, toXZ, toLL, $,
@@ -217,7 +218,7 @@ function checkTiles() {
     if (Math.hypot(controls.target.x - t.cx, controls.target.z - t.cz) > t.rad + 5000) continue;
     tiles[t.id] = "loading"; const st = $("status"); st.hidden = false; st.textContent = "Loading " + t.name + " buildings…";
     fetch(t.file).then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
-      .then(list => { addBuildings(list); tiles[t.id] = "done"; st.hidden = true; })
+      .then(list => { addBuildings(list); tiles[t.id] = "done"; st.hidden = true; app.emit("tile-loaded", { id: t.id, list }); })
       .catch(() => { tiles[t.id] = "failed"; st.textContent = t.name + " buildings could not load"; setTimeout(() => st.hidden = true, 3000); });
   }
 }
@@ -421,7 +422,7 @@ canvas.addEventListener("pointerup", e => {
   if (!down || Math.hypot(e.clientX - down[0], e.clientY - down[1]) > 6) { down = null; return; } down = null;
   const r = canvas.getBoundingClientRect(), px = e.clientX - r.left, py = e.clientY - r.top;
   if (setMode) { const g = groundPoint(px, py); if (g) { const [lat, lon] = toLL(g.x, g.z); home = { lat, lon }; store.set("reston-map-home", home); endSetMode(); homeChip(); refresh(); app.emit("home-changed", home); flyTo(g.x, g.z, 3000, TILT); setTilt(true); } return; }
-  const s = nearest(px, py, 20); if (s) s.pick();
+  const s = nearest(px, py, 20); if (s) s.pick(); else if (glOK) { const rc = new THREE.Raycaster(); rc.setFromCamera(new THREE.Vector2(px / W * 2 - 1, -(py / H) * 2 + 1), camera); app.emit("map-click", { ray: rc.ray }); }
 });
 canvas.addEventListener("pointermove", e => {
   if (e.buttons) { hoverKey = null; placeTip(); return; }
