@@ -226,7 +226,7 @@ const order = (f, k) => { const L = JOBS.filter(j => pass(j, f)).sort(SORTS[k]);
   ok(await page.evaluate(() => [...document.querySelectorAll('#list .jobrow')].every(r => r.querySelectorAll('button').length <= 3)), 'at most 3 actions per row');
 
   // =================== 4. Openings: sorting ===================
-  ok((await page.locator('#sort-jobs option').allTextContents()).join() === 'Best fit,Newest,Closing soon,Closest', 'Openings has a sort control');
+  ok((await page.locator('#sort-jobs option').allTextContents()).join() === 'Apply order,Best fit,Newest,Closing soon,Closest', 'Openings has a sort control');
   for (const k of ['fit', 'new', 'close', 'near']) {
     await page.selectOption('#sort-jobs', k); await page.waitForTimeout(250);
     const got = (await shown()).join(), exp = order(DEF(), k).join();

@@ -1,0 +1,168 @@
+[
+ {
+  "id": "usajobs-likely",
+  "title": "Program Analyst",
+  "employer": "Small Business Administration",
+  "loc": {
+   "text": "Washington, DC"
+  },
+  "url": "https://www.usajobs.gov/job/usajobs-likely",
+  "source": "usajobs",
+  "clearance": "none",
+  "entry": "yes",
+  "fit": 60,
+  "fitWhy": [],
+  "status": "new",
+  "firstSeen": "2026-11-10",
+  "lastSeen": "2026-11-10",
+  "verified": true,
+  "read": {
+   "at": "2026-11-22",
+   "from": "posting",
+   "what": "Review agency programs and write reports for managers.",
+   "musts": [],
+   "years": 0,
+   "degree": "bachelor",
+   "clearance": "none",
+   "activeAtHire": false,
+   "licence": false,
+   "deadline": "2099-12-03",
+   "howApply": "usajobs",
+   "applyUrl": "https://www.usajobs.gov/job/likely/apply",
+   "hash": "h"
+  },
+  "canGet": {
+   "label": "likely",
+   "why": "Nothing in the posting rules you out"
+  }
+ },
+ {
+  "id": "usajobs-stretch",
+  "title": "T usajobs-stretch",
+  "employer": "E usajobs-stretch",
+  "loc": {
+   "text": "Washington, DC"
+  },
+  "url": "https://www.usajobs.gov/job/usajobs-stretch",
+  "source": "usajobs",
+  "clearance": "none",
+  "entry": "yes",
+  "fit": 90,
+  "fitWhy": [],
+  "status": "new",
+  "firstSeen": "2026-11-10",
+  "lastSeen": "2026-11-10",
+  "verified": true,
+  "read": {
+   "at": "2026-11-22",
+   "from": "posting",
+   "what": "Analyze budgets.",
+   "musts": [],
+   "years": 2,
+   "degree": "bachelor",
+   "clearance": "sponsor",
+   "activeAtHire": false,
+   "licence": false,
+   "deadline": "2099-12-10",
+   "howApply": "usajobs",
+   "applyUrl": null,
+   "hash": "h"
+  },
+  "canGet": {
+   "label": "stretch",
+   "why": "2 years of experience required"
+  }
+ },
+ {
+  "id": "usajobs-long",
+  "title": "T usajobs-long",
+  "employer": "E usajobs-long",
+  "loc": {
+   "text": "Washington, DC"
+  },
+  "url": "https://www.usajobs.gov/job/usajobs-long",
+  "source": "usajobs",
+  "clearance": "none",
+  "entry": "yes",
+  "fit": 95,
+  "fitWhy": [],
+  "status": "new",
+  "firstSeen": "2026-11-10",
+  "lastSeen": "2026-11-10",
+  "verified": true,
+  "read": {
+   "at": "2026-11-22",
+   "from": "posting",
+   "what": "Lead audits.",
+   "musts": [],
+   "years": 5,
+   "degree": "master",
+   "clearance": "none",
+   "activeAtHire": false,
+   "licence": false,
+   "deadline": null,
+   "howApply": "usajobs",
+   "applyUrl": null,
+   "hash": "h"
+  },
+  "canGet": {
+   "label": "long shot",
+   "why": "5+ years of experience required; a master's degree is required"
+  }
+ },
+ {
+  "id": "usajobs-closed",
+  "title": "T usajobs-closed",
+  "employer": "E usajobs-closed",
+  "loc": {
+   "text": "Washington, DC"
+  },
+  "url": "https://www.usajobs.gov/job/usajobs-closed",
+  "source": "usajobs",
+  "clearance": "none",
+  "entry": "yes",
+  "fit": 99,
+  "fitWhy": [],
+  "status": "new",
+  "firstSeen": "2026-11-10",
+  "lastSeen": "2026-11-10",
+  "verified": true,
+  "read": {
+   "at": "2026-11-22",
+   "from": "posting",
+   "what": "Closed job.",
+   "musts": [],
+   "years": 0,
+   "degree": null,
+   "clearance": null,
+   "activeAtHire": false,
+   "licence": false,
+   "deadline": "2020-01-01",
+   "howApply": "usajobs",
+   "applyUrl": null,
+   "hash": "h"
+  },
+  "canGet": {
+   "label": "likely",
+   "why": "Nothing in the posting rules you out"
+  }
+ },
+ {
+  "id": "indeed-noread",
+  "title": "T indeed-noread",
+  "employer": "E indeed-noread",
+  "loc": {
+   "text": "Washington, DC"
+  },
+  "url": "https://www.indeed.com/viewjob?jk=z",
+  "source": "indeed",
+  "clearance": "none",
+  "entry": "yes",
+  "fit": 40,
+  "fitWhy": [],
+  "status": "new",
+  "firstSeen": "2026-11-10",
+  "lastSeen": "2026-11-10",
+  "verified": true
+ }
+]

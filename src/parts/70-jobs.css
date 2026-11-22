@@ -28,3 +28,10 @@
 .jwhere .jcareers { margin: 2px 0 8px; }
 .jwhere .kit-row { grid-template-columns: auto 1fr auto; }
 .jwhere .kit-row .s { grid-column: 2 / 4; }
+.jcanrow { grid-column: 1 / 3; display: flex; flex-wrap: wrap; gap: 4px; align-items: center; }
+.jcan.cg-likely { color: var(--ok); border: 1px solid var(--ok); background: transparent; }
+.jcan.cg-stretch { color: var(--warm); border: 1px solid var(--warm); background: transparent; }
+.jcan.cg-long { color: var(--muted); border: 1px solid var(--line); background: transparent; }
+.jwhat { grid-column: 1 / 3; }
+.jfacts { grid-column: 1 / 3; color: var(--muted); font-size: 12.5px; font-family: var(--f-mono); overflow-wrap: anywhere; }
+.jdetails { align-self: center; font-size: 13px; color: var(--accent); margin: 0 4px; }

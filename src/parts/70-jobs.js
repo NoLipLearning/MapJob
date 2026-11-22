@@ -12,16 +12,17 @@ PARTS.push(function (app) {
   const F_CL = [["none", "No clearance"], ["sponsor", "Can be sponsored"], ["unknown", "Not stated"], ["required", "Needs clearance"]];
   const F_EN = [["yes", "Entry level"], ["maybe", "Some experience"], ["unknown", "Not stated"], ["no", "Experienced"]];
   const F_POSTED = [["any", "Any"], ["7", "7 days"], ["30", "30 days"]];
-  const SORTS = [["fit", "Best fit"], ["new", "Newest"], ["close", "Closing soon"], ["near", "Closest"]];
+  const SORTS = [["apply", "Apply order"], ["fit", "Best fit"], ["new", "Newest"], ["close", "Closing soon"], ["near", "Closest"]];
+  const F_CG = [["likely", "Likely"], ["stretch", "Stretch"], ["long shot", "Long shot"], ["unread", "Not read yet"]];
   const F_PAY = [["50", "$50k+"], ["low", "Under $50k"], ["unk", "Not listed"]];
-  const fdefaults = () => ({ src: F_SRC.map(o => o[0]), cl: ["none", "sponsor", "unknown"], en: F_EN.map(o => o[0]), posted: "any", pb: ["50", "unk"] });
+  const fdefaults = () => ({ src: F_SRC.map(o => o[0]), cl: ["none", "sponsor", "unknown"], en: F_EN.map(o => o[0]), posted: "any", pb: ["50", "unk"], cg: F_CG.map(o => o[0]) });
   const payKey = j => j.payMin == null ? "unk" : j.payMin >= 50000 ? "50" : "low";
-  let FS = fdefaults(), sortBy = "fit", facetsOpen = !matchMedia("(max-width: 900px)").matches, refocus = null; // phones start with the facets folded away
+  let FS = fdefaults(), sortBy = "apply", facetsOpen = !matchMedia("(max-width: 900px)").matches, refocus = null; // phones start with the facets folded away
   (function loadFacets() {
     const sub = (k, all, s0) => { if (Array.isArray(s0[k])) FS[k] = s0[k].filter(v => all.includes(v)); };
     try {
       const s0 = JSON.parse(localStorage.getItem(FKEY) || "null");
-      if (s0 && typeof s0 === "object") { sub("src", F_SRC.map(o => o[0]), s0); sub("cl", F_CL.map(o => o[0]), s0); sub("en", F_EN.map(o => o[0]), s0); if (F_POSTED.some(o => o[0] === s0.posted)) FS.posted = s0.posted; sub("pb", F_PAY.map(o => o[0]), s0); }
+      if (s0 && typeof s0 === "object") { sub("src", F_SRC.map(o => o[0]), s0); sub("cl", F_CL.map(o => o[0]), s0); sub("en", F_EN.map(o => o[0]), s0); if (F_POSTED.some(o => o[0] === s0.posted)) FS.posted = s0.posted; sub("pb", F_PAY.map(o => o[0]), s0); sub("cg", F_CG.map(o => o[0]), s0); }
       const so = JSON.parse(localStorage.getItem(SKEY) || "null"); if (SORTS.some(o => o[0] === so)) sortBy = so;
       const fo = localStorage.getItem(FKEY + "-open"); if (fo === "false" || fo === "true") facetsOpen = fo === "true";
     } catch (_) {}
@@ -41,16 +42,24 @@ PARTS.push(function (app) {
     if (!v("cl").includes(clKey(j)) || !v("en").includes(enKey(j))) return false;
     const pd = v("posted"); if (pd !== "any") { const a = ageDays(j); if (a == null || a > +pd) return false; }
     if (!v("pb").includes(payKey(j))) return false;
+    if (!v("cg").includes(cgKey(j))) return false;
     return true;
   }
-  const facetsDefault = () => { const d = fdefaults(); return ["src", "cl", "en", "pb"].every(k => d[k].length === FS[k].length && d[k].every(x => FS[k].includes(x))) && FS.posted === "any"; };
-  const closeOf = j => ISO.test(j.deadline || "") ? j.deadline : "";
+  const facetsDefault = () => { const d = fdefaults(); return ["src", "cl", "en", "pb", "cg"].every(k => d[k].length === FS[k].length && d[k].every(x => FS[k].includes(x))) && FS.posted === "any"; };
+  const closeOf = j => { const d = (j.read && j.read.deadline) || j.deadline; return ISO.test(d || "") ? d : ""; };
+  const isUnread = j => !j.read || j.read.from === "title";
+  const cgKey = j => isUnread(j) ? "unread" : (j.canGet && j.canGet.label) || "likely";
+  const CG_RANK = { likely: 0, stretch: 1, "long shot": 2 };
+  const cgRank = j => CG_RANK[(j.canGet && j.canGet.label) || "likely"] ?? 0;
+  const isClosed = j => { const c = closeOf(j); return !!c && c < today(); };
   function distOf(j) {
     const ll = j.loc && typeof j.loc.lat === "number" ? j.loc : (empOf(j) || null); if (!ll) return Infinity;
     const h = app.homeLL(), lon = ll.lon; return typeof lon === "number" ? app.miles(h[0], h[1], ll.lat, lon) : Infinity;
   }
   const newest = (a, b) => String(b.posted || b.firstSeen || "").localeCompare(String(a.posted || a.firstSeen || ""));
   const SORT_FN = {
+    apply: (a, b) => (isClosed(a) - isClosed(b)) || ((a.status === "applied") - (b.status === "applied")) || (cgRank(a) - cgRank(b))
+      || (() => { const x = closeOf(a), y = closeOf(b); return x && y ? x.localeCompare(y) : x ? -1 : y ? 1 : 0; })() || byFit(a, b),
     fit: (a, b) => byFit(a, b),
     new: (a, b) => newest(a, b) || byFit(a, b),
     close: (a, b) => { const x = closeOf(a), y = closeOf(b); return x && y ? x.localeCompare(y) || byFit(a, b) : x ? -1 : y ? 1 : byFit(a, b); },
@@ -144,6 +153,20 @@ PARTS.push(function (app) {
   // ---------- rendering ----------
   const tags = j => [CL_TAG[j.clearance] || CL_TAG.unknown, EN_TAG[j.entry]].filter(Boolean).map(t => `<span class="tag">${esc(t)}</span>`).join("");
   const metaLine = j => { const bits = []; if (j.checked) bits.push("Checked " + fmtDate(j.checked)); if (closeOf(j)) bits.push("Closes " + fmtDate(closeOf(j))); return bits.length ? `<div class="jmeta">${bits.map(esc).join(" &middot; ")}</div>` : ""; };
+  const CG_LABEL = { likely: "Likely", stretch: "Stretch", "long shot": "Long shot" };
+  const DEG = { none: "No degree", bachelor: "Bachelor's", master: "Master's", doctorate: "Doctorate", specialist: "Specialist degree" };
+  const HOW = { usajobs: "via USAJOBS", "employer site": "via employer site", indeed: "via Indeed" };
+  function factsLine(r) {
+    if (!r) return "";
+    const MON = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"], bits = [];
+    if (typeof r.years === "number") bits.push(r.years + " yrs");
+    if (r.clearance === "none") bits.push("no clearance"); else if (r.clearance === "sponsor") bits.push("clearance: ability to obtain"); else if (r.clearance === "required") bits.push(r.activeAtHire ? "active clearance" : "clearance required");
+    if (DEG[r.degree]) bits.push(DEG[r.degree]);
+    if (ISO.test(r.deadline || "")) bits.push("apply by " + MON[+r.deadline.slice(5, 7) - 1] + " " + (+r.deadline.slice(8, 10)));
+    if (HOW[r.howApply]) bits.push(HOW[r.howApply]);
+    return bits.join(" · ");
+  }
+  const applyHref = j => safeUrl((j.read && j.read.applyUrl) || "") || safeUrl(j.url);
   function row(j) {
     const isNew = j.status === "new" && !seen.has(j.id), d = drive(j);
     const where = [j.employer, j.loc && j.loc.text, d].filter(Boolean).map(esc).join(" &middot; ");
@@ -153,8 +176,11 @@ PARTS.push(function (app) {
       <div class="jfit" title="Fit with your background (0 to 100)">${j.fit == null ? "–" : j.fit}</div>
       <div class="js">${where || esc(SRC[j.source] || "")}</div>
       <div class="jtags">${tags(j)}${j.pay ? `<span class="tag">${esc(j.pay)}</span>` : ""}</div>
+      ${j.canGet && CG_LABEL[j.canGet.label] ? `<div class="jcanrow"><span class="pill jcan cg-${j.canGet.label === "long shot" ? "long" : j.canGet.label}" title="${esc(j.canGet.why || "")}">${CG_LABEL[j.canGet.label]}</span>${isClosed(j) ? ' <span class="pill soft">Closed</span>' : ""}${isUnread(j) ? ' <span class="tag jtitleonly">Unread (title only)</span>' : ""}</div>` : (isUnread(j) ? '<div class="jcanrow"><span class="tag jtitleonly">Unread (title only)</span></div>' : "")}
+      ${j.read && j.read.what ? `<div class="jwhat">${esc(j.read.what)}</div>` : ""}
+      ${factsLine(j.read) ? `<div class="jfacts">${esc(factsLine(j.read))}</div>` : ""}
       ${metaLine(j)}
-      <div class="btn-row jact"><button type="button" class="btn sm" data-a="open">Open</button>${j.status === "new" ? '<button type="button" class="btn sm" data-a="save">Save</button>' : ""}${j.status !== "applied" ? '<button type="button" class="btn sm quiet" data-a="dismiss">Not for me</button>' : ""}</div>
+      <div class="btn-row jact">${applyHref(j) && j.status !== "applied" ? '<button type="button" class="btn sm primary" data-a="apply">Apply ↗</button><a href="#" class="jdetails" data-a="open">Details</a>' : '<button type="button" class="btn sm" data-a="open">Open</button>'}${j.status === "new" ? '<button type="button" class="btn sm" data-a="save">Save</button>' : ""}${j.status !== "applied" ? '<button type="button" class="btn sm quiet" data-a="dismiss">Not for me</button>' : ""}</div>
     </div>`;
   }
   // openings before facets (dismissed hidden, one employer if "Show all N" was tapped), then after facets
@@ -165,7 +191,7 @@ PARTS.push(function (app) {
     const cnt = ov => pool.filter(j => passes(j, ov)).length;
     const grp = (title, g, opts) => `<fieldset class="fgrp"><legend>${title}</legend><div class="chips">${opts.map(o => chipHTML(g, o[0], o[1], FS[g].includes(o[0]), cnt({ [g]: [o[0]] }))).join("")}</div></fieldset>`;
     return `<details class="jfacets" id="jfacets"${facetsOpen ? " open" : ""}><summary>Filter openings <span class="jfs" role="status">${shown.length} of ${pool.length} shown</span></summary>
-      <div class="jfbody">${grp("Source", "src", F_SRC)}${grp("Clearance", "cl", F_CL)}${grp("Entry", "en", F_EN)}
+      <div class="jfbody">${grp("Source", "src", F_SRC)}${grp("Clearance", "cl", F_CL)}${grp("Entry", "en", F_EN)}${grp("Can you get it", "cg", F_CG)}
       <fieldset class="fgrp"><legend>Posted</legend><div class="chips">${F_POSTED.map(o => chipHTML("posted", o[0], o[1], FS.posted === o[0], cnt({ posted: o[0] }))).join("")}</div></fieldset>
       <fieldset class="fgrp"><legend>Pay</legend><div class="chips">${F_PAY.map(o => chipHTML("pb", o[0], o[1], FS.pb.includes(o[0]), cnt({ pb: [o[0]] }))).join("")}</div></fieldset>
       <div class="btn-row"><button type="button" class="btn quiet sm" id="jf-reset"${facetsDefault() ? " disabled" : ""}>Reset filters</button></div></div></details>`;
@@ -197,11 +223,14 @@ PARTS.push(function (app) {
     if (keepFk) { const t = [...el.querySelectorAll("[data-fk]")].find(x => x.dataset.fk === keepFk) || el.querySelector("#" + keepFk); if (t) t.focus(); }
     el.querySelector("#job-save").onclick = openSave;
     const ae = el.querySelector("#job-allemp"); if (ae) ae.onclick = () => { empFilter = null; app.refresh(); };
-    el.querySelectorAll(".jobrow [data-a]").forEach(b => b.onclick = () => {
+    el.querySelectorAll(".jobrow [data-a]").forEach(b => b.onclick = ev => { if (ev) ev.preventDefault();
       const id = b.closest(".jobrow").dataset.job;
-      if (b.dataset.a === "open") openJob(id); else if (b.dataset.a === "save") setStatus(id, "saved"); else setStatus(id, "dismissed");
+      if (b.dataset.a === "apply") applyJob(id); else if (b.dataset.a === "open") openJob(id); else if (b.dataset.a === "save") setStatus(id, "saved"); else setStatus(id, "dismissed");
     });
   }
+
+  // ---------- apply ----------
+  function applyJob(id) { const j = jobs.get(id); const u = j && applyHref(j); if (u) window.open(u, "_blank", "noopener"); }
 
   // ---------- sheets ----------
   function sheet(id, inner, onReady) {
