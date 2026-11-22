@@ -89,3 +89,90 @@ class Fetch(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class CanGet(unittest.TestCase):
+    def test_three_years_is_long_shot(self):
+        self.assertEqual(rp.can_get({"years": 3})["label"], "long shot")
+
+    def test_two_years_is_stretch(self):
+        self.assertEqual(rp.can_get({"years": 2, "degree": "bachelor", "clearance": "none"})["label"], "stretch")
+
+    def test_ability_to_obtain_is_likely(self):
+        self.assertEqual(rp.can_get({"clearance": "sponsor", "activeAtHire": False, "years": 0})["label"], "likely")
+
+    def test_active_clearance_long_shot(self):
+        g = rp.can_get({"clearance": "required", "activeAtHire": True, "years": 0})
+        self.assertEqual(g["label"], "long shot"); self.assertIn("active clearance", g["why"])
+
+    def test_master_long_shot(self):
+        self.assertEqual(rp.can_get({"degree": "master"})["label"], "long shot")
+
+    def test_specialist_stretch(self):
+        self.assertEqual(rp.can_get({"degree": "specialist", "years": 0})["label"], "stretch")
+
+    def test_licence_long_shot(self):
+        self.assertEqual(rp.can_get({"licence": True})["label"], "long shot")
+
+    def test_unknowns_listed(self):
+        g = rp.can_get({})
+        self.assertEqual(g["label"], "likely"); self.assertIn("experience not stated", g["why"])
+
+    def test_musts_ok_drops_invented(self):
+        self.assertEqual(rp.musts_ok(["Bachelor's degree", "5 years Python"], "Requires a bachelor's  degree."), ["Bachelor's degree"])
+
+
+def _job(i, **kw):
+    d = {"id": i, "title": "Analyst", "employer": "X", "url": "https://example.gov/" + i, "status": "new", "firstSeen": "2026-11-01"}
+    d.update(kw); return d
+
+
+GH_TEXT = "Duties: write reports. Requirements: Bachelor's degree required. 1-2 years of related experience. Applications close December 3, 2026."
+
+
+class BuildReads(unittest.TestCase):
+    def test_build_reads_never_patches_status(self):
+        out = rp.build_reads([_job("greenhouse-1", board="greenhouse:t", source="greenhouse")],
+                             {"greenhouse-1": {"text": GH_TEXT, "applyUrl": "https://boards.greenhouse.io/t/jobs/1", "deadline": None}}, {}, {}, TODAY)
+        self.assertEqual(len(out), 1)
+        for w in out: self.assertFalse({"status", "firstSeen"} & set(w["patch"]))
+        r = out[0]["patch"]["read"]
+        self.assertEqual((r["from"], r["years"], r["degree"], r["deadline"], r["howApply"]), ("posting", 1, "bachelor", "2026-12-03", "employer site"))
+        self.assertEqual(out[0]["patch"]["canGet"]["label"], "likely")
+
+    def test_build_reads_skips_unchanged_hash(self):
+        h = rp.hashlib.sha1(GH_TEXT.encode()).hexdigest()
+        j = _job("greenhouse-1", board="greenhouse:t", source="greenhouse", read={"from": "posting", "hash": h, "what": "x"}, canGet={"label": "likely", "why": ""})
+        out = rp.build_reads([j], {"greenhouse-1": {"text": GH_TEXT, "applyUrl": None, "deadline": None}}, {}, {}, TODAY)
+        self.assertEqual(out, [])
+
+    def test_build_reads_skips_read_indeed(self):
+        j = _job("indeed-1", source="indeed", read={"from": "posting", "hash": "abc", "what": "x"}, canGet={"label": "likely", "why": ""})
+        self.assertEqual(rp.build_reads([j], {}, {}, {"indeed-1": "new text " * 50}, TODAY), [])
+
+    def test_build_reads_indeed_text_is_posting(self):
+        out = rp.build_reads([_job("indeed-2", source="indeed")], {}, {}, {"indeed-2": "Minimum of 3 years of experience required."}, TODAY)
+        self.assertEqual(out[0]["patch"]["read"]["from"], "posting"); self.assertEqual(out[0]["patch"]["read"]["howApply"], "indeed")
+        self.assertEqual(out[0]["patch"]["canGet"]["label"], "long shot")
+
+    def test_build_reads_title_only_when_fetch_failed(self):
+        out = rp.build_reads([_job("greenhouse-3", board="greenhouse:t", source="greenhouse")], {"greenhouse-3": None}, {}, {}, TODAY)
+        p = out[0]["patch"]
+        self.assertEqual(p["read"]["from"], "title"); self.assertIn("canGet", p)
+        self.assertEqual(p["read"]["applyUrl"], "https://example.gov/greenhouse-3")
+
+    def test_build_reads_alert_text(self):
+        out = rp.build_reads([_job("linkedin-1", source="linkedin", summary="Entry level policy assistant role. No experience required.")], {}, {}, {}, TODAY)
+        self.assertEqual(out[0]["patch"]["read"]["from"], "alert"); self.assertEqual(out[0]["patch"]["read"]["years"], 0)
+
+    def test_build_reads_plain_fields_checked(self):
+        out = rp.build_reads([_job("greenhouse-1", board="greenhouse:t", source="greenhouse")],
+                             {"greenhouse-1": {"text": GH_TEXT, "applyUrl": None, "deadline": None}},
+                             {"greenhouse-1": {"what": "Write reports for the team.", "musts": ["Bachelor's degree required", "Python expert"]}}, {}, TODAY)
+        r = out[0]["patch"]["read"]
+        self.assertEqual(r["what"], "Write reports for the team."); self.assertEqual(r["musts"], ["Bachelor's degree required"])
+
+    def test_build_reads_keeps_version(self):
+        j = _job("greenhouse-1", board="greenhouse:t", source="greenhouse"); j["_version"] = 4
+        out = rp.build_reads([j], {"greenhouse-1": {"text": GH_TEXT, "applyUrl": None, "deadline": None}}, {}, {}, TODAY)
+        self.assertEqual(out[0]["version"], 4)

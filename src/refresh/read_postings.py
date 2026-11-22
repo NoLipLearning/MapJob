@@ -143,3 +143,117 @@ def extract(text, today):
             try: deadline = date(int(m.group(3)), int(m.group(1)), int(m.group(2))).isoformat()
             except ValueError: deadline = None
     return {"years": years, "degree": degree, "clearance": cl, "active_at_hire": active, "deadline": deadline, "licence": bool(LICENCE.search(t))}
+
+
+# ---------- labels ----------
+
+def can_get(read):
+    """likely / stretch / long shot for a recent grad with a bachelor's, no clearance, open to sponsored clearance. Unknown = no barrier."""
+    r = read or {}
+    years, deg, cl = r.get("years"), r.get("degree"), r.get("clearance")
+    long_, stretch = [], []
+    if isinstance(years, int) and years >= 3: long_.append("%d+ years of experience required" % years)
+    if cl == "required" and r.get("activeAtHire"): long_.append("an active clearance is required at hire")
+    if deg in ("master", "doctorate"): long_.append("a %s's degree is required" % deg if deg == "master" else "a doctorate is required")
+    if r.get("licence"): long_.append("a professional licence is required")
+    if years == 2: stretch.append("2 years of experience required")
+    if deg == "specialist": stretch.append("a specialist degree is required")
+    unknown = [w for k, w in (("years", "experience not stated"), ("degree", "degree not stated"), ("clearance", "clearance not stated")) if r.get(k) in (None, "unknown")]
+    tail = (" (" + ", ".join(unknown) + ")") if unknown else ""
+    if long_: return {"label": "long shot", "why": "; ".join(long_).capitalize() + tail}
+    if stretch: return {"label": "stretch", "why": "; ".join(stretch).capitalize() + tail}
+    return {"label": "likely", "why": ("Nothing in the posting rules you out" if r.get("from") != "title" else "Posting not read yet") + tail}
+
+
+def _norm(s):
+    return re.sub(r"\s+", " ", (s or "").lower().replace("’", "'")).strip()
+
+
+def musts_ok(musts, text):
+    t = _norm(text)
+    return [m for m in (musts or []) if m and _norm(m) in t][:3]
+
+
+HOW = {"usajobs": "usajobs", "greenhouse": "employer site", "lever": "employer site", "indeed": "indeed"}
+ALERT_SOURCES = ("linkedin", "handshake", "web", "careers")
+
+
+def build_reads(existing, fetched, plain, indeed_text, today):
+    """[{id, patch: {read, canGet}, version?}] for jobs whose read is new or changed. Never touches status/firstSeen."""
+    out = []
+    for j in existing:
+        jid = j.get("id")
+        if not jid: continue
+        ref = source_ref(j); kind = ref["kind"]; old = j.get("read") or {}
+        text, src_from, fx = None, "title", None
+        if kind == "indeed":
+            if old.get("from") == "posting": continue
+            if indeed_text.get(jid): text, src_from = indeed_text[jid], "posting"
+        elif kind in ("usajobs", "greenhouse", "lever"):
+            if jid in fetched:
+                fx = fetched[jid]
+                if fx and fx.get("text"): text, src_from = fx["text"], "posting"
+            elif old: continue  # not attempted this run: keep what we have
+        if text is None and (j.get("pasted") or j.get("summary")) and (str(j.get("source") or "").split("-")[-1] in ALERT_SOURCES or str(j.get("source", "")).startswith("saved")):
+            text, src_from = j.get("pasted") or j.get("summary"), "alert"
+        h = hashlib.sha1(text.encode()).hexdigest() if text else None
+        p = plain.get(jid) or {}
+        if old and h and old.get("hash") == h and not p: continue
+        if old and not h and old.get("from") == "title" and j.get("canGet"): continue
+        ex = extract(text, today) if text else {}
+        what = p.get("what") if text else None
+        read = {"at": today.isoformat(), "from": src_from,
+                "what": (what or old.get("what") if old.get("hash") == h else what) or None,
+                "musts": musts_ok(p.get("musts"), text) if text else [],
+                "years": ex.get("years"), "degree": ex.get("degree"), "clearance": ex.get("clearance"),
+                "activeAtHire": bool(ex.get("active_at_hire")), "licence": bool(ex.get("licence")),
+                "deadline": (fx or {}).get("deadline") or ex.get("deadline") or j.get("deadline"),
+                "howApply": HOW.get(kind), "applyUrl": (fx or {}).get("applyUrl") or j.get("url"), "hash": h}
+        if not read["musts"] and old.get("hash") == h and old.get("musts"): read["musts"] = old["musts"]
+        w = {"id": jid, "patch": {"read": read, "canGet": can_get(read)}}
+        if "_version" in j: w["version"] = j["_version"]
+        out.append(w)
+    return out
+
+
+# ---------- CLI ----------
+
+def main(argv=None):
+    import argparse
+    a = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    a.add_argument("--existing", required=True); a.add_argument("--out", required=True)
+    a.add_argument("--plain"); a.add_argument("--indeed"); a.add_argument("--fetch", action="store_true"); a.add_argument("--today")
+    o = a.parse_args(argv)
+    today = date.fromisoformat(o.today) if o.today else date.today()
+    existing = json.load(open(o.existing))
+    plain = json.load(open(o.plain)) if o.plain else {}
+    indeed = json.load(open(o.indeed)) if o.indeed else {}
+    key, email = os.environ.get("USAJOBS_KEY", "").strip(), os.environ.get("USAJOBS_EMAIL", "").strip()
+    fetched, failed = {}, 0
+    for j in existing:
+        ref = source_ref(j)
+        if ref["kind"] not in ("usajobs", "greenhouse", "lever"): continue
+        if o.fetch:
+            r = fetch_text(ref, key, email)
+            if r and r.get("text"): cache_put(j["id"], json.dumps(r))
+            else: failed += 1
+            fetched[j["id"]] = r
+        else:
+            c = cache_get(j["id"])
+            if c: fetched[j["id"]] = json.loads(c)
+    for jid, t in indeed.items(): cache_put(jid, json.dumps({"text": t, "applyUrl": None, "deadline": None}))
+    out = build_reads(existing, fetched, plain, indeed, today)
+    json.dump(out, open(o.out, "w"), indent=1)
+    froms = {}
+    for w in out: froms[w["patch"]["read"]["from"]] = froms.get(w["patch"]["read"]["from"], 0) + 1
+    labels = {}
+    for w in out: labels[w["patch"]["canGet"]["label"]] = labels.get(w["patch"]["canGet"]["label"], 0) + 1
+    need = [{"id": w["id"], "cachePath": cache_path(w["id"])} for w in out if w["patch"]["read"]["from"] == "posting" and not w["patch"]["read"]["what"]]
+    json.dump(need, open(os.path.join(os.path.dirname(os.path.abspath(o.out)), "needs_plain.json"), "w"), indent=1)
+    print("read %d (posting) / %d (alert) / %d (title), skipped %d unchanged, fetch failures %d" % (
+        froms.get("posting", 0), froms.get("alert", 0), froms.get("title", 0), len(existing) - len(out), failed))
+    print("labels:", labels, "| need plain-words:", len(need))
+
+
+if __name__ == "__main__":
+    main()
