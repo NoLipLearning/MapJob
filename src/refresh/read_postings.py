@@ -112,6 +112,7 @@ DATE_NUM = re.compile(r"\b(?:closing date|close date|deadline|apply by|due by|no
 
 
 WORDNUM = {w: str(i) for i, w in enumerate(["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"])}
+HEAD_WORD = re.compile(r"\b(?:qualifications?|requirements?|skills|education|experience|responsibilities|duties|benefits|about (?:you|the|us)|what you|who you|you have|you bring|nice to have|bonus|preferred|desired|helpful|pluses)\b", re.I)
 SOFT_HEAD = re.compile(r"\b(?:helpful|preferred|nice to have|bonus|desired|desirable|a plus|pluses|ideally)\b", re.I)
 YRS_ANY = re.compile(r"(\d{1,2})\s*(?:\+|(?:-|–|to)\s*\d{1,2})?\s*years?\s+(?:of|with|in)\s+(?!age\b)[a-z]", re.I)
 YRS_LIST = re.compile(r"(?:^|:)\s*(\d{1,2})\+?\s*years?\s*\(required\)", re.I)  # Indeed: "Coding: 1 year (Required)"
@@ -125,10 +126,10 @@ def _normalize(text):
     t = re.sub(r"(\d)\s*\((?:zero|one|two|three|four|five|six|seven|eight|nine|ten|\d+)\)", r"\1", t, flags=re.I)
     out, soft = [], False
     for line in t.split("\n"):
-        s = line.strip(); head = s.endswith(":") or (0 < len(s) < 60 and not s.endswith("."))
+        s = line.strip(); head = s.endswith(":") or (0 < len(s) < 60 and not s.endswith(".") and bool(HEAD_WORD.search(s)) and not re.search(r"\d", re.sub(r"^[IVX\d]+\.\s*", "", s)))
         if head and SOFT_HEAD.search(s): soft = True; out.append(line); continue
-        if s.endswith(":") and not SOFT_HEAD.search(s): soft = False
-        out.append(line + " (preferred)" if soft and s else line)
+        if head: soft = False
+        out.append("(preferred) " + line if soft and s else line)
     return "\n".join(out)
 
 
@@ -144,10 +145,14 @@ def _sentences(text):
     return out
 
 
+SUBST = re.compile(r"\b(?:may satisfy|in lieu of|substitut\w*|in place of|equivalent combination|may be accepted instead)\b", re.I)
+ALT_PATH = re.compile(r"\bbachelor.{0,80}\bor\b.{0,40}\b(?:high school|diploma|ged)\b", re.I)  # "Bachelor's or HS diploma and 4 years": years belong to the no-degree path
+
+
 def _years(sents):
     found = []
     for s in sents:
-        if SOFT.search(s): continue
+        if SOFT.search(s) or SUBST.search(s) or ALT_PATH.search(s): continue
         ms = [m for rx in (YRS, YRS_LIST, YRS_ANY) for m in rx.finditer(s) if not HISTORY.search(s[:m.start()][-25:]) and int(m.group(1)) <= 15]
         ms = sorted({m.start(1): m for m in ms}.values(), key=lambda m: m.start())
         if not ms: continue
@@ -177,6 +182,7 @@ def _degree(sents, text):
 
 
 def _clearance(sents, text):
+    if re.search(r"\bclearance(?: type| level| requirements?)?\s*:\s*(?:none|not required|n/?a)\b", text, re.I): return "none", False
     cl = classify_clearance(text)
     cs = [s for s in sents if CLEAR_WORD.search(s)]
     if cl in ("required", "sponsor") and cs and all(SOFT.search(s) and not REQ.search(s) for s in cs): return "preferred", False

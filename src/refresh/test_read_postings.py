@@ -273,3 +273,31 @@ class TruthCheckRetry(unittest.TestCase):
 class WordRange(unittest.TestCase):
     def test_zero_to_two_words(self):
         self.assertEqual(rp.extract("Experience: Zero to two years of professional experience.", TODAY)["years"], 0)
+
+
+class TruthCheckRetry2(unittest.TestCase):
+    def ex(self, t): return rp.extract(t, TODAY)
+
+    def test_clearance_type_none(self):
+        self.assertEqual(self.ex("Clearance Type: None. Bachelor's degree required.")["clearance"], "none")
+
+    def test_substitution_years_ignored(self):
+        t = "Bachelor's degree required. At least 0-4 years of experience. A minimum of four (4) years of additional relevant experience may satisfy degree requirements."
+        self.assertEqual(self.ex(t)["years"], 0)
+
+    def test_degree_or_diploma_plus_years(self):
+        t = "Bachelor's Degree or High School Diploma/GED and 4 years of relevant work experience."
+        e = self.ex(t)
+        self.assertEqual((e["degree"], e["years"]), ("bachelor", None))
+
+
+class PreferredHeading(unittest.TestCase):
+    def test_preferred_heading_line_and_next_heading_resets(self):
+        t = ("A. Required Qualifications\n\nBachelor's Degree\n\nB. Preferred Qualifications\n\n"
+             "4 years of supervisory experience (in addition to education requirement).\n\nIV. Physical Requirements\n\n2 years of experience driving required.")
+        self.assertEqual(rp.extract(t, TODAY)["years"], 2)
+
+    def test_short_item_lines_do_not_end_a_preferred_section(self):
+        t = "Preferred Qualifications\nMaster's degree\n3 years of experience\nRequired Qualifications\nBachelor's degree"
+        e = rp.extract(t, TODAY)
+        self.assertEqual((e["degree"], e["years"]), ("bachelor", None))
