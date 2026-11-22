@@ -72,6 +72,24 @@ python3 build_jobs.py --raw $S/raw.json --existing $S/existing.json --profile $S
 
 It prints the counts and the top five. `--geocode` looks up at most 20 new places through Nominatim (1 per second, cached in `src/geocache.json`).
 
+### 6b. Read postings (after the build, before writing)
+
+Spec: `docs/superpowers/specs/2026-11-22-read-postings-apply-list-design.md`.
+
+1. List `jobs` again after step 7's writes (or use `existing.json`), with `_version` set on each document from the listing.
+2. `cd src/refresh && USAJOBS_KEY=... USAJOBS_EMAIL=... python3 read_postings.py --existing $S/existing.json --fetch --out $S/reads.json`
+   - It fetches USAJOBS, Greenhouse and Lever postings and caches them in `posting_cache/` (gitignored).
+   - Without `USAJOBS_EMAIL`, USAJOBS jobs stay "title only".
+3. Indeed: at most 40 unread jobs per refresh, highest fit first.
+   - Run `search_jobs` with "<title> <employer>", match the title and company exactly, then `get_job_details`.
+   - Save the matched jobs to `$S/indeed.json` as `{id: verbatim text}`.
+   - Use Haiku agents, 20 jobs each.
+4. Plain words: Haiku agents (up to 4, 40 jobs each) read `needs_plain.json` and write `{id: {what <=160 chars, musts <=3 phrases copied exactly}}`. Each agent runs the musts-in-text check before returning.
+5. Re-run with `--plain $S/plain.json --indeed $S/indeed.json` (no `--fetch`) to get the final `reads.json`.
+6. A Sonnet reviewer checks 15 random reads against their cached text. Redo a batch that fails, at most twice.
+7. Write each entry with `ArtifactData batch` `update` (its `patch`, `if_version` = its `version`), 50 per call.
+8. Report: read / unread by source, and Likely / Stretch / Long shot counts.
+
 ### 7. Write
 
 One `ArtifactData batch` call to the artifact:

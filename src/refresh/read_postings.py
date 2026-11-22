@@ -96,7 +96,7 @@ MONTHS = {m: i for i, m in enumerate(["january", "february", "march", "april", "
 YRS = re.compile(r"(\d{1,2})\s*(?:\+|(?:-|–|to)\s*\d{1,2})?\s*(?:or more |plus )?years?(?:'|’)?\s+(?:of\s+)?(?:\w+\s+){0,3}?(?:experience|exp\b)", re.I)
 NO_EXP = re.compile(r"\bno (?:prior |previous )?(?:work )?experience (?:is )?(?:required|necessary|needed)\b|\b0 years\b", re.I)
 SOFT = re.compile(r"\b(?:preferred|a plus|is a plus|desired|desirable|nice to have|ideally|bonus)\b", re.I)
-HISTORY = re.compile(r"\b(?:over|more than|nearly|almost)\s+$", re.I)  # "With over 25 years of experience serving..." (the company)
+HISTORY = re.compile(r"\b(?:over|more than|nearly|almost|up to)\s+$", re.I)  # "With over 25 years of experience serving..." (the company)
 SPEC_FIELD = re.compile(r"\b(?:nursing|engineering|computer science|accounting|chemistry|physics|biology|pharmacy|architecture|mathematics)\b", re.I)
 DEG = [("doctorate", re.compile(r"\bph\.?\s?d\b|\bdoctorate\b|\bdoctoral degree\b|\bjuris doctor\b|\bj\.d\.(?=[\s,;)]|$)", re.I)),
        ("master", re.compile(r"\bmaster'?s?\b(?! data| file| schedule)|\bm\.?b\.?a\b|\bm\.p\.p\b", re.I)),
@@ -111,23 +111,53 @@ DATE_TXT = re.compile(r"\b(?:closing date|close date|deadline(?: to apply)?|appl
 DATE_NUM = re.compile(r"\b(?:closing date|close date|deadline|apply by|due by|no later than|open (?:through|until))\s*:?\s*(?:on\s+)?(\d{1,2})/(\d{1,2})/(\d{4})\b", re.I)
 
 
+WORDNUM = {w: str(i) for i, w in enumerate(["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"])}
+SOFT_HEAD = re.compile(r"\b(?:helpful|preferred|nice to have|bonus|desired|desirable|a plus|pluses|ideally)\b", re.I)
+YRS_ANY = re.compile(r"(\d{1,2})\s*(?:\+|(?:-|–|to)\s*\d{1,2})?\s*years?\s+(?:of|with|in)\s+(?!age\b)[a-z]", re.I)
+YRS_LIST = re.compile(r"(?:^|:)\s*(\d{1,2})\+?\s*years?\s*\(required\)", re.I)  # Indeed: "Coding: 1 year (Required)"
+
+
+def _normalize(text):
+    """Digits for number words, drop "(one)" after a digit, and mark lines under a "helpful/preferred" heading as preferred."""
+    t = text or ""
+    for _ in range(2):  # twice, so "Zero to two years" becomes "0 to 2 years"
+        t = re.sub(r"\b(zero|one|two|three|four|five|six|seven|eight|nine|ten)\b(?=\s*(?:\+|(?:-|–|to)\s*\d+)?\s*(?:\(\d+\)\s*)?years?\b)", lambda m: WORDNUM[m.group(1).lower()], t, flags=re.I)
+    t = re.sub(r"(\d)\s*\((?:zero|one|two|three|four|five|six|seven|eight|nine|ten|\d+)\)", r"\1", t, flags=re.I)
+    out, soft = [], False
+    for line in t.split("\n"):
+        s = line.strip(); head = s.endswith(":") or (0 < len(s) < 60 and not s.endswith("."))
+        if head and SOFT_HEAD.search(s): soft = True; out.append(line); continue
+        if s.endswith(":") and not SOFT_HEAD.search(s): soft = False
+        out.append(line + " (preferred)" if soft and s else line)
+    return "\n".join(out)
+
+
 def _sentences(text):
-    return [s for s in re.split(r"(?<=[.;!?\n])\s+|\n+|•", text or "") if s.strip()]
+    raw = [s for s in re.split(r"(?<=[.;!?:\n])\s+|\n+|•", text or "") if s.strip()]
+    out, soft = [], 0  # sentences after a "helpful/preferred ...:" heading are preferred until the next heading (at most 6)
+    for s in raw:
+        st = s.strip()
+        if st.endswith(":"):
+            soft = 6 if SOFT_HEAD.search(st) else 0; out.append(s); continue
+        if soft and not SOFT.search(st): out.append(s + " (preferred)"); soft -= 1; continue
+        out.append(s)
+    return out
 
 
 def _years(sents):
     found = []
     for s in sents:
         if SOFT.search(s): continue
-        ms = [m for m in YRS.finditer(s) if not HISTORY.search(s[:m.start()][-25:]) and int(m.group(1)) <= 15]
+        ms = [m for rx in (YRS, YRS_LIST, YRS_ANY) for m in rx.finditer(s) if not HISTORY.search(s[:m.start()][-25:]) and int(m.group(1)) <= 15]
+        ms = sorted({m.start(1): m for m in ms}.values(), key=lambda m: m.start())
         if not ms: continue
         b = re.search(r"\bbachelor", s, re.I)
         if len(ms) > 1 and b:  # "Bachelor's with 2 years, or Master's with 0 years": the bachelor's path is Eric's
             after = [m for m in ms if m.start() > b.start()]
             ms = after[:1] or ms
             found.append(int(ms[0].group(1))); continue
-        found.extend(int(m.group(1)) for m in ms)
-    return min(found) if found else None
+        found.append(min(int(m.group(1)) for m in ms))  # one sentence = one requirement (a range or options): its low end
+    return max(found) if found else None  # separate requirements all apply: the largest is the bar
 
 
 def _degree(sents, text):
@@ -174,7 +204,7 @@ def _deadline(text):
 
 
 def extract(text, today):
-    t = text or ""; sents = _sentences(t)
+    t = _normalize(text); sents = _sentences(t)
     years = _years(sents)
     if years is None and NO_EXP.search(t): years = 0
     cl, active = _clearance(sents, t)

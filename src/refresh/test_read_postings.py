@@ -231,3 +231,45 @@ class FailedFetchKeepsRead(unittest.TestCase):
         old = {"from": "posting", "hash": "h1", "what": "Write reports.", "musts": ["Bachelor's degree"], "deadline": "2026-12-03"}
         j = _job("greenhouse-1", board="greenhouse:t", source="greenhouse", read=old, canGet={"label": "likely", "why": ""})
         self.assertEqual(rp.build_reads([j], {"greenhouse-1": None}, {}, {}, TODAY), [])
+
+
+class TruthCheckFindings(unittest.TestCase):
+    """Truth check of 15 real postings (2026-11-22): each case was a wrong fact before the fix."""
+    def ex(self, t): return rp.extract(t, TODAY)
+
+    def test_word_number_years(self):
+        self.assertEqual(self.ex("At least one year of related experience.")["years"], 1)
+
+    def test_parenthetical_number_years(self):
+        self.assertEqual(self.ex("Must have a minimum of 1 (one) year of experience in sales.")["years"], 1)
+
+    def test_indeed_required_list_years(self):
+        self.assertEqual(self.ex("Experience:\nCoding: 1 year (Required)\nPython: 1 year (Required)")["years"], 1)
+
+    def test_largest_of_several_requirements(self):
+        t = "Here's What You Need:\n1+ year of experience in IT support\n2 years of Cisco Switching\nBachelor's degree"
+        self.assertEqual(self.ex(t)["years"], 2)
+
+    def test_range_still_takes_its_low_end(self):
+        self.assertEqual(self.ex("1-3 years of experience required.")["years"], 1)
+
+    def test_helpful_section_is_not_required(self):
+        t = "Requirements:\nHigh school diploma or equivalent\nIt would be helpful if you have:\nBachelor's degree\nSales experience"
+        self.assertEqual(self.ex(t)["degree"], "none")
+
+
+class TruthCheckRetry(unittest.TestCase):
+    def ex(self, t): return rp.extract(t, TODAY)
+
+    def test_up_to_is_a_ceiling_not_a_requirement(self):
+        t = "Candidates with up to 2 years of professional experience are encouraged to apply. Experience: Zero to 2 years of professional experience. Coding: 1 year (Required)"
+        self.assertEqual(self.ex(t)["years"], 1)
+
+    def test_helpful_heading_without_newlines(self):
+        t = "Requirements: High school diploma or equivalent. It would be helpful if you have: Bachelor's degree. Earn $72,000 each year."
+        self.assertEqual(self.ex(t)["degree"], "none")
+
+
+class WordRange(unittest.TestCase):
+    def test_zero_to_two_words(self):
+        self.assertEqual(rp.extract("Experience: Zero to two years of professional experience.", TODAY)["years"], 0)
