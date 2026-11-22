@@ -1,0 +1,10 @@
+{"_note": "Hand-built in the USAJOBS Search API response shape (live fetch needs Eric's email header; see ledger ruling).",
+ "SearchResult": {"SearchResultCount": 1, "SearchResultItems": [{"MatchedObjectId": "851633800", "MatchedObjectDescriptor": {
+  "PositionTitle": "Program Analyst", "PositionURI": "https://www.usajobs.gov:443/job/851633800",
+  "ApplyURI": ["https://www.usajobs.gov:443/job/851633800/apply"], "ApplicationCloseDate": "2026-12-03T23:59:59.9970",
+  "QualificationSummary": "To qualify at the GS-07 level you must have a bachelor's degree with superior academic achievement or one year of specialized experience.",
+  "UserArea": {"Details": {"JobSummary": "Join the Small Business Administration as a Program Analyst.",
+   "MajorDuties": ["Reviews agency programs and prepares written reports for managers.", "Collects and analyzes program data."],
+   "Requirements": "U.S. Citizenship is required. Must be able to obtain and maintain a Public Trust background investigation.",
+   "Education": "A bachelor's degree from an accredited college or university.", "SecurityClearance": "Not Required",
+   "HowToApply": "Apply online through USAJOBS."}}}}]}}
