@@ -37,5 +37,23 @@ const rows = p => p.evaluate(() => [...document.querySelectorAll('#list .jobrow'
   ok(order.length === 4 && !order.includes('usajobs-long'), 'unticking Long shot hides exactly one row: ' + order.join(','));
   ok(await p.evaluate(() => document.querySelector('.jfs').textContent.includes('4 of 5')), 'count updates');
   ok(p.errs.length === 0, 'no console errors ' + p.errs.slice(0, 2));
+  // ---- Task 4: Apply -> Applied? loop ----
+  await p.evaluate(() => { window.__opened = []; window.open = (u) => { window.__opened.push(u); return null; }; });
+  await p.locator('#list [data-fk="cg:long shot"]').click(); await p.waitForTimeout(250); // back to all
+  for (const id of ['usajobs-likely', 'usajobs-stretch', 'usajobs-long']) { await p.click(`[data-job="${id}"] [data-a="apply"]`); await p.waitForTimeout(150); }
+  ok(JSON.stringify(await p.evaluate(() => JSON.parse(localStorage.getItem('reston-map-apply-pending')))) === JSON.stringify(['usajobs-likely', 'usajobs-stretch', 'usajobs-long']), 'pending list holds the 3 ids');
+  ok((await p.evaluate(() => window.__opened[0])) === 'https://www.usajobs.gov/job/likely/apply', 'Apply opens the read applyUrl');
+  ok(/Applied this week: \d+ · Unread: \d+/.test(await p.evaluate(() => document.querySelector('#list .jcounter').textContent)), 'header counter shown');
+  await p.reload(); await p.waitForTimeout(2500); await p.evaluate(() => document.getElementById('tab-jobs').click()); await p.waitForTimeout(400);
+  await p.evaluate(() => document.dispatchEvent(new Event('visibilitychange'))); await p.waitForTimeout(300);
+  ok(await p.evaluate(() => ['usajobs-likely', 'usajobs-stretch', 'usajobs-long'].every(id => !!document.querySelector(`[data-job="${id}"] .jasked`))), 'after reload all 3 rows ask Applied?');
+  await p.click('[data-job="usajobs-likely"] [data-a="applied-yes"]'); await p.waitForTimeout(400);
+  ok(await p.evaluate(() => window.__FAKE_STORE.docs['jobs/usajobs-likely'].status) === 'applied', 'Yes writes status applied to the cloud');
+  ok(await p.evaluate(() => !document.querySelector('[data-job="usajobs-likely"] .jasked') && document.querySelector('[data-job="usajobs-likely"]').textContent.includes('Applied')), 'row shows Applied, prompt gone');
+  ok(await p.evaluate(() => app.tracker.all().some(r => r.jobId === 'usajobs-likely' && r.status === 'applied')), 'tracker has an applied record for the job');
+  await p.click('[data-job="usajobs-stretch"] [data-a="applied-no"]'); await p.waitForTimeout(300);
+  ok(JSON.stringify(await p.evaluate(() => JSON.parse(localStorage.getItem('reston-map-apply-pending')))) === JSON.stringify(['usajobs-long']), 'Not yet removes only that id');
+  ok(await p.evaluate(() => window.__FAKE_STORE.docs['jobs/usajobs-stretch'].status) === 'new', 'Not yet leaves status alone');
+  ok(p.errs.length === 0, 'loop: no console errors ' + p.errs.slice(0, 2));
   await b.close(); console.log(res.join('\n')); process.exit(res.some(r => r.startsWith('FAIL')) ? 1 : 0);
 })();

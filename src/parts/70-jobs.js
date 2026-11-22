@@ -180,7 +180,7 @@ PARTS.push(function (app) {
       ${j.read && j.read.what ? `<div class="jwhat">${esc(j.read.what)}</div>` : ""}
       ${factsLine(j.read) ? `<div class="jfacts">${esc(factsLine(j.read))}</div>` : ""}
       ${metaLine(j)}
-      <div class="btn-row jact">${applyHref(j) && j.status !== "applied" ? '<button type="button" class="btn sm primary" data-a="apply">Apply ↗</button><a href="#" class="jdetails" data-a="open">Details</a>' : '<button type="button" class="btn sm" data-a="open">Open</button>'}${j.status === "new" ? '<button type="button" class="btn sm" data-a="save">Save</button>' : ""}${j.status !== "applied" ? '<button type="button" class="btn sm quiet" data-a="dismiss">Not for me</button>' : ""}</div>
+      ${asking && j.status !== "applied" && pendGet().includes(j.id) ? `<div class="btn-row jact jasked" role="group" aria-label="Did you apply?"><span class="jask-q">Applied?</span><button type="button" class="btn sm primary" data-a="applied-yes">Yes</button><button type="button" class="btn sm" data-a="applied-no">Not yet</button></div>` : `<div class="btn-row jact">${applyHref(j) && j.status !== "applied" ? '<button type="button" class="btn sm primary" data-a="apply">Apply ↗</button><a href="#" class="jdetails" data-a="open">Details</a>' : '<button type="button" class="btn sm" data-a="open">Open</button>'}${j.status === "new" ? '<button type="button" class="btn sm" data-a="save">Save</button>' : ""}${j.status !== "applied" ? '<button type="button" class="btn sm quiet" data-a="dismiss">Not for me</button>' : ""}</div>`}
     </div>`;
   }
   // openings before facets (dismissed hidden, one employer if "Show all N" was tapped), then after facets
@@ -202,7 +202,8 @@ PARTS.push(function (app) {
     const emp = empFilter && app.E.find(e => e.id === empFilter);
     const saved = list.filter(j => j.status === "saved").sort(cmp), rest = list.filter(j => j.status !== "saved").sort(cmp);
     const when = meta && meta.lastRun ? "Last refreshed " + esc(meta.lastRun) + "." : "Not refreshed yet.";
-    let h = `<div class="jhead"><p class="intro">${when} Ask Claude to “refresh my map” for new openings.</p><button type="button" class="btn sm" id="job-save">Save a job</button></div>`;
+    const unread = pool.filter(isUnread).length;
+    let h = `<p class="jcounter" role="status">Applied this week: ${weekApplied()} · Unread: ${unread}</p><div class="jhead"><p class="intro">${when} Ask Claude to “refresh my map” for new openings.</p><button type="button" class="btn sm" id="job-save">Save a job</button></div>`;
     if (state === "device") h += `<p class="kit-note">Openings sync only on the published page. Here they are kept on this device.</p>`;
     if (emp) h += `<p class="jfilter">Jobs at ${esc(emp.name)} <button type="button" class="btn sm quiet" id="job-allemp">Show all openings</button></p>`;
     if (pool.length) h += facetsHTML(pool, list) + `<div class="sortbar"><label for="sort-jobs">Sort by</label><select id="sort-jobs">${SORTS.map(o => `<option value="${o[0]}"${o[0] === sortBy ? " selected" : ""}>${o[1]}</option>`).join("")}</select></div>`;
@@ -220,17 +221,47 @@ PARTS.push(function (app) {
     const clearF = () => { FS = fdefaults(); saveFacets(); app.refresh(); };
     ["#jf-reset", "#jf-reset2"].forEach(q => { const b = el.querySelector(q); if (b) b.onclick = clearF; });
     const ss = el.querySelector("#sort-jobs"); if (ss) ss.onchange = () => { refocus = "sort-jobs"; sortBy = ss.value; try { localStorage.setItem(SKEY, JSON.stringify(sortBy)); } catch (_) {} app.refresh(); };
+    if (scrollTo) { const r = el.querySelector(`.jobrow[data-job="${CSS.escape(scrollTo)}"]`); scrollTo = null; if (r) { r.scrollIntoView({ block: "center" }); const f = r.querySelector("[data-a=applied-yes], [data-a=apply]"); if (f) f.focus({ preventScroll: true }); } }
     if (keepFk) { const t = [...el.querySelectorAll("[data-fk]")].find(x => x.dataset.fk === keepFk) || el.querySelector("#" + keepFk); if (t) t.focus(); }
     el.querySelector("#job-save").onclick = openSave;
     const ae = el.querySelector("#job-allemp"); if (ae) ae.onclick = () => { empFilter = null; app.refresh(); };
     el.querySelectorAll(".jobrow [data-a]").forEach(b => b.onclick = ev => { if (ev) ev.preventDefault();
       const id = b.closest(".jobrow").dataset.job;
-      if (b.dataset.a === "apply") applyJob(id); else if (b.dataset.a === "open") openJob(id); else if (b.dataset.a === "save") setStatus(id, "saved"); else setStatus(id, "dismissed");
+      if (b.dataset.a === "applied-yes") answer(id, true); else if (b.dataset.a === "applied-no") answer(id, false); else if (b.dataset.a === "apply") applyJob(id); else if (b.dataset.a === "open") openJob(id); else if (b.dataset.a === "save") setStatus(id, "saved"); else setStatus(id, "dismissed");
     });
   }
 
   // ---------- apply ----------
-  function applyJob(id) { const j = jobs.get(id); const u = j && applyHref(j); if (u) window.open(u, "_blank", "noopener"); }
+  const PKEY = "reston-map-apply-pending";
+  const pendGet = () => { try { const v = JSON.parse(localStorage.getItem(PKEY) || "[]"); return Array.isArray(v) ? v.filter(x => typeof x === "string") : []; } catch (_) { return []; } };
+  const pendSet = v => { try { localStorage.setItem(PKEY, JSON.stringify(v)); } catch (_) {} };
+  let asking = pendGet().length > 0, scrollTo = null;
+  function applyJob(id) {
+    const j = jobs.get(id); const u = j && applyHref(j); if (!u) return;
+    window.open(u, "_blank", "noopener");
+    const pend = pendGet().filter(x => x !== id); pend.push(id); pendSet(pend);
+  }
+  function askNow() { const pend = pendGet(); if (!pend.length) return; asking = true; scrollTo = pend[pend.length - 1]; app.refresh(); }
+  document.addEventListener("visibilitychange", () => { if (document.visibilityState !== "hidden") askNow(); });
+  window.addEventListener("focus", askNow);
+  function answer(id, yes) {
+    pendSet(pendGet().filter(x => x !== id));
+    if (yes) {
+      const j = jobs.get(id);
+      if (j && app.tracker && app.tracker.upsert && !app.tracker.all().some(r => r.jobId === id)) {
+        app.tracker.upsert({ empId: j.empId || "job:" + id, role: j.title || "", postingUrl: applyHref(j) || "", status: "applied", jobId: id, dates: { applied: today() } });
+      }
+      const order = [...document.querySelectorAll("#list .jobrow")].map(r => r.dataset.job), i = order.indexOf(id);
+      scrollTo = order.slice(i + 1).find(x => { const n = jobs.get(x); return n && n.status !== "applied"; }) || null;
+      setStatus(id, "applied");
+    }
+    app.refresh();
+  }
+  function weekApplied() {
+    if (!app.tracker || !app.tracker.all) return 0;
+    const t = dayNum(today()), mon = t - (((new Date(t * 864e5).getUTCDay()) + 6) % 7);
+    return app.tracker.all().filter(r => { const d = dayNum(r.dates && r.dates.applied); return d != null && d >= mon && d <= mon + 6; }).length;
+  }
 
   // ---------- sheets ----------
   function sheet(id, inner, onReady) {
