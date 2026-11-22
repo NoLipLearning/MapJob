@@ -160,7 +160,7 @@ PARTS.push(function (app) {
     if (!r) return "";
     const MON = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"], bits = [];
     if (typeof r.years === "number") bits.push(r.years + " yrs");
-    if (r.clearance === "none") bits.push("no clearance"); else if (r.clearance === "sponsor") bits.push("clearance: ability to obtain"); else if (r.clearance === "required") bits.push(r.activeAtHire ? "active clearance" : "clearance required");
+    if (r.clearance === "none") bits.push("no clearance"); else if (r.clearance === "preferred") bits.push("clearance preferred"); else if (r.clearance === "sponsor") bits.push("clearance: ability to obtain"); else if (r.clearance === "required") bits.push(r.activeAtHire ? "active clearance" : "clearance required");
     if (DEG[r.degree]) bits.push(DEG[r.degree]);
     if (ISO.test(r.deadline || "")) bits.push("apply by " + MON[+r.deadline.slice(5, 7) - 1] + " " + (+r.deadline.slice(8, 10)));
     if (HOW[r.howApply]) bits.push(HOW[r.howApply]);
@@ -241,11 +241,19 @@ PARTS.push(function (app) {
     window.open(u, "_blank", "noopener");
     const pend = pendGet().filter(x => x !== id); pend.push(id); pendSet(pend);
   }
-  function askNow() { const pend = pendGet(); if (!pend.length) return; asking = true; scrollTo = pend[pend.length - 1]; app.refresh(); }
+  let askedSig = null;
+  // drop ids that were applied, dismissed or removed some other way (tracker, details sheet, another device)
+  const pendLive = () => { if (!jobs.size) return pendGet(); const live = pendGet().filter(id => { const j = jobs.get(id); return j && j.status !== "applied" && j.status !== "dismissed"; }); pendSet(live); return live; };
+  function askNow() {
+    const pend = pendLive(), sig = pend.join("|");
+    if (sig === askedSig) return; // already asking about exactly these: don't re-render or jump the list again
+    askedSig = sig; if (!pend.length) { asking = false; return; }
+    asking = true; scrollTo = pend[pend.length - 1]; app.refresh();
+  }
   document.addEventListener("visibilitychange", () => { if (document.visibilityState !== "hidden") askNow(); });
   window.addEventListener("focus", askNow);
   function answer(id, yes) {
-    pendSet(pendGet().filter(x => x !== id));
+    pendSet(pendGet().filter(x => x !== id)); askedSig = pendGet().join("|");
     if (yes) {
       const j = jobs.get(id);
       if (j && app.tracker && app.tracker.upsert && !app.tracker.all().some(r => r.jobId === id)) {

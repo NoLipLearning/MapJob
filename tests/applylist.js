@@ -55,5 +55,13 @@ const rows = p => p.evaluate(() => [...document.querySelectorAll('#list .jobrow'
   ok(JSON.stringify(await p.evaluate(() => JSON.parse(localStorage.getItem('reston-map-apply-pending')))) === JSON.stringify(['usajobs-long']), 'Not yet removes only that id');
   ok(await p.evaluate(() => window.__FAKE_STORE.docs['jobs/usajobs-stretch'].status) === 'new', 'Not yet leaves status alone');
   ok(p.errs.length === 0, 'loop: no console errors ' + p.errs.slice(0, 2));
+  // ---- final review fixes ----
+  ok((await p.evaluate(() => document.querySelector('[data-job="usajobs-stretch"] .jfacts').textContent)).includes('clearance preferred'), 'preferred clearance shown as preferred');
+  await p.evaluate(() => app.jobs.setStatus('usajobs-long', 'applied')); await p.waitForTimeout(200);
+  await p.evaluate(() => document.dispatchEvent(new Event('visibilitychange'))); await p.waitForTimeout(200);
+  ok(JSON.stringify(await p.evaluate(() => JSON.parse(localStorage.getItem('reston-map-apply-pending')))) === '[]', 'pending drops a job marked applied elsewhere');
+  await p.evaluate(() => { localStorage.setItem('reston-map-apply-pending', JSON.stringify(['usajobs-stretch'])); window.__renders = 0; const o = app.refresh; app.refresh = (...a) => { window.__renders++; return o.apply(app, a); }; });
+  for (let i = 0; i < 3; i++) { await p.evaluate(() => window.dispatchEvent(new Event('focus'))); await p.waitForTimeout(100); }
+  ok(await p.evaluate(() => window.__renders) <= 1, 'returning to the tab re-asks only once for the same pending jobs: ' + await p.evaluate(() => window.__renders));
   await b.close(); console.log(res.join('\n')); process.exit(res.some(r => r.startsWith('FAIL')) ? 1 : 0);
 })();

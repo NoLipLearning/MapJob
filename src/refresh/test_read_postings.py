@@ -34,7 +34,7 @@ class Extract(unittest.TestCase):
         self.assertEqual(rp.extract("Bachelor's degree required", TODAY)["degree"], "bachelor")
         self.assertEqual(rp.extract("Master's degree required", TODAY)["degree"], "master")
         self.assertEqual(rp.extract("Bachelor's degree in Nursing required", TODAY)["degree"], "specialist")
-        self.assertEqual(rp.extract("Bachelor's preferred, Master's a plus", TODAY)["degree"], "bachelor")
+        self.assertIsNone(rp.extract("Bachelor's preferred, Master's a plus", TODAY)["degree"])  # final review: preferred is not required
         self.assertIsNone(rp.extract("Great team.", TODAY)["degree"])
 
     def test_extract_clearance_active(self):
@@ -176,3 +176,58 @@ class BuildReads(unittest.TestCase):
         j = _job("greenhouse-1", board="greenhouse:t", source="greenhouse"); j["_version"] = 4
         out = rp.build_reads([j], {"greenhouse-1": {"text": GH_TEXT, "applyUrl": None, "deadline": None}}, {}, {}, TODAY)
         self.assertEqual(out[0]["version"], 4)
+
+
+class ReviewFindings(unittest.TestCase):
+    """Final review (2026-11-22): each case produced a wrong fact before the fix."""
+    def ex(self, t): return rp.extract(t, TODAY)
+
+    def test_jd_edwards_is_not_a_doctorate(self):
+        self.assertIsNone(self.ex("Experience with JD Edwards ERP.")["degree"])
+
+    def test_drivers_licence_is_not_professional(self):
+        self.assertFalse(self.ex("Valid driver's license required.")["licence"])
+        self.assertTrue(self.ex("Active CPA license required.")["licence"])
+
+    def test_company_years_ignored(self):
+        self.assertIsNone(self.ex("With over 25 years of experience serving federal clients, we are a leader.")["years"])
+
+    def test_preferred_years_ignored(self):
+        self.assertIsNone(self.ex("3+ years of experience preferred.")["years"])
+        self.assertEqual(rp.can_get(dict(self.ex("3+ years of experience preferred."), activeAtHire=False))["label"], "likely")
+
+    def test_preferred_only_degree_is_not_required(self):
+        self.assertIsNone(self.ex("Master's degree preferred.")["degree"])
+
+    def test_active_clearance_preferred_is_not_long_shot(self):
+        for t in ["Active Secret clearance preferred.",
+                  "Must obtain and maintain a Secret clearance. Current Secret clearance is a plus.",
+                  "Must have an active Secret clearance or the ability to obtain one."]:
+            e = self.ex(t)
+            self.assertFalse(e["active_at_hire"], t)
+            self.assertNotEqual(rp.can_get({"clearance": e["clearance"], "activeAtHire": e["active_at_hire"], "years": 0})["label"], "long shot", t)
+
+    def test_clearance_preferred_stated_as_preferred(self):
+        self.assertEqual(self.ex("Secret clearance preferred.")["clearance"], "preferred")
+
+    def test_engineering_in_a_list_is_not_specialist(self):
+        self.assertEqual(self.ex("Bachelor's degree in political science, economics, engineering, or a related field.")["degree"], "bachelor")
+        self.assertEqual(self.ex("Bachelor's degree in Nursing required.")["degree"], "specialist")
+
+    def test_bachelor_path_years(self):
+        self.assertEqual(self.ex("Bachelor's degree with 2 years of experience, or Master's degree with 0 years of experience.")["years"], 2)
+
+    def test_high_school_or_equivalent_does_not_override_bachelor(self):
+        self.assertEqual(self.ex("High school diploma or equivalent. Bachelor's degree required.")["degree"], "bachelor")
+
+    def test_extended_from_is_not_a_deadline(self):
+        self.assertIsNone(self.ex("The deadline was extended from January 5, 2026 to a later date.")["deadline"])
+        self.assertIsNone(self.ex("Our contract closes out in March 3, 2027.")["deadline"])
+        self.assertEqual(self.ex("Closing date: December 3, 2026.")["deadline"], "2026-12-03")
+
+
+class FailedFetchKeepsRead(unittest.TestCase):
+    def test_failed_fetch_keeps_old_posting_read(self):
+        old = {"from": "posting", "hash": "h1", "what": "Write reports.", "musts": ["Bachelor's degree"], "deadline": "2026-12-03"}
+        j = _job("greenhouse-1", board="greenhouse:t", source="greenhouse", read=old, canGet={"label": "likely", "why": ""})
+        self.assertEqual(rp.build_reads([j], {"greenhouse-1": None}, {}, {}, TODAY), [])

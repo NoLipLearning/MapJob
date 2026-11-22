@@ -93,56 +93,92 @@ def cache_get(job_id):
 # ---------- extraction ----------
 
 MONTHS = {m: i for i, m in enumerate(["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"], 1)}
-YRS = re.compile(r"(?:minimum of |at least |requires? )?(\d{1,2})\s*(?:\+|(?:-|–|to)\s*\d{1,2})?\s*(?:or more |plus )?years?(?:'|’)?\s+(?:of\s+)?(?:\w+\s+){0,3}?(?:experience|exp\b)", re.I)
+YRS = re.compile(r"(\d{1,2})\s*(?:\+|(?:-|–|to)\s*\d{1,2})?\s*(?:or more |plus )?years?(?:'|’)?\s+(?:of\s+)?(?:\w+\s+){0,3}?(?:experience|exp\b)", re.I)
 NO_EXP = re.compile(r"\bno (?:prior |previous )?(?:work )?experience (?:is )?(?:required|necessary|needed)\b|\b0 years\b", re.I)
-SPECIALIST = re.compile(r"\b(?:bachelor'?s?|b\.?s\.?|degree)\b[^.]{0,40}\b(?:nursing|engineering|computer science|accounting|chemistry|physics|biology|pharmacy|architecture|mathematics)\b", re.I)
-DEG = [("doctorate", re.compile(r"\b(?:ph\.?d|doctorate|doctoral|j\.?d\.?|juris doctor)\b", re.I)),
-       ("master", re.compile(r"\bmaster'?s?\b|\bm\.?b\.?a\b|\bm\.?p\.?p\b", re.I)),
-       ("bachelor", re.compile(r"\bbachelor'?s?\b|\bb\.?a\.?/b\.?s\b|\bundergraduate degree\b|\bfour-year degree\b|\b4-year degree\b|\bcollege degree\b", re.I))]
+SOFT = re.compile(r"\b(?:preferred|a plus|is a plus|desired|desirable|nice to have|ideally|bonus)\b", re.I)
+HISTORY = re.compile(r"\b(?:over|more than|nearly|almost)\s+$", re.I)  # "With over 25 years of experience serving..." (the company)
+SPEC_FIELD = re.compile(r"\b(?:nursing|engineering|computer science|accounting|chemistry|physics|biology|pharmacy|architecture|mathematics)\b", re.I)
+DEG = [("doctorate", re.compile(r"\bph\.?\s?d\b|\bdoctorate\b|\bdoctoral degree\b|\bjuris doctor\b|\bj\.d\.(?=[\s,;)]|$)", re.I)),
+       ("master", re.compile(r"\bmaster'?s?\b(?! data| file| schedule)|\bm\.?b\.?a\b|\bm\.p\.p\b", re.I)),
+       ("bachelor", re.compile(r"\bbachelor'?s?\b|\bundergraduate degree\b|\bfour-year degree\b|\b4-year degree\b|\bcollege degree\b", re.I))]
 NO_DEG = re.compile(r"\bno (?:college )?degree (?:is )?required\b|\bhigh school diploma or (?:equivalent|ged)\b", re.I)
-PREF = re.compile(r"\b(?:preferred|a plus|desired|nice to have)\b", re.I)
+REQ = re.compile(r"\b(?:required|requires?|must|minimum|at least|need|qualif)", re.I)
 ACTIVE = re.compile(r"\b(?:active|current)\s+(?:\w+\s+){0,3}?(?:clearance|ts/sci|top secret|secret)\b|\bclearance required (?:at|prior to|before) (?:start|hire)\b|\bmust (?:currently )?(?:hold|possess|have) an? (?:active |current )?(?:ts/sci|top secret|secret)", re.I)
-LICENCE = re.compile(r"\b(?:license|licence|licensure|certified public accountant|\bcpa\b|bar admission|admitted to (?:the|a) bar|registered nurse|\brn\b)\b[^.]{0,30}\brequired\b|\bmust (?:hold|have|possess) an? (?:active |valid )?(?:\w+ ){0,2}(?:license|licence)\b", re.I)
-DATE_TXT = re.compile(r"\b(?:close[sd]?|closing|deadline|apply by|applications? (?:are )?due|due by|no later than)\b[^.\n]{0,30}?\b(january|february|march|april|may|june|july|august|september|october|november|december)\s+(\d{1,2}),?\s+(\d{4})", re.I)
-DATE_NUM = re.compile(r"\b(?:close[sd]?|closing|deadline|apply by|due by|no later than)\b[^.\n]{0,30}?\b(\d{1,2})/(\d{1,2})/(\d{4})\b", re.I)
+OBTAIN = re.compile(r"\b(?:or (?:the )?(?:ability|able) to obtain|or be eligible|or eligib|ability to obtain|able to obtain)\b", re.I)
+CLEAR_WORD = re.compile(r"\b(?:clearance|ts/sci|top secret|secret)\b", re.I)
+LIC_WORD = re.compile(r"\b(?:license|licence|licensure|licensed|certified public accountant|cpa|bar admission|admitted to (?:the|a) bar|registered nurse)\b", re.I)
+DATE_TXT = re.compile(r"\b(?:closing date|close date|deadline(?: to apply)?|apply by|applications? (?:are |is )?(?:due|accepted through|accepted until)|applications? (?:will )?close(?:s)?(?: on)?|due by|no later than|open (?:through|until))\s*:?\s*(?:on\s+)?(january|february|march|april|may|june|july|august|september|october|november|december)\s+(\d{1,2}),?\s+(\d{4})", re.I)
+DATE_NUM = re.compile(r"\b(?:closing date|close date|deadline|apply by|due by|no later than|open (?:through|until))\s*:?\s*(?:on\s+)?(\d{1,2})/(\d{1,2})/(\d{4})\b", re.I)
 
 
-def _sentences_with(rx, text):
-    return [s for s in re.split(r"(?<=[.;\n])\s+", text) if rx.search(s)]
+def _sentences(text):
+    return [s for s in re.split(r"(?<=[.;!?\n])\s+|\n+|•", text or "") if s.strip()]
+
+
+def _years(sents):
+    found = []
+    for s in sents:
+        if SOFT.search(s): continue
+        ms = [m for m in YRS.finditer(s) if not HISTORY.search(s[:m.start()][-25:]) and int(m.group(1)) <= 15]
+        if not ms: continue
+        b = re.search(r"\bbachelor", s, re.I)
+        if len(ms) > 1 and b:  # "Bachelor's with 2 years, or Master's with 0 years": the bachelor's path is Eric's
+            after = [m for m in ms if m.start() > b.start()]
+            ms = after[:1] or ms
+            found.append(int(ms[0].group(1))); continue
+        found.extend(int(m.group(1)) for m in ms)
+    return min(found) if found else None
+
+
+def _degree(sents, text):
+    hits = []
+    for s in sents:
+        for name, rx in DEG:
+            if rx.search(s): hits.append((name, s))
+    req = [(n, s) for n, s in hits if not SOFT.search(s) or REQ.search(s)]
+    if not req: return "none" if NO_DEG.search(text) else None
+    order = ["bachelor", "master", "doctorate"]
+    name, sent = min(req, key=lambda x: order.index(x[0]))
+    if name == "bachelor":
+        for n, s in req:
+            if n == "bachelor" and SPEC_FIELD.search(s) and not re.search(r"\bor\b|related field|such as|including|,", s, re.I):
+                return "specialist"
+    return name
+
+
+def _clearance(sents, text):
+    cl = classify_clearance(text)
+    cs = [s for s in sents if CLEAR_WORD.search(s)]
+    if cl in ("required", "sponsor") and cs and all(SOFT.search(s) and not REQ.search(s) for s in cs): return "preferred", False
+    active = any(ACTIVE.search(s) and not SOFT.search(s) and not OBTAIN.search(s) for s in cs) and cl == "required"
+    return cl, active
+
+
+def _licence(sents):
+    for s in sents:
+        if LIC_WORD.search(s) and not re.search(r"driver", s, re.I) and not SOFT.search(s) and (REQ.search(s) or re.search(r"\bcpa\b|registered nurse|bar admission|admitted to", s, re.I)):
+            return True
+    return False
+
+
+def _deadline(text):
+    m = DATE_TXT.search(text or "")
+    if m and not re.search(r"extended from\s*$", (text or "")[:m.start(1)][-20:], re.I):
+        try: return date(int(m.group(3)), MONTHS[m.group(1).lower()], int(m.group(2))).isoformat()
+        except ValueError: return None
+    m = DATE_NUM.search(text or "")
+    if m:
+        try: return date(int(m.group(3)), int(m.group(1)), int(m.group(2))).isoformat()
+        except ValueError: return None
+    return None
 
 
 def extract(text, today):
-    t = text or ""
-    yrs = [int(m.group(1)) for m in YRS.finditer(t)]
-    years = min(yrs) if yrs else (0 if NO_EXP.search(t) else None)
-    degree = None
-    if NO_DEG.search(t): degree = "none"
-    else:
-        req = [(name, rx) for name, rx in DEG]
-        hits = []
-        for name, rx in req:
-            for s in _sentences_with(rx, t):
-                hits.append((name, bool(PREF.search(s)) and not re.search(r"\brequired\b", s, re.I)))
-        required = [n for n, pref in hits if not pref]
-        if required:
-            order = ["bachelor", "master", "doctorate"]
-            degree = min(required, key=order.index)  # the lowest level the posting requires
-        elif hits:
-            degree = min((n for n, _ in hits), key=["bachelor", "master", "doctorate"].index)
-        if degree == "bachelor" and SPECIALIST.search(t): degree = "specialist"
-    cl = classify_clearance(t)
-    active = bool(ACTIVE.search(t)) and cl == "required"
-    deadline = None
-    m = DATE_TXT.search(t)
-    if m:
-        try: deadline = date(int(m.group(3)), MONTHS[m.group(1).lower()], int(m.group(2))).isoformat()
-        except ValueError: deadline = None
-    else:
-        m = DATE_NUM.search(t)
-        if m:
-            try: deadline = date(int(m.group(3)), int(m.group(1)), int(m.group(2))).isoformat()
-            except ValueError: deadline = None
-    return {"years": years, "degree": degree, "clearance": cl, "active_at_hire": active, "deadline": deadline, "licence": bool(LICENCE.search(t))}
+    t = text or ""; sents = _sentences(t)
+    years = _years(sents)
+    if years is None and NO_EXP.search(t): years = 0
+    cl, active = _clearance(sents, t)
+    return {"years": years, "degree": _degree(sents, t), "clearance": cl, "active_at_hire": active, "deadline": _deadline(t), "licence": _licence(sents)}
 
 
 # ---------- labels ----------
@@ -193,6 +229,7 @@ def build_reads(existing, fetched, plain, indeed_text, today):
             if jid in fetched:
                 fx = fetched[jid]
                 if fx and fx.get("text"): text, src_from = fx["text"], "posting"
+                elif old.get("from") == "posting": continue  # a failed fetch never wipes a good read
             elif old: continue  # not attempted this run: keep what we have
         if text is None and (j.get("pasted") or j.get("summary")) and (str(j.get("source") or "").split("-")[-1] in ALERT_SOURCES or str(j.get("source", "")).startswith("saved")):
             text, src_from = j.get("pasted") or j.get("summary"), "alert"
