@@ -99,7 +99,7 @@ SOFT = re.compile(r"\b(?:preferred|a plus|is a plus|desired|desirable|nice to ha
 HISTORY = re.compile(r"\b(?:over|more than|nearly|almost|up to)\s+$", re.I)  # "With over 25 years of experience serving..." (the company)
 SPEC_FIELD = re.compile(r"\b(?:nursing|engineering|computer science|accounting|chemistry|physics|biology|pharmacy|architecture|mathematics)\b", re.I)
 DEG = [("doctorate", re.compile(r"\bph\.?\s?d\b|\bdoctorate\b|\bdoctoral degree\b|\bjuris doctor\b|\bj\.d\.(?=[\s,;)]|$)", re.I)),
-       ("master", re.compile(r"\bmaster'?s?\b(?! data| file| schedule)|\bm\.?b\.?a\b|\bm\.p\.p\b", re.I)),
+       ("master", re.compile(r"\bmaster(?:'|’)s\b|\bmasters degree\b|\bmaster of (?:arts|science|public|business)\b|\bm\.?b\.?a\b|\bm\.p\.p\b", re.I)),
        ("bachelor", re.compile(r"\bbachelor'?s?\b|\bundergraduate degree\b|\bfour-year degree\b|\b4-year degree\b|\bcollege degree\b", re.I))]
 NO_DEG = re.compile(r"\bno (?:college )?degree (?:is )?required\b|\bhigh school diploma or (?:equivalent|ged)\b", re.I)
 REQ = re.compile(r"\b(?:required|requires?|must|minimum|at least|need|qualif)", re.I)
@@ -114,7 +114,7 @@ DATE_NUM = re.compile(r"\b(?:closing date|close date|deadline|apply by|due by|no
 WORDNUM = {w: str(i) for i, w in enumerate(["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"])}
 HEAD_WORD = re.compile(r"\b(?:qualifications?|requirements?|skills|education|experience|responsibilities|duties|benefits|about (?:you|the|us)|what you|who you|you have|you bring|nice to have|bonus|preferred|desired|helpful|pluses)\b", re.I)
 SOFT_HEAD = re.compile(r"\b(?:helpful|preferred|nice to have|bonus|desired|desirable|a plus|pluses|ideally)\b", re.I)
-YRS_ANY = re.compile(r"(\d{1,2})\s*(?:\+|(?:-|–|to)\s*\d{1,2})?\s*years?\s+(?:of|with|in)\s+(?!age\b)[a-z]", re.I)
+YRS_ANY = re.compile(r"(\d{1,2})\s*(?:\+|(?:-|–|to)\s*\d{1,2})?\s*years?\s+(?:of|with|in)\s+(?!age\b|earning|graduat|complet|service|study|studies|college|school|education|employment with|tour)[a-z]", re.I)
 YRS_LIST = re.compile(r"(?:^|:)\s*(\d{1,2})\+?\s*years?\s*\(required\)", re.I)  # Indeed: "Coding: 1 year (Required)"
 
 
@@ -209,12 +209,24 @@ def _deadline(text):
     return None
 
 
+FED_LADDER = re.compile(r"\bspecialized experience\b|\b(?:GS|GL)-?\s?\d{1,2}\b|\bcombination of (?:education and experience|experience and education)\b|\bmay (?:be )?substitut", re.I)
+BG_CHECK = re.compile(r"\b(?:background investigation|background check|suitability (?:determination|investigation)|public trust)\b", re.I)
+FED_ALT = re.compile(r"\byears?\b|semester|credit hours|\bdegree\b|\beducation\b|\bgpa\b|\bgrade\b|\bgs-|\bgl-", re.I)
+
+
+def fed_musts(musts):
+    """Federal must-haves: drop items that are one of several alternative ways to qualify (years, credit hours, degrees)."""
+    return [m for m in (musts or []) if not FED_ALT.search(m)]
+
+
 def extract(text, today):
     t = _normalize(text); sents = _sentences(t)
-    years = _years(sents)
-    if years is None and NO_EXP.search(t): years = 0
+    fed = bool(FED_LADDER.search(t))  # federal qualification ladder: experience OR education, by grade; no single number is honest
+    years = None if fed else _years(sents)
+    if years is None and not fed and NO_EXP.search(t): years = 0
     cl, active = _clearance(sents, t)
-    return {"years": years, "degree": _degree(sents, t), "clearance": cl, "active_at_hire": active, "deadline": _deadline(t), "licence": _licence(sents)}
+    if cl in ("none", "unknown") and BG_CHECK.search(t): cl = "sponsor"
+    return {"years": years, "degree": None if fed else _degree(sents, t), "clearance": cl, "active_at_hire": active, "deadline": _deadline(t), "licence": _licence(sents), "federal": fed}
 
 
 # ---------- labels ----------
@@ -230,6 +242,8 @@ def can_get(read):
     if r.get("licence"): long_.append("a professional licence is required")
     if years == 2: stretch.append("2 years of experience required")
     if deg == "specialist": stretch.append("a specialist degree is required")
+    if r.get("federal") and not long_ and not stretch:
+        return {"label": "likely", "why": "Federal posting: qualify with experience or education at the listed grade (check the posting)"}
     unknown = [w for k, w in (("years", "experience not stated"), ("degree", "degree not stated"), ("clearance", "clearance not stated")) if r.get(k) in (None, "unknown")]
     tail = (" (" + ", ".join(unknown) + ")") if unknown else ""
     if long_: return {"label": "long shot", "why": "; ".join(long_).capitalize() + tail}
@@ -277,9 +291,9 @@ def build_reads(existing, fetched, plain, indeed_text, today):
         what = p.get("what") if text else None
         read = {"at": today.isoformat(), "from": src_from,
                 "what": (what or old.get("what") if old.get("hash") == h else what) or None,
-                "musts": musts_ok(p.get("musts"), text) if text else [],
+                "musts": (fed_musts(musts_ok(p.get("musts"), text)) if ex.get("federal") else musts_ok(p.get("musts"), text)) if text else [],
                 "years": ex.get("years"), "degree": ex.get("degree"), "clearance": ex.get("clearance"),
-                "activeAtHire": bool(ex.get("active_at_hire")), "licence": bool(ex.get("licence")),
+                "activeAtHire": bool(ex.get("active_at_hire")), "licence": bool(ex.get("licence")), "federal": bool(ex.get("federal")),
                 "deadline": (fx or {}).get("deadline") or ex.get("deadline") or j.get("deadline"),
                 "howApply": HOW.get(kind), "applyUrl": (fx or {}).get("applyUrl") or j.get("url"), "hash": h}
         if not read["musts"] and old.get("hash") == h and old.get("musts"): read["musts"] = old["musts"]

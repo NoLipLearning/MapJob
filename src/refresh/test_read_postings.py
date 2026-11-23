@@ -318,3 +318,33 @@ class UsajobsMatch(unittest.TestCase):
         rp._get_json = lambda url, headers=None: (seen.append(url), load("usajobs_detail.json"))[1]
         rp.fetch_text({"kind": "usajobs", "control": "851633800"}, "k", "e")
         self.assertIn("Keyword=851633800", seen[0])
+
+
+class FederalQualifications(unittest.TestCase):
+    """Truth check of 15 USAJOBS postings (2026-11-23): federal 'experience OR education' ladders produced wrong years/degree."""
+    FED = ("Qualifications: GL-5: three years of general experience OR A bachelor's degree. GL-7: one year of specialized experience "
+           "equivalent to the GS-5 level OR one full year of graduate education. Security clearance: Not Required. "
+           "Background investigation will be required.")
+
+    def test_federal_ladder_has_no_years_or_degree(self):
+        e = rp.extract(self.FED, TODAY)
+        self.assertEqual((e["years"], e["degree"]), (None, None))
+
+    def test_background_investigation_is_sponsor(self):
+        self.assertEqual(rp.extract(self.FED, TODAY)["clearance"], "sponsor")
+
+    def test_federal_musts_drop_alternative_paths(self):
+        self.assertEqual(rp.fed_musts(["at least 4 years of experience in accounting", "U.S. Citizenship is required", "24 semester hours in accounting"]),
+                         ["U.S. Citizenship is required"])
+
+    def test_non_federal_text_unchanged(self):
+        self.assertEqual(rp.extract("Bachelor's degree required. 2 years of experience required.", TODAY)["years"], 2)
+
+
+class LooseMatches(unittest.TestCase):
+    def test_master_key_is_not_a_degree(self):
+        self.assertIsNone(rp.extract("Plans, designs, and implements master key systems.", TODAY)["degree"])
+        self.assertEqual(rp.extract("Master's degree required.", TODAY)["degree"], "master")
+
+    def test_within_a_year_of_earning_is_not_experience(self):
+        self.assertIsNone(rp.extract("Bachelor's degree (applicants within 1 year of earning a four-year degree will be considered).", TODAY)["years"])
