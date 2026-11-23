@@ -176,11 +176,11 @@ PARTS.push(function (app) {
       <div class="jfit" title="Fit with your background (0 to 100)">${j.fit == null ? "–" : j.fit}</div>
       <div class="js">${where || esc(SRC[j.source] || "")}</div>
       <div class="jtags">${tags(j)}${j.pay ? `<span class="tag">${esc(j.pay)}</span>` : ""}</div>
-      ${j.canGet && CG_LABEL[j.canGet.label] ? `<div class="jcanrow"><span class="pill jcan cg-${j.canGet.label === "long shot" ? "long" : j.canGet.label}" title="${esc(j.canGet.why || "")}">${CG_LABEL[j.canGet.label]}</span>${isClosed(j) ? ' <span class="pill soft">Closed</span>' : ""}${isUnread(j) ? ' <span class="tag jtitleonly">Unread (title only)</span>' : ""}</div>` : (isUnread(j) ? '<div class="jcanrow"><span class="tag jtitleonly">Unread (title only)</span></div>' : "")}
+      ${(() => { const cg = j.canGet && CG_LABEL[j.canGet.label] ? `<span class="pill jcan cg-${j.canGet.label === "long shot" ? "long" : j.canGet.label}" title="${esc(j.canGet.why || "")}">${CG_LABEL[j.canGet.label]}</span>` : "", bits = [cg, isClosed(j) ? '<span class="pill soft">Closed</span>' : "", isUnread(j) ? '<span class="tag jtitleonly">Unread (title only)</span>' : ""].filter(Boolean); return bits.length ? `<div class="jcanrow">${bits.join(" ")}</div>` : ""; })()}
       ${j.read && j.read.what ? `<div class="jwhat">${esc(j.read.what)}</div>` : ""}
       ${factsLine(j.read) ? `<div class="jfacts">${esc(factsLine(j.read))}</div>` : ""}
       ${metaLine(j)}
-      ${asking && j.status !== "applied" && pendGet().includes(j.id) ? `<div class="btn-row jact jasked" role="group" aria-label="Did you apply?"><span class="jask-q">Applied?</span><button type="button" class="btn sm primary" data-a="applied-yes">Yes</button><button type="button" class="btn sm" data-a="applied-no">Not yet</button></div>` : `<div class="btn-row jact">${applyHref(j) && j.status !== "applied" ? '<button type="button" class="btn sm primary" data-a="apply">Apply ↗</button><a href="#" class="jdetails" data-a="open">Details</a>' : '<button type="button" class="btn sm" data-a="open">Open</button>'}${j.status === "new" ? '<button type="button" class="btn sm" data-a="save">Save</button>' : ""}${j.status !== "applied" ? '<button type="button" class="btn sm quiet" data-a="dismiss">Not for me</button>' : ""}</div>`}
+      ${asking && j.status !== "applied" && pendNow.has(j.id) ? `<div class="btn-row jact jasked" role="group" aria-label="Did you apply?"><span class="jask-q">Applied?</span><button type="button" class="btn sm primary" data-a="applied-yes">Yes</button><button type="button" class="btn sm" data-a="applied-no">Not yet</button></div>` : `<div class="btn-row jact">${applyHref(j) && j.status !== "applied" ? '<button type="button" class="btn sm primary" data-a="apply">Apply ↗</button><a href="#" class="jdetails" data-a="open">Details</a>' : '<button type="button" class="btn sm" data-a="open">Open</button>'}${j.status === "new" ? '<button type="button" class="btn sm" data-a="save">Save</button>' : ""}${j.status !== "applied" ? '<button type="button" class="btn sm quiet" data-a="dismiss">Not for me</button>' : ""}</div>`}
     </div>`;
   }
   // openings before facets (dismissed hidden, one employer if "Show all N" was tapped), then after facets
@@ -198,6 +198,7 @@ PARTS.push(function (app) {
   }
   function render(el) {
     const keepFk = refocus; refocus = null; // the core clears the list before calling render, so the control that changed the list says so itself
+    pendNow = new Set(pendGet());
     const pool = poolJobs(), list = pool.filter(j => passes(j, null)), cmp = SORT_FN[sortBy];
     const emp = empFilter && app.E.find(e => e.id === empFilter);
     const saved = list.filter(j => j.status === "saved").sort(cmp), rest = list.filter(j => j.status !== "saved").sort(cmp);
@@ -235,7 +236,7 @@ PARTS.push(function (app) {
   const PKEY = "reston-map-apply-pending";
   const pendGet = () => { try { const v = JSON.parse(localStorage.getItem(PKEY) || "[]"); return Array.isArray(v) ? v.filter(x => typeof x === "string") : []; } catch (_) { return []; } };
   const pendSet = v => { try { localStorage.setItem(PKEY, JSON.stringify(v)); } catch (_) {} };
-  let asking = pendGet().length > 0, scrollTo = null;
+  let asking = pendGet().length > 0, scrollTo = null, pendNow = new Set(); // pendNow: read once per render, not per row
   function applyJob(id) {
     const j = jobs.get(id); const u = j && applyHref(j); if (!u) return;
     window.open(u, "_blank", "noopener");

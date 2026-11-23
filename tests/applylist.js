@@ -22,8 +22,9 @@ const rows = p => p.evaluate(() => [...document.querySelectorAll('#list .jobrow'
   ok(await p.evaluate(() => document.getElementById('sort-jobs').value) === 'apply', 'default sort is Apply order');
   let order = await rows(p);
   ok(order[0] === 'usajobs-likely', 'first row is the likely job: ' + order.join(','));
-  ok(order[order.length - 1] === 'usajobs-closed', 'closed job is last');
+  ok(order.slice(-2).includes('usajobs-closed') && order.slice(-2).includes('indeed-closed-title'), 'closed jobs are last');
   ok(await p.evaluate(() => document.querySelector('[data-job="usajobs-closed"]').textContent.includes('Closed')), 'closed job is tagged Closed');
+  ok(await p.evaluate(() => document.querySelector('[data-job="indeed-closed-title"]').textContent.includes('Closed')), 'title-only closed job is tagged Closed');
   ok(order.indexOf('usajobs-stretch') < order.indexOf('usajobs-long'), 'stretch before long shot');
   const facts = await p.evaluate(() => document.querySelector('[data-job="usajobs-likely"] .jfacts').textContent.trim());
   ok(facts === '0 yrs · no clearance · Bachelor\'s · apply by Dec 3 · via USAJOBS', 'facts line: ' + facts);
@@ -34,8 +35,8 @@ const rows = p => p.evaluate(() => [...document.querySelectorAll('#list .jobrow'
   ok(await p.evaluate(() => document.querySelector('[data-job="usajobs-likely"] [data-a="apply"]').textContent.trim()) === 'Apply ↗', 'Apply button');
   await p.locator('#list [data-fk="cg:long shot"]').click(); await p.waitForTimeout(250);
   order = await rows(p);
-  ok(order.length === 4 && !order.includes('usajobs-long'), 'unticking Long shot hides exactly one row: ' + order.join(','));
-  ok(await p.evaluate(() => document.querySelector('.jfs').textContent.includes('4 of 5')), 'count updates');
+  ok(order.length === 5 && !order.includes('usajobs-long'), 'unticking Long shot hides exactly one row: ' + order.join(','));
+  ok(await p.evaluate(() => document.querySelector('.jfs').textContent.includes('5 of 6')), 'count updates');
   ok(p.errs.length === 0, 'no console errors ' + p.errs.slice(0, 2));
   // ---- Task 4: Apply -> Applied? loop ----
   await p.evaluate(() => { window.__opened = []; window.open = (u) => { window.__opened.push(u); return null; }; });
