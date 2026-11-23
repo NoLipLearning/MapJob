@@ -52,10 +52,10 @@ def fetch_text(ref, key, email):
         k = ref.get("kind")
         if k == "usajobs":
             if not key or not email: return None
-            d = _get_json("https://data.usajobs.gov/api/search?" + urllib.parse.urlencode({"ControlNumber": ref["control"]}),
+            d = _get_json("https://data.usajobs.gov/api/search?" + urllib.parse.urlencode({"Keyword": ref["control"]}),
                           {"Host": "data.usajobs.gov", "User-Agent": email, "Authorization-Key": key})
-            items = (d.get("SearchResult") or {}).get("SearchResultItems") or []
-            if not items: return None
+            items = [x for x in (d.get("SearchResult") or {}).get("SearchResultItems") or [] if str(x.get("MatchedObjectId")) == ref["control"]]
+            if not items: return None  # never use another announcement's text
             m = items[0]["MatchedObjectDescriptor"]; det = (m.get("UserArea") or {}).get("Details") or {}
             text = _join(det.get("JobSummary"), det.get("MajorDuties"), m.get("QualificationSummary"), det.get("Requirements"),
                          det.get("Education"), "Security clearance: " + det["SecurityClearance"] if det.get("SecurityClearance") else None, det.get("HowToApply"))

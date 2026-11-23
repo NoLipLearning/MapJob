@@ -301,3 +301,20 @@ class PreferredHeading(unittest.TestCase):
         t = "Preferred Qualifications\nMaster's degree\n3 years of experience\nRequired Qualifications\nBachelor's degree"
         e = rp.extract(t, TODAY)
         self.assertEqual((e["degree"], e["years"]), ("bachelor", None))
+
+
+class UsajobsMatch(unittest.TestCase):
+    """Live check 2026-11-23: the API ignores ControlNumber and returns other jobs; a mismatched job must never be used."""
+    def setUp(self): self._get = rp._get_json
+    def tearDown(self): rp._get_json = self._get
+
+    def test_mismatched_announcement_is_rejected(self):
+        d = load("usajobs_detail.json"); d["SearchResult"]["SearchResultItems"][0]["MatchedObjectId"] = "721962100"
+        rp._get_json = lambda url, headers=None: d
+        self.assertIsNone(rp.fetch_text({"kind": "usajobs", "control": "851633800"}, "k", "e"))
+
+    def test_query_uses_keyword(self):
+        seen = []
+        rp._get_json = lambda url, headers=None: (seen.append(url), load("usajobs_detail.json"))[1]
+        rp.fetch_text({"kind": "usajobs", "control": "851633800"}, "k", "e")
+        self.assertIn("Keyword=851633800", seen[0])
