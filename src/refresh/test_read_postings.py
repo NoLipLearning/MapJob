@@ -348,3 +348,26 @@ class LooseMatches(unittest.TestCase):
 
     def test_within_a_year_of_earning_is_not_experience(self):
         self.assertIsNone(rp.extract("Bachelor's degree (applicants within 1 year of earning a four-year degree will be considered).", TODAY)["years"])
+
+
+class FederalRetry2(unittest.TestCase):
+    def ex(self, t): return rp.extract(t, TODAY)
+
+    def test_unconditional_bachelor_in_federal_posting(self):
+        t = "GS-7 level. Candidates must possess at least a bachelor's degree from an accredited college or university. One year of specialized experience may substitute."
+        self.assertEqual(self.ex(t)["degree"], "bachelor")
+
+    def test_bachelor_or_master_is_bachelor(self):
+        self.assertEqual(self.ex("Specialized experience at the GS-5 level. Bachelor's or master's degree from an accredited university.")["degree"], "bachelor")
+
+    def test_degree_with_experience_alternative_stays_null(self):
+        self.assertIsNone(self.ex("GL-5: three years of general experience OR a bachelor's degree.")["degree"])
+
+    def test_security_clearance_other_is_not_required(self):
+        e = self.ex("Security clearance: Other. A character investigation may be conducted on applicants selected.")
+        self.assertEqual(e["clearance"], "sponsor")
+
+    def test_do_not_apply_through_usajobs(self):
+        out = rp.build_reads([{"id": "usajobs-1", "title": "X", "url": "https://www.usajobs.gov/job/1", "source": "usajobs"}],
+                             {"usajobs-1": {"text": "Do not apply through USAJobs. Apply at the Pearson VUE site.", "applyUrl": "https://www.usajobs.gov/job/1/apply", "deadline": None}}, {}, {}, TODAY)
+        self.assertEqual(out[0]["patch"]["read"]["howApply"], "employer site")

@@ -182,6 +182,8 @@ def _degree(sents, text):
 
 
 def _clearance(sents, text):
+    text = re.sub(r"\bsecurity clearance\s*:\s*(?:other|not applicable)\b", "", text, flags=re.I)  # a USAJOBS form field, not a requirement
+    sents = [re.sub(r"\bsecurity clearance\s*:\s*(?:other|not applicable)\b", "", s, flags=re.I) for s in sents]
     if re.search(r"\bclearance(?: type| level| requirements?)?\s*:\s*(?:none|not required|n/?a)\b", text, re.I): return "none", False
     cl = classify_clearance(text)
     cs = [s for s in sents if CLEAR_WORD.search(s)]
@@ -210,7 +212,8 @@ def _deadline(text):
 
 
 FED_LADDER = re.compile(r"\bspecialized experience\b|\b(?:GS|GL)-?\s?\d{1,2}\b|\bcombination of (?:education and experience|experience and education)\b|\bmay (?:be )?substitut", re.I)
-BG_CHECK = re.compile(r"\b(?:background investigation|background check|suitability (?:determination|investigation)|public trust)\b", re.I)
+BG_CHECK = re.compile(r"\b(?:background investigation|background check|character investigation|suitability (?:determination|investigation)|public trust)\b", re.I)
+DEG_ALT = re.compile(r"\bor\b[^.]{0,80}\b(?:experience|equivalent|combination)\b|\b(?:experience|equivalent)\b[^.]{0,80}\bor\b[^.]{0,40}\bdegree\b|substitut|in lieu|\b(?:GS|GL)-?\s?\d", re.I)
 FED_ALT = re.compile(r"\byears?\b|semester|credit hours|\bdegree\b|\beducation\b|\bgpa\b|\bgrade\b|\bgs-|\bgl-", re.I)
 
 
@@ -226,7 +229,11 @@ def extract(text, today):
     if years is None and not fed and NO_EXP.search(t): years = 0
     cl, active = _clearance(sents, t)
     if cl in ("none", "unknown") and BG_CHECK.search(t): cl = "sponsor"
-    return {"years": years, "degree": None if fed else _degree(sents, t), "clearance": cl, "active_at_hire": active, "deadline": _deadline(t), "licence": _licence(sents), "federal": fed}
+    deg = _degree(sents, t)
+    if fed and deg:  # keep a federal degree only when its sentence offers no experience/substitution alternative
+        ds = [s for s in sents if re.search(r"\bbachelor|\bmaster|\bdoctor|\bdegree\b", s, re.I)]
+        if any(DEG_ALT.search(s) for s in ds): deg = None
+    return {"years": years, "degree": deg, "clearance": cl, "active_at_hire": active, "deadline": _deadline(t), "licence": _licence(sents), "federal": fed}
 
 
 # ---------- labels ----------
@@ -295,7 +302,7 @@ def build_reads(existing, fetched, plain, indeed_text, today):
                 "years": ex.get("years"), "degree": ex.get("degree"), "clearance": ex.get("clearance"),
                 "activeAtHire": bool(ex.get("active_at_hire")), "licence": bool(ex.get("licence")), "federal": bool(ex.get("federal")),
                 "deadline": (fx or {}).get("deadline") or ex.get("deadline") or j.get("deadline"),
-                "howApply": HOW.get(kind), "applyUrl": (fx or {}).get("applyUrl") or j.get("url"), "hash": h}
+                "howApply": "employer site" if kind == "usajobs" and text and re.search(r"do not apply (?:through|via|on) usa ?jobs", text, re.I) else HOW.get(kind), "applyUrl": (fx or {}).get("applyUrl") or j.get("url"), "hash": h}
         if not read["musts"] and old.get("hash") == h and old.get("musts"): read["musts"] = old["musts"]
         w = {"id": jid, "patch": {"read": read, "canGet": can_get(read)}}
         if "_version" in j: w["version"] = j["_version"]
