@@ -1,0 +1,6 @@
+[
+ {"id":"near-careers-aaaaaa","name":"Near Careers Co","kind":"contractor","addr":"11 Main St, Reston, VA 20190","lat":38.96,"lon":-77.36,"gc":"addr","link":"https://near.example.com/careers","linkType":"careers","src":["https://near.example.com"],"via":"list","checked":"2026-11-24"},
+ {"id":"mid-website-bbbbbb","name":"Mid Website Inc","kind":"corporate","addr":"22 Elm St, Fairfax, VA 22030","lat":38.85,"lon":-77.30,"gc":"addr","link":"https://mid.example.com/","linkType":"website","src":["https://mid.example.com"],"via":"sam","checked":"2026-11-24"},
+ {"id":"far-nolink-cccccc","name":"Far No Link Assoc","kind":"ngo-advocacy","addr":"33 Oak St, Warrenton, VA 20186","lat":38.71,"lon":-77.79,"gc":"addr","link":null,"linkType":null,"src":["https://far.example.org"],"via":"list","checked":"2026-11-24"},
+ {"id":"usgs-dup-dddddd","name":"USGS","kind":"federal","addr":"12201 Sunrise Valley Drive, Reston, VA 20192","lat":38.947851,"lon":-77.368057,"gc":"addr","link":"https://www.usgs.gov/","linkType":"careers","src":["https://www.usgs.gov"],"via":"list","checked":"2026-11-24","empId":"usgs-reston-national-center"}
+]
