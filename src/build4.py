@@ -10,6 +10,7 @@ except OSError: ap = ''
 if ap: js = js.replace('"__APPLY_PROMPT__"', json.dumps(ap))
 D = json.load(open('prep4.json'))
 D['offices'] = json.load(open('offices.json')) if os.path.exists('offices.json') else []  # office buildings, see docs/DATA-CONTRACT-v4.md
+D['dir'] = json.load(open('directory.json')) if os.path.exists('directory.json') else []  # NoVA employer directory, see src/directory.py
 data = json.dumps(D, separators=(',', ':'))
 out = shell.replace('/*__CSS__*/', css).replace('/*__JS__*/', js.replace('__DATA__', data))
 open('../reston-hiring-map.html', 'w').write(out)
