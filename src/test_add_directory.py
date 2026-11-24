@@ -33,4 +33,23 @@ class T(unittest.TestCase):
         recs, _, stats = self.run_build()
         self.assertEqual(validate(recs), []); self.assertEqual(stats["careers"], 1)
 
+class Keep(unittest.TestCase):
+    def test_not_geocoded_keeps_previous_record(self):
+        first, _, _ = A.build(CANDS, EMPS, geo, today="2026-11-24", prev=[])
+        again, unplaced, _ = A.build(CANDS, EMPS, lambda a: None, today="2026-12-01", prev=first)
+        self.assertEqual([r["id"] for r in again], [r["id"] for r in first])
+        self.assertEqual(sorted(u["name"] for u in unplaced), ["No Addr", "Street Only"])
+
+class Clean(unittest.TestCase):
+    def test_geo_query_drops_suite(self):
+        self.assertEqual(A.geo_query("12000 Government Center Parkway, Suite 270, Fairfax, VA 22035"), "12000 Government Center Parkway, Fairfax, VA 22035")
+        self.assertEqual(A.geo_query("1 Main St Ste 5, Reston, VA 20190"), "1 Main St, Reston, VA 20190")
+        self.assertEqual(A.geo_query("1 Main St, 3rd Floor, Reston, VA"), "1 Main St, Reston, VA")
+    def test_rate_limit_stops_run(self):
+        calls = []
+        def boom(q):
+            calls.append(q); import urllib.error; raise urllib.error.HTTPError(q, 629, "x", {}, None)
+        g = A.cached_geocoder({}, 10, False, fetch=boom, pause=0)
+        self.assertIsNone(g("1 A St, Reston, VA")); self.assertIsNone(g("2 B St, Reston, VA")); self.assertEqual(len(calls), 1)
+
 if __name__ == "__main__": unittest.main()
