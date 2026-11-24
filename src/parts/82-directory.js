@@ -1,5 +1,5 @@
 // 82-directory: the NoVA employer directory (app.D.dir, built by src/add_directory.py) as light round "E" pins, clustered
-// separately from the researched employers and drawn under them, plus an "All NoVA" list sorted by drive minutes.
+// separately from the researched employers and drawn under them, plus an "All NoVA employers" list (a card opened from the Employers map button), nearest first.
 // Each entry links to its careers page ("Careers ↗") or homepage ("Website ↗"); links open only if they are http(s).
 // Entries with empId are already on the map as researched employers and draw no pin. No fit score: this is a directory.
 PARTS.push(function (app) {
@@ -31,26 +31,34 @@ PARTS.push(function (app) {
   }
 
   const match = d => !q || (d.name + " " + d.addr).toLowerCase().includes(q);
-  function render(el) {
-    if (!all.length) { el.innerHTML = '<div class="kit-empty"><b>No employers loaded.</b>The directory fills in when Claude builds it.</div>'; return; }
+  function rowsHtml() {
     const rows = shown.filter(match).map(d => [mins(d), d]).sort((a, b) => a[0] - b[0] || a[1].name.localeCompare(b[1].name)), cap = MAXROWS + more;
-    el.innerHTML = `<p class="kit-note">${shown.length} employers across Northern Virginia, nearest first. Tap a name to see it on the map.</p>
+    return (rows.length ? "" : '<p class="kit-note">No employer matches that search.</p>') + rows.slice(0, cap).map(([m, d]) => `<div class="dirrow" data-dir="${esc(d.id)}"><button type="button" class="dir-name" data-a="dir-show">${esc(d.name)}</button><span class="s">${esc(d.town)} &middot; ${m} min</span>${linkBtn(d)}</div>`).join("")
+      + (rows.length > cap ? `<button type="button" class="btn sm" id="dir-more">Show ${Math.min(MAXROWS, rows.length - cap)} more</button>` : "");
+  }
+  function bindRows(root) {
+    root.querySelectorAll('[data-a="dir-show"]').forEach(b => b.onclick = () => open(b.closest(".dirrow").dataset.dir, true));
+    const m = root.querySelector("#dir-more"); if (m) m.onclick = () => { more += MAXROWS; paint(root.closest("#card") || document); };
+  }
+  const paint = root => { const box = root.querySelector("#dir-rows"); if (box) { box.innerHTML = rowsHtml(); bindRows(box); } };
+  function openList() {
+    app.openCard({ kind: "dirlist", id: "all", html: `<p class="eyebrow">Employer directory</p><h2 style="padding-right:30px">All NoVA employers</h2>
+      <p class="kit-note">${shown.length} employers across Northern Virginia, nearest first. Tap a name to see it on the map.</p>
+      <label class="dir-pins"><input type="checkbox" id="dir-pins"${on ? " checked" : ""}> Show these employers on the map</label>
       <input type="search" id="dir-q" class="dir-q" placeholder="Search employers or towns" aria-label="Search employers or towns" value="${esc(q)}">
-      ${rows.slice(0, cap).map(([m, d]) => `<div class="dirrow" data-dir="${esc(d.id)}"><button type="button" class="dir-name" data-a="dir-show">${esc(d.name)}</button><span class="s">${esc(d.town)} &middot; ${m} min</span>${linkBtn(d)}</div>`).join("")}
-      ${rows.length > cap ? `<button type="button" class="btn sm" id="dir-more">Show ${Math.min(MAXROWS, rows.length - cap)} more</button>` : ""}`;
-    const inp = el.querySelector("#dir-q"); inp.oninput = () => { q = inp.value.trim().toLowerCase(); more = 0; app.refresh(); setTimeout(() => { const i = document.getElementById("dir-q"); if (i) { i.focus(); i.setSelectionRange(i.value.length, i.value.length); } }, 0); };
-    el.querySelectorAll('[data-a="dir-show"]').forEach(b => b.onclick = () => open(b.closest(".dirrow").dataset.dir, true));
-    const m = el.querySelector("#dir-more"); if (m) m.onclick = () => { more += MAXROWS; app.refresh(); };
+      <div id="dir-rows"></div>`, bind: root => {
+        paint(root);
+        const inp = root.querySelector("#dir-q"); inp.oninput = () => { q = inp.value.trim().toLowerCase(); more = 0; paint(root); };
+        root.querySelector("#dir-pins").onchange = ev => { on = ev.target.checked; app.store.set(KEY, on); sync(); app.refresh(); };
+      } });
   }
-  if (all.length) app.addTab({ id: "dir", label: "All NoVA", render, count: () => shown.filter(match).length, items: () => shown.filter(match).map(d => ({ kind: "dir", id: d.id })) });
 
-  const places = app.$("places");
+  const places = app.$("places"); let sync = () => {};
   if (shown.length && places) {
-    const b = document.createElement("button"); b.type = "button"; b.className = "mbtn"; b.id = "dirbtn"; b.title = "Show or hide all NoVA employer pins";
-    b.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="7"/><path d="M10 9h4M10 12h3M10 15h4M10 9v6"/></svg>Employers<span class="bk" aria-hidden="true"></span>';
-    const sync = () => { b.setAttribute("aria-pressed", String(on)); b.querySelector(".bk").textContent = on ? "✓" : ""; };
-    b.onclick = () => { on = !on; app.store.set(KEY, on); sync(); if (!on && app.selected && app.selected.kind === "dir") app.closeCard(); else app.refresh(); };
-    sync(); places.insertBefore(b, app.$("jump"));
+    const b = document.createElement("button"); b.type = "button"; b.className = "mbtn"; b.id = "dirbtn"; b.title = "All Northern Virginia employers, with careers links";
+    b.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="7"/><path d="M10 9h4M10 12h3M10 15h4M10 9v6"/></svg>Employers';
+    sync = () => b.setAttribute("aria-pressed", String(on));
+    b.onclick = openList; sync(); places.insertBefore(b, app.$("jump"));
   }
-  app.directory = { all: () => all, get: id => byId.get(id) || null, open, isOn: () => on };
+  app.directory = { all: () => all, get: id => byId.get(id) || null, open, openList, isOn: () => on };
 });

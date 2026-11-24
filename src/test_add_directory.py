@@ -40,6 +40,12 @@ class Keep(unittest.TestCase):
         self.assertEqual([r["id"] for r in again], [r["id"] for r in first])
         self.assertEqual(sorted(u["name"] for u in unplaced), ["No Addr", "Street Only"])
 
+class Census(unittest.TestCase):
+    def test_parse(self):
+        body = {"result": {"addressMatches": [{"coordinates": {"x": -77.3672365, "y": 38.9501739}, "matchedAddress": "12201 SUNRISE VALLEY DR, RESTON, VA, 20191"}]}}
+        self.assertEqual(A.parse_census(body), {"lat": 38.950174, "lon": -77.367237, "hn": "12201", "via": "census"})
+        self.assertEqual(A.parse_census({"result": {"addressMatches": []}}), {"miss": True})
+
 class Clean(unittest.TestCase):
     def test_geo_query_drops_suite(self):
         self.assertEqual(A.geo_query("12000 Government Center Parkway, Suite 270, Fairfax, VA 22035"), "12000 Government Center Parkway, Fairfax, VA 22035")

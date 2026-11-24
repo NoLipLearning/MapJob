@@ -1,0 +1,1754 @@
+[
+{
+"id": "aes-beba47",
+"name": "AES Corporation (Arlington)",
+"kind": "corporate",
+"addr": "4300 Wilson Blvd, Arlington, VA 22203",
+"lat": 38.879975,
+"lon": -77.112507,
+"gc": "addr",
+"link": "https://www.aes.com/careers",
+"linkType": "careers",
+"src": [
+"https://www.aes.com/careers"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "air-and-space-forces-association-52a500",
+"name": "Air & Space Forces Association (formerly Air Force Association)",
+"kind": "ngo-advocacy",
+"addr": "1501 Lee Highway, Arlington, VA 22209",
+"lat": 38.899035,
+"lon": -77.075524,
+"gc": "addr",
+"link": "https://www.afa.org/careers/",
+"linkType": "careers",
+"src": [
+"https://www.afa.org/careers/"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "alexandria-city-public-schools-509f67",
+"name": "Alexandria City Public Schools (Central Office)",
+"kind": "state-local",
+"addr": "1340 Braddock Place, Alexandria, VA 22314",
+"lat": 38.81493,
+"lon": -77.051345,
+"gc": "addr",
+"link": "https://www.acps.k12.va.us/careers2",
+"linkType": "careers",
+"src": [
+"https://www.acps.k12.va.us/departments/human-resources"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "american-counseling-association-0ab804",
+"name": "American Counseling Association",
+"kind": "ngo-advocacy",
+"addr": "2461 Eisenhower Avenue, Suite 300, Alexandria, VA 22314",
+"lat": 38.80145,
+"lon": -77.07229,
+"gc": "addr",
+"link": "https://www.counseling.org",
+"linkType": "website",
+"src": [
+"https://imis.counseling.org/"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "american-institutes-for-research-51b9d4",
+"name": "American Institutes for Research (Arlington office)",
+"kind": "think-tank",
+"addr": "1400 Crystal Drive, 10th Floor, Arlington, VA 22202",
+"lat": 38.861195,
+"lon": -77.049364,
+"gc": "addr",
+"link": "https://job-boards.greenhouse.io/americaninstitutesforresearch",
+"linkType": "careers",
+"src": [
+"https://job-boards.greenhouse.io/americaninstitutesforresearch/jobs/5349077008"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "american-trucking-associations-4a2a7f",
+"name": "American Trucking Associations",
+"kind": "ngo-advocacy",
+"addr": "950 N. Glebe Road, Suite 210, Arlington, VA 22203",
+"lat": 38.88129,
+"lon": -77.115725,
+"gc": "addr",
+"link": "https://trucking.org/careers",
+"linkType": "careers",
+"src": [
+"https://www.trucking.org/Affiliates.aspx",
+"https://trucking.org/careers"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "arlington-county-government-81a568",
+"name": "Arlington County Government (Human Resources)",
+"kind": "state-local",
+"addr": "2100 Clarendon Blvd, Suite 511, Arlington, VA 22201",
+"lat": 38.891364,
+"lon": -77.084913,
+"gc": "addr",
+"link": "https://www.arlingtonva.us/Government/Careers",
+"linkType": "careers",
+"src": [
+"https://www.arlingtonva.us/Government/Careers",
+"https://jobboard.arlingtonva.us/profile/4yqc/arlington-county-government"
+],
+"via": "list",
+"empId": "arlington-county-government",
+"checked": "2026-11-24"
+},
+{
+"id": "arlington-public-schools-8bfd0f",
+"name": "Arlington Public Schools (Syphax Education Center)",
+"kind": "state-local",
+"addr": "2110 Washington Blvd, Arlington, VA 22204",
+"lat": 38.873935,
+"lon": -77.084145,
+"gc": "addr",
+"link": "https://www.apsva.us/careers-aps/available-positions/",
+"linkType": "careers",
+"src": [
+"https://www.apsva.us/careers-aps/available-positions/"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "association-for-talent-development-2fa9e4",
+"name": "Association for Talent Development",
+"kind": "ngo-advocacy",
+"addr": "1640 King Street, Alexandria, VA 22314",
+"lat": 38.806355,
+"lon": -77.057523,
+"gc": "addr",
+"link": "https://www.td.org",
+"linkType": "website",
+"src": [
+"https://www.cbinsights.com/company/association-for-talent-development"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "association-of-old-crows-a51639",
+"name": "Association of Old Crows",
+"kind": "ngo-advocacy",
+"addr": "1001 N. Fairfax Street, Unit 300, Alexandria, VA 22314",
+"lat": 38.81476,
+"lon": -77.040266,
+"gc": "addr",
+"link": "https://careers.crows.org/",
+"linkType": "careers",
+"src": [
+"https://crows.org/wp-content/uploads/2024/03/AOC-Continuity-and-Recovery-Plan-2024.pdf",
+"https://careers.crows.org/profile/association-of-old-crows/511945"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "association-of-the-united-states-army-bc1329",
+"name": "Association of the United States Army",
+"kind": "ngo-advocacy",
+"addr": "2425 Wilson Boulevard, Arlington, VA 22201",
+"lat": 38.890775,
+"lon": -77.087846,
+"gc": "addr",
+"link": "https://www.ausa.org",
+"linkType": "website",
+"src": [
+"https://www.ausa.org/your-ausa-community-public"
+],
+"via": "list",
+"empId": "ausa",
+"checked": "2026-11-24"
+},
+{
+"id": "association-of-the-us-navy-34f00d",
+"name": "Association of the US Navy",
+"kind": "ngo-advocacy",
+"addr": "3337 Duke Street, Alexandria, VA 22314",
+"lat": 38.808347,
+"lon": -77.087502,
+"gc": "addr",
+"link": "https://www.ausn.org",
+"linkType": "website",
+"src": [
+"https://ausn.org/?p=1702"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "bechtel-46f154",
+"name": "Bechtel (Reston office)",
+"kind": "contractor",
+"addr": "12011 Sunset Hills Road, Reston, VA 20190",
+"lat": 38.955145,
+"lon": -77.356484,
+"gc": "addr",
+"link": "https://jobs.bechtel.com",
+"linkType": "careers",
+"src": [
+"https://jobs.bechtel.com/job/Reston-Facilities-Services-Supervisor-VA-20190/1282397700"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "booz-allen-hamilton-570816",
+"name": "Booz Allen Hamilton (McLean HQ)",
+"kind": "contractor",
+"addr": "8283 Greensboro Drive, McLean, VA 22102",
+"lat": 38.923273,
+"lon": -77.231063,
+"gc": "addr",
+"link": "https://careers.boozallen.com",
+"linkType": "careers",
+"src": [
+"https://www.hcareers.com/es/booz-allen-hamilton",
+"https://www.wikipedia.com/wiki/Booz_Allen"
+],
+"via": "list",
+"empId": "booz-allen-hamilton",
+"checked": "2026-11-24"
+},
+{
+"id": "capital-one-11e86c",
+"name": "Capital One (McLean HQ)",
+"kind": "corporate",
+"addr": "1680 Capital One Drive, McLean, VA 22102",
+"lat": 38.924445,
+"lon": -77.211813,
+"gc": "addr",
+"link": "https://www.capitalonecareers.com/mclean",
+"linkType": "careers",
+"src": [
+"https://www.capitalonecareers.com/mclean",
+"https://www.capitalonecareers.com/locations"
+],
+"via": "list",
+"empId": "capital-one",
+"checked": "2026-11-24"
+},
+{
+"id": "capital-one-6c6958",
+"name": "Capital One (McLean HQ)",
+"kind": "corporate",
+"addr": "1680 Capital One Dr, McLean, VA 22102",
+"lat": 38.924445,
+"lon": -77.211813,
+"gc": "addr",
+"link": "https://www.capitalonecareers.com/mclean",
+"linkType": "careers",
+"src": [
+"https://www.capitalonecareers.com/locations"
+],
+"via": "list",
+"empId": "capital-one",
+"checked": "2026-11-24"
+},
+{
+"id": "carahsoft-technology-dfa144",
+"name": "Carahsoft Technology (Reston HQ)",
+"kind": "contractor",
+"addr": "11493 Sunset Hills Road, Suite 100, Reston, VA 20190",
+"lat": 38.952315,
+"lon": -77.345095,
+"gc": "addr",
+"link": "https://www.carahsoft.com/careers",
+"linkType": "careers",
+"src": [
+"https://partners.boomi.com/english/directory/partner/991655/carahsoft-technology-corp"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "city-of-falls-church-f6d2bc",
+"name": "City of Falls Church (Human Resources)",
+"kind": "state-local",
+"addr": "300 Park Ave., Suite 200W, Falls Church, VA 22046",
+"lat": 38.884922,
+"lon": -77.172613,
+"gc": "addr",
+"link": "https://www.fallschurchva.gov/jobs",
+"linkType": "careers",
+"src": [
+"https://www.careerbuilder.com/job-details/systems-specialist-falls-church-va--6a9f7c95-05d3-48ff-baa0-e481335f0898"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "cna-06cef5",
+"name": "CNA (Clarendon HQ)",
+"kind": "think-tank",
+"addr": "3003 Washington Blvd, Arlington, VA 22201",
+"lat": 38.885142,
+"lon": -77.093752,
+"gc": "addr",
+"link": "https://cna.org/careers/open-positions",
+"linkType": "careers",
+"src": [
+"https://cna.org/contact",
+"https://cna.org/careers/open-positions"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "conservation-international-cb35a9",
+"name": "Conservation International (Arlington HQ)",
+"kind": "ngo-advocacy",
+"addr": "2011 Crystal Drive, Suite 600, Arlington, VA 22202",
+"lat": 38.855663,
+"lon": -77.049245,
+"gc": "addr",
+"link": "https://www.conservation.org",
+"linkType": "website",
+"src": [
+"https://conservation.org/about/global-offices"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "consumer-technology-association-1268d1",
+"name": "Consumer Technology Association (Arlington HQ)",
+"kind": "ngo-advocacy",
+"addr": "1919 S. Eads Street, Arlington, VA 22202",
+"lat": 38.856391,
+"lon": -77.053067,
+"gc": "addr",
+"link": "https://www.cta.tech/careers",
+"linkType": "careers",
+"src": [
+"https://www.cta.tech/About/Contact-Us",
+"https://www.cta.tech/careers"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "costar-group-3712b4",
+"name": "CoStar Group (Rosslyn HQ)",
+"kind": "corporate",
+"addr": "1201 Wilson Boulevard, Arlington, VA 22209",
+"lat": 38.895149,
+"lon": -77.070875,
+"gc": "addr",
+"link": "https://www.costargroup.com/careers",
+"linkType": "careers",
+"src": [
+"https://www.arlingtonva.us/About-Arlington/Newsroom/Articles/2024/Global-Real-Estate-Giant-CoStar-Group-Chooses-Arlington-for-its-Headquarters-Location"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "darpa-74fb94",
+"name": "DARPA (Defense Advanced Research Projects Agency)",
+"kind": "federal",
+"addr": "675 North Randolph Street, Arlington, VA 22203",
+"lat": 38.878798,
+"lon": -77.109171,
+"gc": "addr",
+"link": "https://darpa.mil/careers",
+"linkType": "careers",
+"src": [
+"https://www.darpa.mil/policy/visitor-information"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "darpa-c61572",
+"name": "DARPA (Arlington HQ)",
+"kind": "federal",
+"addr": "675 North Randolph Street, Arlington, VA 22203-2114",
+"lat": 38.878798,
+"lon": -77.109171,
+"gc": "addr",
+"link": "https://darpa.mil/careers",
+"linkType": "careers",
+"src": [
+"https://www.darpa.mil/policy/visitor-information"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "deloitte-17e30f",
+"name": "Deloitte (Rosslyn office)",
+"kind": "consulting",
+"addr": "1919 North Lynn Street, Arlington, VA 22209",
+"lat": 38.897358,
+"lon": -77.070756,
+"gc": "addr",
+"link": "https://apply.deloitte.com/en_US/careers/SearchJobs/talent",
+"linkType": "careers",
+"src": [
+"https://managementconsulted.com/deloitte-rosslyn/",
+"https://apply.deloitte.com/en_US/careers/SearchJobs/talent"
+],
+"via": "list",
+"empId": "deloitte-gps",
+"checked": "2026-11-24"
+},
+{
+"id": "deloitte-be1847",
+"name": "Deloitte (McLean/Tysons office)",
+"kind": "consulting",
+"addr": "7900 Tysons One Place, Suite 800, McLean, VA 22102",
+"lat": 38.919386,
+"lon": -77.22086,
+"gc": "addr",
+"link": "https://apply.deloitte.com/careers/SearchJobs",
+"linkType": "careers",
+"src": [
+"https://www2.deloitte.com/us/en/footerlinks/office-locator/virginia/mclean.html"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "dxc-technology-2468bf",
+"name": "DXC Technology (Tysons office)",
+"kind": "corporate",
+"addr": "1775 Tysons Blvd, Tysons, VA 22102",
+"lat": 38.922681,
+"lon": -77.221859,
+"gc": "addr",
+"link": "https://dxc.com",
+"linkType": "website",
+"src": [
+"https://managementconsulted.com/consulting-firm/dxc-technology/"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "fairfax-county-government-e2559e",
+"name": "Fairfax County Government (Government Center HR)",
+"kind": "state-local",
+"addr": "12000 Government Center Parkway, Suite 270, Fairfax, VA 22035",
+"lat": 38.85212,
+"lon": -77.357578,
+"gc": "addr",
+"link": "https://www.fairfaxcounty.gov/hr/",
+"linkType": "careers",
+"src": [
+"https://www.fairfaxcounty.gov/hr/node/217"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "falls-church-city-public-schools-05c565",
+"name": "Falls Church City Public Schools (Human Resources)",
+"kind": "state-local",
+"addr": "150 South Washington St, Suite 400, Falls Church, VA 22046",
+"lat": 38.881544,
+"lon": -77.171952,
+"gc": "addr",
+"link": "https://sites.google.com/fccps.org/jobs/",
+"linkType": "careers",
+"src": [
+"https://sites.google.com/fccps.org/jobs/"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "fauquier-county-government-11162e",
+"name": "Fauquier County Government (County Administrator, 10 Hotel St)",
+"kind": "state-local",
+"addr": "10 Hotel Street, Third Floor, Warrenton, VA 20186",
+"lat": 38.713223,
+"lon": -77.795792,
+"gc": "addr",
+"link": "https://jobs.fauquiercounty.gov",
+"linkType": "careers",
+"src": [
+"https://search.211virginia.org/search/2c42fd59-3902-512b-b8af-66d1a62ae754"
+],
+"via": "list",
+"empId": "fauquier-county-government",
+"checked": "2026-11-24"
+},
+{
+"id": "fauquier-county-public-schools-a2bfbb",
+"name": "Fauquier County Public Schools (Central Office)",
+"kind": "state-local",
+"addr": "320 Hospital Drive, Warrenton, VA 20186",
+"lat": 38.714722,
+"lon": -77.809033,
+"gc": "addr",
+"link": "https://jobs.fauquiercounty.gov",
+"linkType": "careers",
+"src": [
+"https://www.fauquiercounty.gov/government/departments-h-z/human-resources/employment/job-openings"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "fdic-710d16",
+"name": "FDIC (Virginia Square campus, Arlington)",
+"kind": "federal",
+"addr": "3501 Fairfax Drive, Arlington, VA 22226",
+"lat": 38.884161,
+"lon": -77.101709,
+"gc": "addr",
+"link": "https://www.fdic.gov/about/careers/index.html",
+"linkType": "careers",
+"src": [
+"https://www.fdic.gov/about/careers/contacts.html",
+"https://www.fdic.gov/about/visiting-fdic"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "federal-managers-association-23c5b9",
+"name": "Federal Managers Association",
+"kind": "ngo-advocacy",
+"addr": "1641 Prince Street, Alexandria, VA 22314",
+"lat": 38.80536,
+"lon": -77.057942,
+"gc": "addr",
+"link": "https://fedmanagers.org",
+"linkType": "website",
+"src": [
+"https://fedmanagers.org/fma/files/cclibraryfiles/filename/000000001937/FMA%20Fact%20Sheet.pdf"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "fedex-ground-b187f9",
+"name": "FedEx Ground (Manassas distribution center)",
+"kind": "corporate",
+"addr": "7303 Cushing Road, Manassas, VA 20109",
+"lat": 38.796961,
+"lon": -77.565613,
+"gc": "addr",
+"link": "https://careers.fedex.com",
+"linkType": "careers",
+"src": [
+"https://careers.fedex.com/courier-non-dot/job/P25-342994-1"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "fleet-reserve-association-1f8cd9",
+"name": "Fleet Reserve Association",
+"kind": "ngo-advocacy",
+"addr": "125 N. West Street, Alexandria, VA 22314",
+"lat": 38.806337,
+"lon": -77.054493,
+"gc": "addr",
+"link": "https://www.fra.org",
+"linkType": "website",
+"src": [
+"https://askjan.org/organizations/Fleet-Reserve-Association.cfm"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "fort-belvoir-garrison-663b38",
+"name": "Fort Belvoir Garrison (Army, 9820 Flagler Rd)",
+"kind": "federal",
+"addr": "9820 Flagler Road, Fort Belvoir, VA 22060-5932",
+"lat": 38.692193,
+"lon": -77.133417,
+"gc": "addr",
+"link": "https://home.army.mil/belvoir/index.php/about/garrison-job-openings",
+"linkType": "careers",
+"src": [
+"https://home.army.mil/belvoir/contact"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "freddie-mac-c794a2",
+"name": "Freddie Mac (McLean HQ)",
+"kind": "corporate",
+"addr": "8200 Jones Branch Dr, McLean, VA 22102",
+"lat": 38.932037,
+"lon": -77.227129,
+"gc": "addr",
+"link": "https://www.freddiemac.com",
+"linkType": "website",
+"src": [
+"https://www.hrc.org/resources/corporations/federal-home-loan-mortgage-corp.-freddie-mac"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "george-mason-university-6730a7",
+"name": "George Mason University (Fairfax Campus)",
+"kind": "education-health",
+"addr": "4400 University Drive, Fairfax, VA 22030",
+"lat": 38.834399,
+"lon": -77.304408,
+"gc": "addr",
+"link": "https://jobs.gmu.edu",
+"linkType": "careers",
+"src": [
+"https://listings.jobs.gmu.edu/"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "guidehouse-098cd3",
+"name": "Guidehouse (McLean HQ, Tysons)",
+"kind": "consulting",
+"addr": "1676 International Drive, Suite 800, McLean, VA 22102",
+"lat": 38.924602,
+"lon": -77.227954,
+"gc": "addr",
+"link": "https://guidehouse.com",
+"linkType": "website",
+"src": [
+"https://www.areadevelopment.com/newsitems/5-12-2021/guidehouse-headquarters-fairfax-county-virginia.shtml"
+],
+"via": "list",
+"empId": "guidehouse",
+"checked": "2026-11-24"
+},
+{
+"id": "hilton-0b8374",
+"name": "Hilton (McLean HQ)",
+"kind": "corporate",
+"addr": "7930 Jones Branch Drive, McLean, VA 22102",
+"lat": 38.928567,
+"lon": -77.216409,
+"gc": "addr",
+"link": "https://jobs.hilton.com/us/en/career-areas-corporate",
+"linkType": "careers",
+"src": [
+"https://builtin.com/company/hilton/offices"
+],
+"via": "list",
+"empId": "hilton",
+"checked": "2026-11-24"
+},
+{
+"id": "icf-90d9bf",
+"name": "ICF (Fairfax HQ)",
+"kind": "consulting",
+"addr": "9300 Lee Highway, Fairfax, VA 22031",
+"lat": 38.871998,
+"lon": -77.264549,
+"gc": "addr",
+"link": "https://www.icf.com",
+"linkType": "website",
+"src": [
+"https://vault.com/company-profiles/management-strategy/icf-international-inc"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "inova-alexandria-hospital-22d592",
+"name": "Inova Alexandria Hospital",
+"kind": "education-health",
+"addr": "4320 Seminary Road, Alexandria, VA 22304",
+"lat": 38.824071,
+"lon": -77.104481,
+"gc": "addr",
+"link": "https://www.inova.org/careers/career-areas/clinical-careers/relocating",
+"linkType": "careers",
+"src": [
+"https://inova.org/iah/nursing"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "inova-alexandria-hospital-26a5e2",
+"name": "Inova Alexandria Hospital",
+"kind": "education-health",
+"addr": "4320 Seminary Rd, Alexandria, VA 22304",
+"lat": 38.824071,
+"lon": -77.104481,
+"gc": "addr",
+"link": "https://www.inova.org/careers",
+"linkType": "careers",
+"src": [
+"https://www.inova.org/nursing-inova/nursing-inova-alexandria-hospital"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "inova-fair-oaks-hospital-db6bba",
+"name": "Inova Fair Oaks Hospital",
+"kind": "education-health",
+"addr": "3600 Joseph Siewick Dr, Fairfax, VA 22033",
+"lat": 38.884998,
+"lon": -77.378811,
+"gc": "addr",
+"link": "https://www.inova.org/careers/career-areas/clinical-careers/relocating",
+"linkType": "careers",
+"src": [
+"https://www.inova.org/ifoh"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "inova-loudoun-hospital-6dfb99",
+"name": "Inova Loudoun Hospital",
+"kind": "education-health",
+"addr": "44045 Riverside Pkwy, Leesburg, VA 20176",
+"lat": 39.077051,
+"lon": -77.478171,
+"gc": "addr",
+"link": "https://www.inova.org/careers/career-areas/clinical-careers/relocating",
+"linkType": "careers",
+"src": [
+"https://www.inova.org/ilh",
+"https://www.inova.org/locations/inova-loudoun-hospital",
+"https://www.vivian.com/facilities/inova-loudoun-hospital-leesburg-va"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "institute-for-defense-analyses-6c1359",
+"name": "Institute for Defense Analyses (Alexandria HQ)",
+"kind": "think-tank",
+"addr": "730 East Glebe Road, Alexandria, VA 22305",
+"lat": 38.832599,
+"lon": -77.049183,
+"gc": "addr",
+"link": "https://www.ida.org",
+"linkType": "website",
+"src": [
+"https://www.cbinsights.com/company/institute-for-defense-analyses"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "institute-for-justice-0d954e",
+"name": "Institute for Justice",
+"kind": "ngo-advocacy",
+"addr": "901 N. Glebe Road, Suite 900, Arlington, VA 22203",
+"lat": 38.880878,
+"lon": -77.115099,
+"gc": "addr",
+"link": "https://ij.org/careers/",
+"linkType": "careers",
+"src": [
+"https://ij.org/careers/"
+],
+"via": "list",
+"empId": "institute-for-justice",
+"checked": "2026-11-24"
+},
+{
+"id": "intelsat-2a5631",
+"name": "Intelsat (McLean/Tysons office)",
+"kind": "corporate",
+"addr": "7900 Tysons One Place, McLean, VA 22102",
+"lat": 38.919386,
+"lon": -77.22086,
+"gc": "addr",
+"link": "https://www.intelsat.com/careers/launch-your-career-at-intelsat",
+"linkType": "careers",
+"src": [
+"https://www.businesswire.com/news/home/20200521005343/en/"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "laurel-ridge-community-college-870873",
+"name": "Laurel Ridge Community College (Fauquier Campus, Warrenton)",
+"kind": "education-health",
+"addr": "6480 College Street, Warrenton, VA 20187",
+"lat": 38.685518,
+"lon": -77.784938,
+"gc": "addr",
+"link": "https://laurelridge.edu",
+"linkType": "website",
+"src": [
+"https://laurelridge.edu/community-college-in-fauquier-warrenton-va/"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "leidos-31c3f6",
+"name": "Leidos (Reston HQ)",
+"kind": "contractor",
+"addr": "1750 Presidents St, Reston, VA 20190",
+"lat": 38.958937,
+"lon": -77.355528,
+"gc": "addr",
+"link": "https://careers.leidos.com",
+"linkType": "careers",
+"src": [
+"https://www.clay.com/fr/dossier/leidos-headquarters-office-locations"
+],
+"via": "list",
+"empId": "leidos",
+"checked": "2026-11-24"
+},
+{
+"id": "lockheed-martin-e0314d",
+"name": "Lockheed Martin (Manassas, Rotary and Mission Systems)",
+"kind": "contractor",
+"addr": "9500 Godwin Dr, Bldg 400, Manassas, VA 20110",
+"lat": 38.747041,
+"lon": -77.512929,
+"gc": "addr",
+"link": "https://www.lockheedmartinjobs.com",
+"linkType": "careers",
+"src": [
+"https://lockheedmartin.com/en-us/who-we-are/business-areas/rotary-and-mission-systems/manassas-va.html"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "loudoun-county-government-06808e",
+"name": "Loudoun County Government (Government Center)",
+"kind": "state-local",
+"addr": "1 Harrison St SE, Leesburg, VA 20175",
+"lat": 39.113939,
+"lon": -77.56156,
+"gc": "addr",
+"link": "https://www.loudoun.gov/Jobs",
+"linkType": "careers",
+"src": [
+"https://www.loudoun.gov/Jobs"
+],
+"via": "list",
+"empId": "loudoun-county-government",
+"checked": "2026-11-24"
+},
+{
+"id": "loudoun-county-public-schools-c755d6",
+"name": "Loudoun County Public Schools (Administration Building)",
+"kind": "state-local",
+"addr": "21000 Education Court, Ashburn, VA 20148",
+"lat": 39.03139,
+"lon": -77.520312,
+"gc": "addr",
+"link": "https://www.lcps.org/Page/1116",
+"linkType": "careers",
+"src": [
+"https://www.topschooljobs.org/job/1083218/director-school-administration/",
+"https://www.lcps.org/Page/1116"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "manassas-city-public-schools-394b23",
+"name": "Manassas City Public Schools (Central Offices)",
+"kind": "state-local",
+"addr": "8700 Centreville Rd, Suite 400, Manassas, VA 20110",
+"lat": 38.766025,
+"lon": -77.456593,
+"gc": "addr",
+"link": "https://manassas.tedk12.com/hire",
+"linkType": "careers",
+"src": [
+"https://phoenix.aws.mapquest.com/us/virginia/manassas-city-public-schools-central-offices-436583359"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "mantech-14fb83",
+"name": "ManTech (Herndon HQ)",
+"kind": "contractor",
+"addr": "2251 Corporate Park Drive, Herndon, VA 20171",
+"lat": 38.951277,
+"lon": -77.395802,
+"gc": "addr",
+"link": "https://careers.mantech.com",
+"linkType": "careers",
+"src": [
+"https://www.mantech.com/contact-us"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "marine-corps-base-quantico-bd9143",
+"name": "Marine Corps Base Quantico (G-1 Civilian Manpower, Catlin Ave)",
+"kind": "federal",
+"addr": "3250 Catlin Avenue, Room 226, Quantico, VA 22134",
+"lat": 38.512929,
+"lon": -77.314,
+"gc": "addr",
+"link": "https://www.quantico.marines.mil/Resources/Quantico-Careers/",
+"linkType": "careers",
+"src": [
+"https://www.quantico.marines.mil/Offices-Staff/G-1-Manpower/Civilian-Manpower-Management/Civilian-Training-and-Education/"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "marymount-university-ed0a7f",
+"name": "Marymount University (Arlington)",
+"kind": "education-health",
+"addr": "2807 N Glebe Rd, Arlington, VA 22207",
+"lat": 38.904498,
+"lon": -77.128851,
+"gc": "addr",
+"link": "https://marymount.edu/careers",
+"linkType": "careers",
+"src": [
+"https://www.academicjobs.com/marymount-university-jobs"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "mercatus-center-at-george-mason-university-9cbb16",
+"name": "Mercatus Center at George Mason University",
+"kind": "think-tank",
+"addr": "3434 Washington Boulevard, 4th Floor, Arlington, VA 22201",
+"lat": 38.886003,
+"lon": -77.102315,
+"gc": "addr",
+"link": "https://mercatus.org/jobs",
+"linkType": "careers",
+"src": [
+"https://Www.Wikipedia.org/wiki/Mercatus_Center",
+"https://mercatus.org/jobs"
+],
+"via": "list",
+"empId": "mercatus-center",
+"checked": "2026-11-24"
+},
+{
+"id": "military-officers-association-of-america-97bdac",
+"name": "Military Officers Association of America",
+"kind": "ngo-advocacy",
+"addr": "201 N. Washington St., Alexandria, VA 22314",
+"lat": 38.806387,
+"lon": -77.046607,
+"gc": "addr",
+"link": "https://www.moaa.org",
+"linkType": "website",
+"src": [
+"https://www.moaa.org/about"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "mitre-485b4e",
+"name": "MITRE Corporation (McLean campus)",
+"kind": "contractor",
+"addr": "7515 Colshire Drive, McLean, VA 22102",
+"lat": 38.922503,
+"lon": -77.204634,
+"gc": "addr",
+"link": "https://www.mitre.org",
+"linkType": "website",
+"src": [
+"https://mitre.org/locations"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "mitre-a0532f",
+"name": "MITRE Corporation (McLean main campus)",
+"kind": "think-tank",
+"addr": "7525 Colshire Drive, McLean, VA 22102",
+"lat": 38.922618,
+"lon": -77.205808,
+"gc": "addr",
+"link": "https://www.mitre.org",
+"linkType": "website",
+"src": [
+"https://mitre.org/locations"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "nami-ca2f09",
+"name": "NAMI (National Alliance on Mental Illness)",
+"kind": "ngo-advocacy",
+"addr": "4301 Wilson Blvd, Suite 300, Arlington, VA 22203",
+"lat": 38.880089,
+"lon": -77.112489,
+"gc": "addr",
+"link": "https://www.nami.org",
+"linkType": "website",
+"src": [
+"https://www.nami.org/nami-news/the-nami-national-office-is-moving/",
+"https://www.nami.org/?p=31937"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "national-association-of-federal-credit-unions-e02bd7",
+"name": "National Association of Federal Credit Unions (NAFCU)",
+"kind": "ngo-advocacy",
+"addr": "3138 10th Street North, Arlington, VA 22201",
+"lat": 38.884325,
+"lon": -77.095573,
+"gc": "addr",
+"link": "https://www.nafcu.org",
+"linkType": "website",
+"src": [
+"https://www.americanbanker.com/creditunions/news/national-association-of-federal-credit-unions-CU80373",
+"https://www.nafcu.org/node/38513"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "national-automobile-dealers-association-89f61a",
+"name": "National Automobile Dealers Association (Tysons HQ)",
+"kind": "ngo-advocacy",
+"addr": "8484 Westpark Drive, Suite 500, Tysons, VA 22102",
+"lat": 38.924229,
+"lon": -77.236122,
+"gc": "addr",
+"link": "https://www.nada.org/careers",
+"linkType": "careers",
+"src": [
+"https://www.nada.org/careers"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "national-credit-union-administration-780e81",
+"name": "National Credit Union Administration (Alexandria HQ)",
+"kind": "federal",
+"addr": "1775 Duke St., Alexandria, VA 22314",
+"lat": 38.804658,
+"lon": -77.06161,
+"gc": "addr",
+"link": "https://www.ncua.gov",
+"linkType": "website",
+"src": [
+"https://www.ncua.gov/About/Documents/Careers/OHR-EmpLeave.pdf"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "national-defense-industrial-association-024b82",
+"name": "National Defense Industrial Association",
+"kind": "ngo-advocacy",
+"addr": "2101 Wilson Boulevard, Suite 700, Arlington, VA 22201-3060",
+"lat": 38.891613,
+"lon": -77.084785,
+"gc": "addr",
+"link": "https://ndia.org",
+"linkType": "website",
+"src": [
+"https://ndia.org/about/contact-us/directions"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "national-military-family-association-be3bae",
+"name": "National Military Family Association",
+"kind": "ngo-advocacy",
+"addr": "2800 Eisenhower Avenue, Suite 250, Alexandria, VA 22314",
+"lat": 38.802419,
+"lon": -77.080753,
+"gc": "addr",
+"link": "https://www.militaryfamily.org/about-us/careers",
+"linkType": "careers",
+"src": [
+"https://www.militaryfamily.org/about-us/careers"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "national-reconnaissance-office-a6cb30",
+"name": "National Reconnaissance Office (Chantilly)",
+"kind": "federal",
+"addr": "14675 Lee Road, Chantilly, VA 20151-1715",
+"lat": 38.879916,
+"lon": -77.452763,
+"gc": "addr",
+"link": "https://www.nro.gov",
+"linkType": "website",
+"src": [
+"https://www.nro.gov/contact-us/"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "national-rifle-association-of-america-1b17d8",
+"name": "National Rifle Association of America (Fairfax HQ)",
+"kind": "ngo-advocacy",
+"addr": "11250 Waples Mill Road, Fairfax, VA 22030",
+"lat": 38.863732,
+"lon": -77.336322,
+"gc": "addr",
+"link": null,
+"linkType": null,
+"src": [
+"https://a.assets.dandb.com/businessdirectory/nationalrifleassociationofamerica-fairfax-va-263256.html"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "national-rural-electric-cooperative-association-d8696e",
+"name": "National Rural Electric Cooperative Association (NRECA)",
+"kind": "ngo-advocacy",
+"addr": "4301 Wilson Blvd, Arlington, VA 22203",
+"lat": 38.880089,
+"lon": -77.112489,
+"gc": "addr",
+"link": "https://www.electric.coop/careers/",
+"linkType": "careers",
+"src": [
+"https://www.guidestar.org/profile/53-0116145",
+"https://www.electric.coop/careers/"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "national-science-foundation-316cc6",
+"name": "National Science Foundation (Alexandria HQ)",
+"kind": "federal",
+"addr": "2415 Eisenhower Avenue, Alexandria, VA 22314",
+"lat": 38.801312,
+"lon": -77.071436,
+"gc": "addr",
+"link": "https://www.nsf.gov/careers",
+"linkType": "careers",
+"src": [
+"https://nsf.gov/about/visit/"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "national-sheriffs-association-d1227c",
+"name": "National Sheriffs' Association",
+"kind": "ngo-advocacy",
+"addr": "1450 Duke Street, Alexandria, VA 22314",
+"lat": 38.803854,
+"lon": -77.057059,
+"gc": "addr",
+"link": "https://www.sheriffs.org/about-nsa/careers/",
+"linkType": "careers",
+"src": [
+"https://www.sheriffs.org/about-nsa/careers/"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "national-wildlife-federation-eb6bd4",
+"name": "National Wildlife Federation (Reston HQ)",
+"kind": "ngo-advocacy",
+"addr": "11100 Wildlife Center Drive, Reston, VA 20190",
+"lat": 38.952265,
+"lon": -77.327846,
+"gc": "addr",
+"link": "https://www.nwf.org/About-Us/Careers",
+"linkType": "careers",
+"src": [
+"https://www.nwf.org/FAQs"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "navy-federal-credit-union-deb340",
+"name": "Navy Federal Credit Union (Vienna HQ)",
+"kind": "corporate",
+"addr": "820 Follin Lane SE, Vienna, VA 22180",
+"lat": 38.904022,
+"lon": -77.246142,
+"gc": "addr",
+"link": "https://navyfederal.org/about/careers/working-at-navy-federal.php",
+"linkType": "careers",
+"src": [
+"https://www.dice.com/jobs/detail/Intern-%26%2345-Year-Round-%28Product-Engineering-%26%2345-Scrum%26%2347Agile%29-Navy-Federal-Credit-Union-Vienna-VA-22180/10117743/28044"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "navy-league-of-the-united-states-d07926",
+"name": "Navy League of the United States",
+"kind": "ngo-advocacy",
+"addr": "2300 Wilson Boulevard, Suite 200, Arlington, VA 22201",
+"lat": 38.890933,
+"lon": -77.086625,
+"gc": "addr",
+"link": "https://www.navyleague.org/who-we-are/careers/",
+"linkType": "careers",
+"src": [
+"https://www.navyleague.org/who-we-are/careers/",
+"https://www.navyleague.org/wp-content/uploads/2023/08/Navy-League-Fact-Sheet.pdf"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "nestl-usa-a50898",
+"name": "Nestlé USA (Rosslyn HQ)",
+"kind": "corporate",
+"addr": "1812 N. Moore Street, Arlington, VA 22209",
+"lat": 38.896225,
+"lon": -77.071631,
+"gc": "addr",
+"link": "https://nestlejobs.com/locations",
+"linkType": "careers",
+"src": [
+"https://www.hrc.org/resources/corporations/nestlé-usa-inc."
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "northern-virginia-community-college-c1b1d2",
+"name": "Northern Virginia Community College (Woodbridge campus)",
+"kind": "education-health",
+"addr": "2645 College Drive, Woodbridge, VA 22191",
+"lat": 38.619888,
+"lon": -77.292905,
+"gc": "addr",
+"link": "https://www.nvcc.edu/employment/",
+"linkType": "careers",
+"src": [
+"https://nvcc.edu/dist/files/sites/about/diversity/dei-resource-map.pdf"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "northern-virginia-community-college-c810a5",
+"name": "Northern Virginia Community College (Annandale campus)",
+"kind": "education-health",
+"addr": "8333 Little River Turnpike, Annandale, VA 22003",
+"lat": 38.836001,
+"lon": -77.233478,
+"gc": "addr",
+"link": "https://www.nvcc.edu/employment/",
+"linkType": "careers",
+"src": [
+"https://www.nvcc.edu/about/locations/annandale/about.html"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "northern-virginia-community-college-d307f9",
+"name": "Northern Virginia Community College (Loudoun campus)",
+"kind": "education-health",
+"addr": "1000 Harry Flood Byrd Highway, Sterling, VA 20164",
+"lat": 39.028952,
+"lon": -77.398562,
+"gc": "addr",
+"link": "https://www.nvcc.edu/employment/",
+"linkType": "careers",
+"src": [
+"https://www.nvcc.edu/catalog/cat2000/front/address.htm"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "northrop-grumman-f667c4",
+"name": "Northrop Grumman (Global HQ, Falls Church)",
+"kind": "contractor",
+"addr": "2980 Fairview Park Drive, Falls Church, VA 22042",
+"lat": 38.873483,
+"lon": -77.215796,
+"gc": "addr",
+"link": "https://northropgrumman.com/careers",
+"linkType": "careers",
+"src": [
+"https://northropgrumman.com/who-we-are/contact-us-northrop-grumman"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "nvr-0faf4a",
+"name": "NVR, Inc. (Reston HQ)",
+"kind": "corporate",
+"addr": "11700 Plaza America Dr, Reston, VA 20190",
+"lat": 38.953068,
+"lon": -77.349559,
+"gc": "addr",
+"link": "https://www.nvrinc.com",
+"linkType": "website",
+"src": [
+"https://www.hrc.org/resources/corporations/nvr-inc."
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "office-of-naval-research-876553",
+"name": "Office of Naval Research (One Liberty Center, Arlington)",
+"kind": "federal",
+"addr": "875 N. Randolph St., Suite 1426, Arlington, VA 22303",
+"lat": 38.880725,
+"lon": -77.109061,
+"gc": "addr",
+"link": "https://www.onr.navy.mil/career-job-opportunity/job-listing",
+"linkType": "careers",
+"src": [
+"https://www.onr.navy.mil/work-with-us"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "politico-77a8e9",
+"name": "Politico (Arlington HQ)",
+"kind": "media",
+"addr": "1000 Wilson Boulevard, Arlington, VA 22209",
+"lat": 38.893876,
+"lon": -77.068403,
+"gc": "addr",
+"link": "https://www.politico.com",
+"linkType": "website",
+"src": [
+"https://globest.com/2014/08/13/politico-signs-lease-deal-at-1000-wilson-blvd",
+"https://edesiderata.crl.edu/node/1543"
+],
+"via": "list",
+"empId": "politico",
+"checked": "2026-11-24"
+},
+{
+"id": "potomac-institute-for-policy-studies-ae3de7",
+"name": "Potomac Institute for Policy Studies",
+"kind": "think-tank",
+"addr": "901 N. Stuart Street, Suite 1200, Arlington, VA 22203",
+"lat": 38.881115,
+"lon": -77.111629,
+"gc": "addr",
+"link": "https://potomacinstitute.org",
+"linkType": "website",
+"src": [
+"https://potomacinstitute.org/contactuscategory/1037-directions"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "prince-william-county-government-89f119",
+"name": "Prince William County Government (County Complex)",
+"kind": "state-local",
+"addr": "1 County Complex Court, Suite 155, Woodbridge, VA 22192",
+"lat": 38.679851,
+"lon": -77.351147,
+"gc": "addr",
+"link": "https://www.pwcva.gov/department/human-resources",
+"linkType": "careers",
+"src": [
+"https://www.pwcva.gov/department/human-resources/contact-us"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "prince-william-county-public-schools-7d994c",
+"name": "Prince William County Public Schools (Edward L. Kelly Leadership Center)",
+"kind": "state-local",
+"addr": "14715 Bristow Road, Manassas, VA 20112",
+"lat": 38.635057,
+"lon": -77.435953,
+"gc": "addr",
+"link": "https://pwcs.edu/departments/hr/employment_opportunities/administrative",
+"linkType": "careers",
+"src": [
+"https://pwcs.edu/about_us/contact_us"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "professional-services-council-cdad49",
+"name": "Professional Services Council",
+"kind": "ngo-advocacy",
+"addr": "4401 Wilson Boulevard, Suite 1110, Arlington, VA 22203",
+"lat": 38.880134,
+"lon": -77.113369,
+"gc": "addr",
+"link": "https://www.pscouncil.org/psc/__p/ca/Careers.aspx",
+"linkType": "careers",
+"src": [
+"https://www.pscouncil.org/psc/__p/ca/Careers.aspx"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "pwc-036cfc",
+"name": "PwC (McLean office)",
+"kind": "consulting",
+"addr": "1800 Tysons Boulevard, McLean, VA 22102",
+"lat": 38.923785,
+"lon": -77.22213,
+"gc": "addr",
+"link": "https://www.pwc.com/us/en/careers",
+"linkType": "careers",
+"src": [
+"https://www.builtinchicago.org/company/pwc/offices"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "rand-0ba62c",
+"name": "RAND Corporation (Arlington office)",
+"kind": "think-tank",
+"addr": "1200 South Hayes Street, Arlington, VA 22202-5050",
+"lat": 38.862998,
+"lon": -77.059513,
+"gc": "addr",
+"link": "https://www.rand.org/jobs.html",
+"linkType": "careers",
+"src": [
+"https://www.rand.org/about/contacts.html",
+"https://www.rand.org/jobs.html"
+],
+"via": "list",
+"empId": "rand-arlington",
+"checked": "2026-11-24"
+},
+{
+"id": "reston-hospital-center-9c044f",
+"name": "Reston Hospital Center (HCA)",
+"kind": "education-health",
+"addr": "1850 Town Center Parkway, Reston, VA 20190",
+"lat": 38.96146,
+"lon": -77.362877,
+"gc": "addr",
+"link": "https://careers.hcahealthcare.com",
+"linkType": "careers",
+"src": [
+"https://www.vivian.com/facilities/reston-hospital-center-reston-va/jobs/?page=3"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "rtx-raytheon-4e74f0",
+"name": "RTX / Raytheon (Sterling, Ladbrook Dr Bldg 2)",
+"kind": "contractor",
+"addr": "23010 Ladbrook Drive, Building 2, Sterling, VA 20166",
+"lat": 38.980445,
+"lon": -77.484627,
+"gc": "addr",
+"link": "https://careers.rtx.com",
+"linkType": "careers",
+"src": [
+"https://my.recruitmilitary.com/job/44035899/Project-Team-Liaison-Coordinator-RTX-Sterling-VA"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "rtx-raytheon-5a6a47",
+"name": "RTX / Raytheon (Sterling, Pacific Blvd CC4)",
+"kind": "contractor",
+"addr": "22260 Pacific Blvd, Sterling, VA 20166",
+"lat": 39.00083,
+"lon": -77.444419,
+"gc": "addr",
+"link": "https://careers.rtx.com",
+"linkType": "careers",
+"src": [
+"https://themuse.com/jobs/rtx/principal-systems-test-engineer-operations-maintenance-senior-engineer"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "saic-b3969e",
+"name": "SAIC (Reston HQ)",
+"kind": "contractor",
+"addr": "12010 Sunset Hills Road, Reston, VA 20190",
+"lat": 38.955454,
+"lon": -77.356424,
+"gc": "addr",
+"link": "https://careers.saic.com",
+"linkType": "careers",
+"src": [
+"https://www.saic.com/sites/default/files/2021-04/SAIC%20Fact%20Sheet%20-%20May%202021.pdf"
+],
+"via": "list",
+"empId": "saic",
+"checked": "2026-11-24"
+},
+{
+"id": "sentara-northern-virginia-medical-center-4e07a1",
+"name": "Sentara Northern Virginia Medical Center (Woodbridge)",
+"kind": "education-health",
+"addr": "2300 Opitz Blvd, Woodbridge, VA 22191",
+"lat": 38.635192,
+"lon": -77.285637,
+"gc": "addr",
+"link": "https://www.sentara.com/aboutus/careers",
+"linkType": "careers",
+"src": [
+"https://vivian.com/facilities/sentara-northern-virginia-medical-center-woodbridge-va/jobs"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "society-for-human-resource-management-f28442",
+"name": "Society for Human Resource Management (SHRM)",
+"kind": "ngo-advocacy",
+"addr": "330 John Carlyle Street, Alexandria, VA 22314",
+"lat": 38.804201,
+"lon": -77.061418,
+"gc": "addr",
+"link": "https://www.shrm.org/about/careers-at-shrm",
+"linkType": "careers",
+"src": [
+"https://www.shrm.org/learningandcareer/learning/pages/program-locations-and-recommended-hotels.aspx",
+"https://www.shrm.org/about/careers-at-shrm"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "stonesprings-hospital-center-6c31c0",
+"name": "StoneSprings Hospital Center (HCA, Sterling)",
+"kind": "education-health",
+"addr": "24440 Stone Springs Blvd, Sterling, VA 20166",
+"lat": 38.942265,
+"lon": -77.542566,
+"gc": "addr",
+"link": "https://careers.hcahealthcare.com",
+"linkType": "careers",
+"src": [
+"https://hcavirginia.com/for-medical-professionals/stonesprings-hospital-center"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "town-of-herndon-8350f9",
+"name": "Town of Herndon (Herndon Municipal Center)",
+"kind": "state-local",
+"addr": "777 Lynn Street, Herndon, VA 20170",
+"lat": 38.971732,
+"lon": -77.386013,
+"gc": "addr",
+"link": "https://herndon-va.gov/residents/careers",
+"linkType": "careers",
+"src": [
+"https://www.herndon-va.gov/government/contact-us"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "town-of-leesburg-efc029",
+"name": "Town of Leesburg (Town Hall)",
+"kind": "state-local",
+"addr": "25 West Market Street, Leesburg, VA 20176",
+"lat": 39.115505,
+"lon": -77.564976,
+"gc": "addr",
+"link": "https://leesburgva.gov/departments/human-resources/job-opportunities",
+"linkType": "careers",
+"src": [
+"https://www.leesburgva.gov/government/contact-the-town",
+"https://leesburgva.gov/departments/human-resources/job-opportunities"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "town-of-purcellville-c57c7a",
+"name": "Town of Purcellville (Town Hall)",
+"kind": "state-local",
+"addr": "221 South Nursery Avenue, Purcellville, VA 20132",
+"lat": 39.135212,
+"lon": -77.715682,
+"gc": "addr",
+"link": "https://purcellvilleva.gov",
+"linkType": "website",
+"src": [
+"https://startpage.mapquest.com/us/virginia/purcellville-town-hall-438535915"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "town-of-warrenton-9c506a",
+"name": "Town of Warrenton (Town Hall)",
+"kind": "state-local",
+"addr": "21 Main Street, Warrenton, VA 20186",
+"lat": 38.713622,
+"lon": -77.794995,
+"gc": "addr",
+"link": "https://www.governmentjobs.com/careers/warrentonva",
+"linkType": "careers",
+"src": [
+"https://www.vaco.org/wp-content/uploads/2026/03/Town-Manager-Town-of-Warrenton.pdf"
+],
+"via": "list",
+"empId": "town-of-warrenton",
+"checked": "2026-11-24"
+},
+{
+"id": "transportation-security-administration-71d8a5",
+"name": "Transportation Security Administration (Springfield HQ)",
+"kind": "federal",
+"addr": "6595 Springfield Center Dr, Springfield, VA 22150",
+"lat": 38.763573,
+"lon": -77.174094,
+"gc": "addr",
+"link": "https://jobs.tsa.gov/featured-careers",
+"linkType": "careers",
+"src": [
+"https://wwe.jsfirm.com/22813/companyprofile",
+"https://jobs.tsa.gov/mission-support"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "uso-17b6b7",
+"name": "USO (United Service Organizations, World HQ)",
+"kind": "ngo-advocacy",
+"addr": "2111 Wilson Boulevard, Suite 1200, Arlington, VA 22201",
+"lat": 38.891599,
+"lon": -77.085021,
+"gc": "addr",
+"link": "https://www.uso.org/careers",
+"linkType": "careers",
+"src": [
+"https://midatlantic.uso.org/about/careers"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "uspto-24b0e3",
+"name": "USPTO (Madison Building HQ, Alexandria)",
+"kind": "federal",
+"addr": "600 Dulany Street, Alexandria, VA 22314",
+"lat": 38.80182,
+"lon": -77.063614,
+"gc": "addr",
+"link": "https://www.uspto.gov",
+"linkType": "website",
+"src": [
+"https://www.uspto.gov/about-us/uspto-locations/headquarters"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "uva-health-prince-william-medical-center-f3ef3a",
+"name": "UVA Health Prince William Medical Center (formerly Novant Health UVA)",
+"kind": "education-health",
+"addr": "8700 Sudley Rd, Manassas, VA 20110",
+"lat": 38.767382,
+"lon": -77.484908,
+"gc": "addr",
+"link": "https://www.uvahealth.com",
+"linkType": "website",
+"src": [
+"https://www.vivian.com/facilities/novant-health-uva-health-system-prince-william-medical-center-manassas-va/"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "verisign-d5c904",
+"name": "Verisign (Reston HQ)",
+"kind": "corporate",
+"addr": "12061 Bluemont Way, Reston, VA 20190",
+"lat": 38.957118,
+"lon": -77.362188,
+"gc": "addr",
+"link": "https://job-boards.greenhouse.io/verisign",
+"linkType": "careers",
+"src": [
+"https://linkedin.com/company/verisign"
+],
+"via": "list",
+"empId": "verisign",
+"checked": "2026-11-24"
+},
+{
+"id": "vhc-health-99d4a8",
+"name": "VHC Health (formerly Virginia Hospital Center)",
+"kind": "education-health",
+"addr": "1701 N. George Mason Drive, Arlington, VA 22205",
+"lat": 38.890021,
+"lon": -77.128874,
+"gc": "addr",
+"link": "https://careers-vhchealth.icims.com/jobs/search",
+"linkType": "careers",
+"src": [
+"https://careers-vhchealth.icims.com/jobs/14090/birth-registrar/job/"
+],
+"via": "list",
+"checked": "2026-11-24"
+},
+{
+"id": "walmart-supercenter-2437-2e9ebe",
+"name": "Walmart Supercenter #2437 (Warrenton)",
+"kind": "corporate",
+"addr": "700 James Madison Hwy, Warrenton, VA 20186",
+"lat": 38.697169,
+"lon": -77.78779,
+"gc": "addr",
+"link": "https://www.walmart.com/store/2437",
+"linkType": "website",
+"src": [
+"https://www.walmart.com/store/2437"
+],
+"via": "list",
+"checked": "2026-11-24"
+}
+]

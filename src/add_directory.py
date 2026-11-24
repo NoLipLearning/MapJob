@@ -1,6 +1,6 @@
 """Build src/directory.json (NoVA employer directory) from candidate files in src/dir_sources/*.json.
 Run from src/:  python3 add_directory.py [--in 'dir_sources/phaseA-*.json'] [--cap 1500] [--offline]
-Geocodes with Nominatim (1 request/second, cached in dir_geocache.json). A record is placed only when the geocoder
+Geocodes with the US Census geocoder (cached in dir_geocache.json; Nominatim kept as nominatim()). A record is placed only when the geocoder
 matches its house number; everything else goes to dir_unplaced.json. Spec: docs/superpowers/specs/2026-11-24-more-employers-careers-links-design.md"""
 import argparse, datetime, glob, json, os, re, time, urllib.error, urllib.parse, urllib.request
 from directory import norm_name, make_id, clean_link, match_emp, validate
@@ -10,6 +10,18 @@ UA = {"User-Agent": "reston-hiring-map/1.0 (personal job-search map)"}
 
 def lead_number(addr):
     m = re.match(r"\s*(\d+)", addr or ""); return m.group(1) if m else None
+
+def parse_census(body):
+    m = (body.get("result") or {}).get("addressMatches") or []
+    if not m: return {"miss": True}
+    c, ma = m[0]["coordinates"], m[0].get("matchedAddress", "")
+    return {"lat": round(c["y"], 6), "lon": round(c["x"], 6), "hn": lead_number(ma), "via": "census"}
+
+def census(addr):
+    """US Census Bureau geocoder: matches the house number against TIGER address ranges (no bulk-use limit)."""
+    q = urllib.parse.urlencode({"address": addr, "benchmark": "Public_AR_Current", "format": "json"})
+    with urllib.request.urlopen(urllib.request.Request("https://geocoding.geo.census.gov/geocoder/locations/onelineaddress?" + q, headers=UA), timeout=40) as r:
+        return parse_census(json.load(r))
 
 def nominatim(addr):
     q = urllib.parse.urlencode({"q": addr, "format": "jsonv2", "addressdetails": 1, "limit": 1, "countrycodes": "us"})
@@ -25,9 +37,9 @@ def geo_query(addr):
     keep = [p for p in parts if p and not re.match(r"^(?:suite|ste\.?|#|unit|room|rm\.?|floor|fl\.?|\d+(?:st|nd|rd|th) floor)\b", p, re.I)]
     return ", ".join(keep)
 
-def cached_geocoder(cache, cap, offline, fetch=None, pause=1.1):
+def cached_geocoder(cache, cap, offline, fetch=None, pause=0.3):
     """Looks up each address once (cached by the cleaned query). Stops for the rest of the run on any HTTP error (rate limit)."""
-    fetch = fetch or nominatim; left, stopped = [cap], [False]
+    fetch = fetch or census; left, stopped = [cap], [False]
     def geo(addr):
         q = geo_query(addr)
         if q in cache: return cache[q]
